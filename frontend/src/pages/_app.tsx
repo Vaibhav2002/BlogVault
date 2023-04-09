@@ -1,10 +1,10 @@
 import '@/styles/globals.css'
 import type {AppProps} from 'next/app'
-import {Open_Sans} from "next/font/google";
 import {CacheProvider, EmotionCache} from "@emotion/react";
 import createEmotionCache from "@/utils/EmotionCache";
+import {CssBaseline, ThemeProvider} from "@mui/material";
+import blogVaultTheme from "@/theme/BlogVaultTheme";
 
-const openSans = Open_Sans({subsets: ['latin']})
 const clientSideEmotionCache = createEmotionCache()
 
 interface AppComponentProps extends AppProps {
@@ -14,11 +14,12 @@ interface AppComponentProps extends AppProps {
 export default function App({Component, pageProps, emotionCache = clientSideEmotionCache}: AppComponentProps) {
     return (
         <CacheProvider value={emotionCache}>
-            <div className={openSans.className}>
+            <ThemeProvider theme={blogVaultTheme}>
+                <CssBaseline/>
                 <main>
                     <Component {...pageProps} />
                 </main>
-            </div>
+            </ThemeProvider>
         </CacheProvider>
     )
 }

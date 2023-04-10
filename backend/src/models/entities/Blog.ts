@@ -5,7 +5,7 @@ const blogSchema = new Schema({
     title: {type: String, required: true},
     description: {type: String, required: true},
     content: {type: String, required: true},
-    hashtags: [{type: Types.ObjectId, ref: 'HashTag'}]
+    tags: [{type: Types.ObjectId, ref: 'Tag'}]
 }, {timestamps: true});
 
 export type Blog = InferSchemaType<typeof blogSchema>;

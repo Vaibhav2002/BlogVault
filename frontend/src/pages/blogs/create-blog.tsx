@@ -1,25 +1,31 @@
 import {Box} from "@mui/material";
-import MarkdownEditor from "@/components/screenComponents/MarkdownEditor";
+import MarkdownEditor from "@/components/form/MarkdownEditor";
 import styles from "@/styles/CreateBlogPage.module.css"
 import {useForm} from "react-hook-form";
 import BlogMetaSection from "@/components/screenComponents/createBlog/BlogMetaSection";
 import {useEffect, useState} from "react";
 import {getAllTags} from "@/data/dataSources/TagDataSource";
+import {BlogData, createBlog} from "@/data/dataSources/BlogDataSource";
 
-interface CreateNewBlogPageProps {
-
-}
-
-interface BlogInput {
+export interface BlogInput {
     title: string,
     description: string,
-    content: string
+    content: string,
+
+    slug: string,
+
+    tags: Tag[]
 }
 
-const CreateNewBlogPage = ({}: CreateNewBlogPageProps) => {
+const CreateNewBlogPage = () => {
 
-    const {control, handleSubmit, formState: {isSubmitting}} = useForm<BlogInput>()
+    const form = useForm<BlogInput>()
+
+    const {handleSubmit, register, watch, setValue, formState: {errors}} = form
+
     const [tags, setTags] = useState<Tag[]>([])
+
+    const [error, setError] = useState<string | undefined>()
 
     useEffect(() => {
         async function fetchTags() {
@@ -30,8 +36,21 @@ const CreateNewBlogPage = ({}: CreateNewBlogPageProps) => {
         fetchTags()
     }, [])
 
-    const onSubmit = (data: BlogInput) => {
-        alert(JSON.stringify(data))
+    const onSubmit = async (data: BlogInput) => {
+        try {
+            await createBlog({
+                title: data.title,
+                description: data.description,
+                content: data.content,
+                slug: data.slug,
+                tags: data.tags ? data.tags.map(tag => tag._id) : []
+            } as BlogData)
+            setError(undefined)
+        } catch (e) {
+            console.error(e)
+            if(e instanceof Error)
+                setError(e.message)
+        }
     }
 
     return (
@@ -42,29 +61,27 @@ const CreateNewBlogPage = ({}: CreateNewBlogPageProps) => {
                 padding={2}
                 display="flex"
                 gap={2}
-                sx={{overflowX: "hidden"}}
+                sx={{overflowX: "hidden", flexDirection: {xs: "column", md: "row"}}}
                 alignItems="flex-start"
             >
 
                 <Box
-                    flex={0.4}
-                    height="100%"
                     position="static"
+                    flex={0.4}
+                    sx={{height: {xs: "auto", md: "100%"}}}
                 >
-                    <BlogMetaSection tags={tags} control={control} isSubmitting={isSubmitting}/>
+                    <BlogMetaSection tags={tags} form={form} error={error}/>
 
                 </Box>
 
-                <Box flex={1} height="100%">
-
-                    <MarkdownEditor
-                        placeholder="Write your blog here..."
-                        className={styles.editor}/>
-
-                </Box>
-
+                <MarkdownEditor
+                    register={register('content', {required: "Blog content is required"})}
+                    error={errors.content}
+                    value={watch('content')}
+                    setValue={setValue}
+                    placeholder="Write your blog here..."
+                    className={styles.editor}/>
             </Box>
-
 
         </form>
 

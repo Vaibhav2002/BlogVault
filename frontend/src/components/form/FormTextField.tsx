@@ -40,7 +40,7 @@ const FormTextField = (
                     {error && <FormHelperText style={{margin: 0}}>{error.message}</FormHelperText>}
 
                     {showLength && getLength(field.value) &&
-                        <FormHelperText style={{textAlign: "end"}}>{getLength(field.value)}</FormHelperText>
+                        <FormHelperText style={{textAlign: "end"}} error={!!error}>{getLength(field.value)}</FormHelperText>
                     }
                 </FormControl>
             }

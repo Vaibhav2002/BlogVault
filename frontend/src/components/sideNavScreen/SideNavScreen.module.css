@@ -1,0 +1,15 @@
+.root {
+    display: flex;
+    flex-direction: row;
+    overflow-x: hidden;
+    height: 100vh;
+}
+
+.sideNav {
+    height: 100%;
+}
+
+.content {
+    flex: 1;
+    height: 100%
+}

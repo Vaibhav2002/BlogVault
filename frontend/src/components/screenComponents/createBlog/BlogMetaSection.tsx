@@ -1,11 +1,10 @@
 import React from 'react';
 import {Alert, Collapse, Stack, Typography} from "@mui/material";
-import FormInputField from "@/components/form/FormInputField";
 import PrimaryButton from "@/components/styled/PrimaryButton";
 import {UseFormReturn} from "react-hook-form";
-import {BlogInput} from "@/pages/blogs/create-blog";
+import {BlogInput} from "@/pages/blogs/create";
 import {generateSlug} from "@/utils/Helpers";
-import FormAutoComplete from "@/components/form/FormAutoComplete";
+import FormTextField from "@/components/form/FormTextField";
 
 interface BlogMetaSectionProps {
     tags: Tag[]
@@ -16,11 +15,12 @@ interface BlogMetaSectionProps {
 
 const BlogMetaSection = ({tags, form, error, className}: BlogMetaSectionProps) => {
 
-    const {register, watch, getValues, setValue, formState: {errors, isSubmitting}} = form
+    const {getValues, setValue, formState: {errors, isSubmitting}} = form
 
     const errorText = errors.content?.message ?? error
 
     const setSlug = () => {
+        console.log('title', getValues('title'))
         const title = getValues('title')
         const slug = generateSlug(title)
         setValue('slug', slug, {shouldValidate: true})
@@ -36,37 +36,33 @@ const BlogMetaSection = ({tags, form, error, className}: BlogMetaSectionProps) =
             </Collapse>
 
             <Stack spacing={3}>
-                <FormInputField
-                    register={register("title", {required: "Blog title is required", maxLength: 100})}
-                    placeholder="Enter Blog Title"
-                    maxLength={100}
-                    fontSize={21}
-                    value={watch('title')}
+
+                <FormTextField
+                    control={form.control}
+                    name="title"
                     label="Title"
-                    fieldError={errors.title}
-                    onBlur={setSlug}
                     showLength
-                />
-
-                <FormInputField
-                    register={register("slug", {required: "Slug is required", maxLength: 100})}
-                    placeholder="Enter Blog Slug"
                     maxLength={100}
-                    label='Slug'
-                    value={watch('slug')}
-                    fieldError={errors.slug}
-                    showLength
+                    onBlur={setSlug}
+                    placeholder="Enter title"
                 />
 
-                <FormInputField
-                    register={register("description", {required: "Blog description is required", maxLength: 300})}
-                    placeholder="Enter blog Description"
-                    maxLength={300}
-                    fieldError={errors.description}
-                    multiline
-                    label="Description"
-                    value={watch('description')}
+                <FormTextField
+                    control={form.control}
+                    name="slug"
+                    label="Slug"
                     showLength
+                    maxLength={100}
+                    placeholder="Enter slug"
+                />
+
+                <FormTextField
+                    control={form.control}
+                    name="description"
+                    label="Description"
+                    showLength
+                    maxLength={100}
+                    placeholder="Enter description"
                     maxRows={6}
                 />
 

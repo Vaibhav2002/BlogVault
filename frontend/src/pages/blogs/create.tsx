@@ -33,6 +33,7 @@ const CreateNewBlogPage = () => {
             setTags(tags)
             console.log(JSON.stringify(tags))
         }
+
         fetchTags()
     }, [])
 
@@ -48,7 +49,7 @@ const CreateNewBlogPage = () => {
             setError(undefined)
         } catch (e) {
             console.error(e)
-            if(e instanceof Error)
+            if (e instanceof Error)
                 setError(e.message)
         }
     }

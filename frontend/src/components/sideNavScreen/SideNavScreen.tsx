@@ -1,6 +1,6 @@
 import React, {useState} from 'react';
 import {Box, Stack} from "@mui/material";
-import SideNav from "@/components/SideNav/SideNav";
+import SideNav from "@/components/SideNav";
 import styles from "./SideNavScreen.module.css";
 
 interface SideNavScreenProps {
@@ -9,8 +9,6 @@ interface SideNavScreenProps {
 }
 
 const SideNavScreen = ({children, className}: SideNavScreenProps) => {
-
-
 
     return (
         <Stack className={`${styles.root} ${className}`}>

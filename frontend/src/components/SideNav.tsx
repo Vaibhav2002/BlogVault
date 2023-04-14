@@ -2,15 +2,12 @@ import React, {useMemo, useState} from 'react';
 import {Stack} from "@mui/material";
 import ContainedIcon from "@/components/ContainedIcon";
 import {CiBookmark, CiGrid42, CiHashtag, CiHome, CiSquarePlus} from "react-icons/ci";
-import styles from "./SideNav.module.css";
-import Link from "next/link";
 import {useRouter} from "next/router";
-
+import {motion} from "framer-motion";
 
 interface SideNavProps {
     className: string
 }
-
 
 const SideNav = ({className}: SideNavProps) => {
 
@@ -46,14 +43,18 @@ const SideNav = ({className}: SideNavProps) => {
     }
 
     return (
-        <Stack spacing={4} className={className} padding={2}>
+        <Stack spacing={4} className={className} padding={3}>
 
             {icons.map((icon, index) => (
                 <ContainedIcon
                     icon={icon}
                     onClick={() => onIconSelected(index)}
-                    sx={{backgroundColor: getIconBgColor(index == selectedIndex)}}
-                    className={styles.navButton}
+                    sx={{
+                        backgroundColor: getIconBgColor(index == selectedIndex),
+                        cursor: "pointer"
+                    }}
+                    component={motion.div}
+                    whileHover={{scale: 1.3}}
                 />
             ))}
 

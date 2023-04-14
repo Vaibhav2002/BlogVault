@@ -7,7 +7,7 @@ import {generateSlug} from "@/utils/Helpers";
 import FormTextField from "@/components/form/FormTextField";
 
 interface BlogMetaSectionProps {
-    tags: Tag[]
+    tags: Topic[]
     form: UseFormReturn<BlogInput>
     error?: string
     className?: string

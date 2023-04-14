@@ -1,4 +1,4 @@
-interface Tag {
+interface Topic {
     _id:string
     name:string
 }

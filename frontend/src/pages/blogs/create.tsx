@@ -4,7 +4,7 @@ import styles from "@/styles/CreateBlogPage.module.css"
 import {useForm} from "react-hook-form";
 import BlogMetaSection from "@/components/screenComponents/createBlog/BlogMetaSection";
 import {useEffect, useState} from "react";
-import {getAllTags} from "@/data/dataSources/TagDataSource";
+import {getAllTags} from "@/data/dataSources/TopicDataSource";
 import {BlogData, createBlog} from "@/data/dataSources/BlogDataSource";
 
 export interface BlogInput {
@@ -14,7 +14,7 @@ export interface BlogInput {
 
     slug: string,
 
-    tags: Tag[]
+    tags: Topic[]
 }
 
 const CreateNewBlogPage = () => {
@@ -23,7 +23,7 @@ const CreateNewBlogPage = () => {
 
     const {handleSubmit, register, watch, setValue, formState: {errors}} = form
 
-    const [tags, setTags] = useState<Tag[]>([])
+    const [tags, setTags] = useState<Topic[]>([])
 
     const [error, setError] = useState<string | undefined>()
 

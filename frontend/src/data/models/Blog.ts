@@ -3,7 +3,7 @@ export default interface Blog {
     title: string
     description: string
     content: string
-    tags: Tag[]
+    topics: Topic[]
     createdAt: string
     updatedAt: string
 }

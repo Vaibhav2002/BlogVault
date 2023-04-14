@@ -1,10 +1,9 @@
 import {Schema, InferSchemaType, model} from "mongoose";
 
-const tagSchema = new Schema({
+const topicSchema = new Schema({
     name: {type: String, required: true, unique: true},
 }, {timestamps: true});
 
-type Tag = InferSchemaType<typeof tagSchema>
+type Topic = InferSchemaType<typeof topicSchema>
 
-export default model<Tag>('Tag', tagSchema)
-
+export default model<Topic>('Topic', topicSchema)

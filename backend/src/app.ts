@@ -2,7 +2,7 @@ import "dotenv/config"
 import express from 'express';
 import {errorMiddleware, notFoundMiddleware} from "./middlewares/ErrorMiddlewares";
 import blogRoutes from "./routes/BlogRoutes";
-import TagRoutes from "./routes/TagRoutes";
+import topicRoutes from "./routes/TopicRoutes";
 import cors from "cors";
 import env from "./utils/CleanEnv";
 
@@ -15,7 +15,7 @@ app.use(cors({
 app.use(express.json())
 
 app.use("/blogs", blogRoutes)
-app.use("/tags", TagRoutes)
+app.use("/topics", topicRoutes)
 
 app.use(notFoundMiddleware)
 app.use(errorMiddleware)

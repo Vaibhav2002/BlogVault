@@ -1,9 +1,9 @@
 interface CreateBlogRequest {
-    slug:string
+    slug: string
     title: string
     description: string
     content: string
-    tags: string[]
+    topics: string[]
 }
 
 export default CreateBlogRequest

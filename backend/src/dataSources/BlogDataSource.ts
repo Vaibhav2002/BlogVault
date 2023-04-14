@@ -1,26 +1,25 @@
 import blogs from '../models/entities/Blog';
 import CreateBlogRequest from "../models/requests/CreateBlogRequest";
-import {getAllTags} from "./TagDataSource";
+import {getAllTopics} from "./TopicDataSource";
 import createHttpError from "http-errors";
 
 export const createBlog = async (req: CreateBlogRequest) => {
 
-    const tags = (await getAllTags()).map(tag => tag.id)
-    const areAllHashtagsValid = req.tags.every(tag => tags.includes(tag))
+    const topics = (await getAllTopics()).map(topic => topic._id.toString())
+    const areAllTopicsValid = req.topics.every(topic => topics.includes(topic))
 
-    if (!areAllHashtagsValid) throw createHttpError('400', 'Invalid tags')
+    if (!areAllTopicsValid) throw createHttpError('400', 'Invalid topic')
 
     const isSlugUsed = await blogs.findOne({slug: req.slug}).exec()
     if (isSlugUsed) throw createHttpError('400', 'Slug already used')
 
-    const blog = await blogs.create({
+    return await blogs.create({
         slug: req.slug,
         title: req.title,
         description: req.description,
         content: req.content,
-        tags: req.tags
+        topics: req.topics
     })
-    return blog
 }
 
 export const getAllBlogs = async () => {

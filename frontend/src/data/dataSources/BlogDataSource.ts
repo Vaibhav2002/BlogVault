@@ -13,3 +13,8 @@ export const createBlog = async (blog: BlogData) => {
     const response = await api.post<Blog>(`/blogs`, blog)
     return response.data as Blog
 }
+
+export const getAllBlogs = async () => {
+    const response = await api.get<Blog[]>(`/blogs`)
+    return response.data as Blog[]
+}

@@ -1,0 +1,12 @@
+.blogSection{
+    flex: 0.7;
+    padding: 4rem;
+    overflow-x:hidden;
+    overflow-y: auto;
+}
+
+.discoverSection {
+    max-height: 100%;
+    flex: 0.3;
+    border-left: 1px solid lightgrey;
+}

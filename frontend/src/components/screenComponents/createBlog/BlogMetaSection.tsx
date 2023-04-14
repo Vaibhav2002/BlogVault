@@ -61,7 +61,7 @@ const BlogMetaSection = ({tags, form, error, className}: BlogMetaSectionProps) =
                     name="description"
                     label="Description"
                     showLength
-                    maxLength={100}
+                    maxLength={300}
                     placeholder="Enter description"
                     maxRows={6}
                 />

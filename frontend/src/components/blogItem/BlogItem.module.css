@@ -1,0 +1,47 @@
+.blogCard{
+    display: flex;
+    flex-direction: row;
+    overflow: hidden;
+    height: 12rem;
+}
+
+
+.blogImage{
+    aspect-ratio: 1/1;
+    height:100%;
+    background-color: grey;
+}
+
+.blogContent{
+    flex: 1;
+    padding: 0 1rem;
+    display: flex;
+    justify-content: space-between;
+    flex-direction: column;
+    overflow-x: hidden;
+}
+
+.userInfoSection{
+    display: flex;
+    justify-content: space-between;
+    flex-direction: row;
+}
+
+.userInfo{
+    display: flex;
+    flex-direction: row;
+    gap: 0.5rem;
+    align-items: center;
+}
+
+
+.userAvatar{
+    height: 32px;
+    width: 32px;
+}
+
+.actionSection{
+    display: flex;
+    justify-content: space-between;
+    flex-direction: row;
+}

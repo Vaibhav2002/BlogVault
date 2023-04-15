@@ -14,6 +14,8 @@ app.use(cors({
 
 app.use(express.json())
 
+app.use("/uploads", express.static("uploads"))
+
 app.use("/blogs", blogRoutes)
 app.use("/topics", topicRoutes)
 

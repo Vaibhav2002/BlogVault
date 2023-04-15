@@ -17,6 +17,7 @@ const FormAutoComplete = ({control, name, label, max, rules, ...props}: FormAuto
 
     const filterOptions = (availableOptions: Topic[], selectedValues: Topic[]) => {
         return availableOptions.filter((option) => {
+            if(!selectedValues) return true
             return selectedValues.findIndex((value) => value._id === option._id) === -1;
         });
     };

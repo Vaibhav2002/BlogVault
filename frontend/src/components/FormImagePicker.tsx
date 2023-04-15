@@ -19,11 +19,14 @@ const FormImagePicker = ({control, name, rules, ...props}: ImagePickerProps) => 
             control={control}
             name={name}
             rules={rules}
-            render={({field}) =>
+            render={({field, fieldState:{error}}) =>
                 <TextField
                     {...field}
+                    {...props}
                     variant="outlined"
                     type="file"
+                    error={!!error}
+                    helperText={error?.message}
                     accept="image/png, image/jpeg"
                 />
             }

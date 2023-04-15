@@ -5,15 +5,17 @@ import {UseFormReturn} from "react-hook-form";
 import {BlogInput} from "@/pages/blogs/create";
 import {generateSlug} from "@/utils/Helpers";
 import FormTextField from "@/components/form/FormTextField";
+import FormAutoComplete from "@/components/form/FormAutoComplete";
+import FormImagePicker from "@/components/FormImagePicker";
 
 interface BlogMetaSectionProps {
-    tags: Topic[]
+    topics: Topic[]
     form: UseFormReturn<BlogInput>
     error?: string
     className?: string
 }
 
-const BlogMetaSection = ({tags, form, error, className}: BlogMetaSectionProps) => {
+const BlogMetaSection = ({topics, form, error, className}: BlogMetaSectionProps) => {
 
     const {getValues, setValue, formState: {errors, isSubmitting}} = form
 
@@ -69,14 +71,21 @@ const BlogMetaSection = ({tags, form, error, className}: BlogMetaSectionProps) =
                     maxRows={6}
                 />
 
-                {/*{tags.length > 0 &&*/}
-                {/*    <FormAutoComplete*/}
-                {/*        register={register('tags')}*/}
-                {/*        fieldError={errors.}*/}
-                {/*        options={tags}*/}
-                {/*        placeholder="Select Tags"*/}
-                {/*        getOptionLabel={tag => tag.name}/>*/}
-                {/*}*/}
+                <FormImagePicker
+                    control={form.control}
+                    name="coverImage"
+                    rules={{required: "Cover Image is required"}}
+                />
+
+                <FormAutoComplete
+                    control={form.control}
+                    name="topics"
+                    options={topics}
+                    rules={{required: "Topics are required"}}
+                    placeholder="Select Topics"
+                    max={3}
+                    getOptionLabel={(topic: Topic) => topic.name}
+                />
 
                 <PrimaryButton
                     type="submit"

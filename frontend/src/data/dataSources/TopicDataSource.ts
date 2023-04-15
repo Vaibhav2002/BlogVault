@@ -1,6 +1,6 @@
 import api from './AxiosInstance'
 
-export const getAllTags = async () => {
+export const getAllTopics = async () => {
     const response = await api.get<Topic[]>(`/topics`)
     return response.data
 }

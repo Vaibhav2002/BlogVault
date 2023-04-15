@@ -47,6 +47,7 @@ const SideNav = ({className}: SideNavProps) => {
 
             {icons.map((icon, index) => (
                 <ContainedIcon
+                    key={index}
                     icon={icon}
                     onClick={() => onIconSelected(index)}
                     sx={{

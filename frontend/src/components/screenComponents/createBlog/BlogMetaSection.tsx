@@ -44,6 +44,7 @@ const BlogMetaSection = ({tags, form, error, className}: BlogMetaSectionProps) =
                     showLength
                     maxLength={100}
                     onBlur={setSlug}
+                    rules={{required: "Title is required"}}
                     placeholder="Enter title"
                 />
 
@@ -52,6 +53,7 @@ const BlogMetaSection = ({tags, form, error, className}: BlogMetaSectionProps) =
                     name="slug"
                     label="Slug"
                     showLength
+                    rules={{required: "Slug is required"}}
                     maxLength={100}
                     placeholder="Enter slug"
                 />
@@ -61,6 +63,7 @@ const BlogMetaSection = ({tags, form, error, className}: BlogMetaSectionProps) =
                     name="description"
                     label="Description"
                     showLength
+                    rules={{required: "Description is required"}}
                     maxLength={300}
                     placeholder="Enter description"
                     maxRows={6}

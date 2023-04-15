@@ -1,6 +1,6 @@
 import React from 'react';
-import {Control, Controller} from "react-hook-form";
-import {FormControl, FormControlProps, FormHelperText, FormLabel, InputBase, InputBaseProps} from "@mui/material";
+import {Control, Controller, RegisterOptions} from "react-hook-form";
+import {FormControl, FormControlProps, FormHelperText, TextField, TextFieldProps} from "@mui/material";
 
 interface FormTextFieldProps {
     control: Control<any>
@@ -9,6 +9,7 @@ interface FormTextFieldProps {
     className?: string
     maxLength?: number
     showLength?: boolean
+    rules?: RegisterOptions
 }
 
 const FormTextField = (
@@ -19,29 +20,45 @@ const FormTextField = (
         className,
         maxLength,
         showLength,
+        rules,
         ...props
-    }: FormTextFieldProps & InputBaseProps & FormControlProps
+    }: FormTextFieldProps & TextFieldProps & FormControlProps
 ) => {
     const getLength = (value?: string) => {
         if (value && value.length > 0) return value.length + "/" + maxLength
         else return null
     }
+    const fieldRules = {
+        ...rules,
+        maxLength: maxLength
+    } as RegisterOptions
+
     return (
         <Controller
             name={name}
             control={control}
-            rules={{maxLength: maxLength}}
+            rules={fieldRules}
             render={({field, fieldState: {error}}) =>
-                <FormControl margin="none" error={!!error}>
-                    {label && <FormLabel>{label}</FormLabel>}
 
-                    <InputBase className={className} multiline fullWidth {...field} {...props}/>
+                <FormControl error={!!error}>
 
-                    {error && <FormHelperText style={{margin: 0}}>{error.message}</FormHelperText>}
+                    <TextField
+                        variant="outlined"
+                        multiline
+                        {...field}
+                        {...props}
+                        label={label}
+                        error={!!error}
+                        helperText={error?.message}
+                        inputProps={{maxLength: maxLength}}
+                    />
 
                     {showLength && getLength(field.value) &&
-                        <FormHelperText style={{textAlign: "end"}} error={!!error}>{getLength(field.value)}</FormHelperText>
+                        <FormHelperText style={{textAlign: "end"}} error={!!error}>
+                            {getLength(field.value)}
+                        </FormHelperText>
                     }
+
                 </FormControl>
             }
         />

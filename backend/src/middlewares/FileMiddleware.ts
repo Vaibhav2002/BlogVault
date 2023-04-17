@@ -1,4 +1,5 @@
 import multer from "multer";
+import createHttpError from "http-errors";
 
 enum FileType {
     PNG = "image/png",
@@ -13,6 +14,6 @@ export const coverImageMiddleware = multer({
         if (file.mimetype === FileType.PNG || file.mimetype === FileType.JPEG)
             callback(null, true)
         else
-            callback(new Error("File must be a png or jpeg"))
+            callback(createHttpError(400, "File must be a png or jpeg"))
     }
 })

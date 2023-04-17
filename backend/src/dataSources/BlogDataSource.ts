@@ -2,8 +2,8 @@ import blogs from '../models/entities/Blog';
 import CreateBlogRequest from "../models/requests/CreateBlogRequest";
 import {getAllTopics} from "./TopicDataSource";
 import createHttpError from "http-errors";
-import * as Mongoose from "mongoose";
 import {saveCoverImage} from "./ImageDataSource";
+import * as mongoose from "mongoose";
 
 export const createBlog = async (
     coverImage: Express.Multer.File,
@@ -11,14 +11,16 @@ export const createBlog = async (
 ) => {
 
     const topics = (await getAllTopics()).map(topic => topic._id.toString())
-    const areAllTopicsValid = req.topics.every(topic => topics.includes(topic))
+    const blogTopics = JSON.parse(req.topics) as string[]
+
+    const areAllTopicsValid = blogTopics.every(topic => topics.includes(topic))
 
     if (!areAllTopicsValid) throw createHttpError('400', 'Invalid topic')
 
     const isSlugUsed = await blogs.findOne({slug: req.slug}).exec()
     if (isSlugUsed) throw createHttpError('400', 'Slug already used')
 
-    const id = new Mongoose.Types.ObjectId()
+    const id = new mongoose.Types.ObjectId()
 
     const coverImagePath = await saveCoverImage(coverImage, id.toString())
 
@@ -28,7 +30,7 @@ export const createBlog = async (
         title: req.title,
         description: req.description,
         content: req.content,
-        topics: req.topics,
+        topics: blogTopics,
         coverImage:coverImagePath
     })
 }

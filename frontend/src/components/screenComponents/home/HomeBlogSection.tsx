@@ -1,7 +1,7 @@
 import React from 'react';
 import Blog from "@/data/models/Blog";
 import BlogItem from "@/components/blogItem/BlogItem";
-import {Box, Stack} from "@mui/material";
+import {Box, Stack, StackProps} from "@mui/material";
 import {AnimatePresence, motion} from "framer-motion";
 
 interface HomeBlogSectionProps {
@@ -9,9 +9,9 @@ interface HomeBlogSectionProps {
     className?: string
 }
 
-const HomeBlogSection = ({blogs, className}: HomeBlogSectionProps) => {
+const HomeBlogSection = ({blogs, className, ...props}: HomeBlogSectionProps & StackProps) => {
     return (
-        <Stack gap={4} className={className}>
+        <Stack gap={4} className={className} {...props}>
             {blogs.map((blog, index) =>
                 <AnimatePresence>
                     <Box
@@ -20,7 +20,10 @@ const HomeBlogSection = ({blogs, className}: HomeBlogSectionProps) => {
                         animate={{scale: 1}}
                         transition={{delay: index*0.05, ease: "easeOut"}}
                     >
-                        <BlogItem blog={blog}/>
+                        <BlogItem
+                            blog={blog}
+                            sx={{height: { xs: "7rem", sm:"9rem", md:"12rem"}}}
+                        />
                     </Box>
                 </AnimatePresence>
 

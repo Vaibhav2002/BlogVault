@@ -1,15 +1,16 @@
 import React, {useMemo, useState} from 'react';
-import {Stack} from "@mui/material";
+import {Stack, StackProps} from "@mui/material";
 import ContainedIcon from "@/components/ContainedIcon";
 import {CiBookmark, CiGrid42, CiHashtag, CiHome, CiSquarePlus} from "react-icons/ci";
 import {useRouter} from "next/router";
 import {motion} from "framer-motion";
+import {BaseProps, DefaultComponentProps} from "@mui/types";
 
 interface SideNavProps {
     className: string
 }
 
-const SideNav = ({className}: SideNavProps) => {
+const SideNav = ({className, ...props}: SideNavProps & StackProps) => {
 
     const [selectedIndex, setSelectedIndex] = useState(0)
 
@@ -43,7 +44,7 @@ const SideNav = ({className}: SideNavProps) => {
     }
 
     return (
-        <Stack spacing={4} className={className} padding={3}>
+        <Stack spacing={4} className={className} padding={3} {...props}>
 
             {icons.map((icon, index) => (
                 <ContainedIcon

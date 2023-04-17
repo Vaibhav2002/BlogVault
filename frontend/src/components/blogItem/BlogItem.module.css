@@ -2,7 +2,6 @@
     display: flex;
     flex-direction: row;
     overflow: hidden;
-    height: 12rem;
 }
 
 
@@ -18,13 +17,14 @@
     display: flex;
     justify-content: space-between;
     flex-direction: column;
-    overflow-x: hidden;
+    overflow: hidden;
 }
 
 .userInfoSection{
     display: flex;
     justify-content: space-between;
     flex-direction: row;
+    align-items: center;
 }
 
 .userInfo{
@@ -41,7 +41,6 @@
 }
 
 .actionSection{
-    display: flex;
     justify-content: space-between;
     flex-direction: row;
 }

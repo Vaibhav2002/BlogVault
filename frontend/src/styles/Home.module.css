@@ -1,6 +1,4 @@
 .blogSection{
-    flex: 0.7;
-    padding: 4rem;
     overflow-x:hidden;
     overflow-y: auto;
 }

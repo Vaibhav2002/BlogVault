@@ -27,14 +27,34 @@ const HomeScreen = ({blogs}: HomeScreenProps) => {
     return (
         <SideNavScreen>
 
-            <Stack direction="row" sx={{overflow: "hidden"}}>
+            <Stack
+                direction="row"
+                sx={{overflow: "hidden", padding: {xs: 2, md: 0}}}
+                height="100%"
+            >
 
-                <Box className={styles.blogSection}>
-                    <HomeBlogSection blogs={blogs}></HomeBlogSection>
+                <HomeBlogSection
+                    className={styles.blogSection}
+                    sx={{
+                        flex: {xs: 1, md: 0.7},
+                        padding: {sx: 2, md: 8},
+                        overflowX: "hidden",
+                        overflowY: "auto"
+                    }}
+                    blogs={blogs}
+                />
+
+                <Box
+                    sx={{
+                        display: {
+                            xs: "none",
+                            md: "block"
+                        }
+                    }}
+                    className={styles.discoverSection}
+                >
+
                 </Box>
-
-
-                <Box className={styles.discoverSection}></Box>
 
 
             </Stack>

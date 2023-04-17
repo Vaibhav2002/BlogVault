@@ -13,7 +13,15 @@ const SideNavScreen = ({children, className}: SideNavScreenProps) => {
     return (
         <Stack className={`${styles.root} ${className}`}>
 
-            <SideNav className={styles.sideNav} />
+            <SideNav
+                className={styles.sideNav}
+                sx={{
+                    display: {
+                        xs: "none",
+                        md: "block"
+                    }
+                }}
+            />
 
             <Box className={styles.content}>{children}</Box>
 

@@ -1,6 +1,6 @@
 import React from 'react';
 import Blog from "@/data/models/Blog";
-import {Avatar, Box, Typography} from "@mui/material";
+import {Avatar, Box, BoxProps, Theme, Typography, useMediaQuery} from "@mui/material";
 import styles from "./BlogItem.module.css";
 import MultilineText from "@/components/styled/MultilineText";
 import {FaArrowRight} from "react-icons/fa";
@@ -14,12 +14,18 @@ interface BlogItemProps {
     className?: string
 }
 
-const BlogItem = ({blog: {title, description, createdAt, ...blog}, className}: BlogItemProps) => {
+const BlogItem = ({blog: {title, description, createdAt, ...blog}, className, ...props}: BlogItemProps & BoxProps) => {
 
+    const isBelowSm = useMediaQuery((theme:Theme)=> theme.breakpoints.down("sm"))
+    const titleSize = isBelowSm ? "h6" : "h5"
+    const descriptionSize = isBelowSm ? "caption" : "body2"
+    const descriptionMaxLines = isBelowSm ? 2 : 3
 
     return (
-        <Box className={`${styles.blogCard} ${className}`}>
-            {/*Will be replaced by image*/}
+        <Box
+            className={`${styles.blogCard} ${className}`}
+            {...props}
+        >
             <Box className={styles.blogImage}>
                 <Image
                     layout="fill"
@@ -32,10 +38,21 @@ const BlogItem = ({blog: {title, description, createdAt, ...blog}, className}: B
 
             <Box className={styles.blogContent}>
 
-
                 <Box>
-                    <MultilineText variant="h6" maxLines={1} marginBottom="4px">{title}</MultilineText>
-                    <MultilineText variant="caption" color="text.secondary" maxLines={3}>{description}</MultilineText>
+                    <MultilineText
+                        variant={titleSize}
+                        maxLines={1}
+                        marginBottom="4px"
+                    >
+                        {title}
+                    </MultilineText>
+                    <MultilineText
+                        variant={descriptionSize}
+                        color="text.secondary"
+                        maxLines={descriptionMaxLines}
+                    >
+                        {description}
+                    </MultilineText>
                 </Box>
 
 
@@ -48,7 +65,10 @@ const BlogItem = ({blog: {title, description, createdAt, ...blog}, className}: B
                 </Box>
 
 
-                <Box className={styles.actionSection}>
+                <Box
+                    className={styles.actionSection}
+                    display={isBelowSm ? "none" : "flex"}
+                >
                     <PrimaryButton
                         size="small"
                         startIcon={<CiBookmark/>}

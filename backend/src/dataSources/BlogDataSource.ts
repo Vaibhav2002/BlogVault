@@ -2,7 +2,7 @@ import blogs from '../models/entities/Blog';
 import CreateBlogRequest from "../models/requests/CreateBlogRequest";
 import {getAllTopics} from "./TopicDataSource";
 import createHttpError from "http-errors";
-import {saveCoverImage} from "./ImageDataSource";
+import {saveCoverImage, savePosterImage} from "./ImageDataSource";
 import * as mongoose from "mongoose";
 
 export const createBlog = async (
@@ -23,6 +23,7 @@ export const createBlog = async (
     const id = new mongoose.Types.ObjectId()
 
     const coverImagePath = await saveCoverImage(coverImage, id.toString())
+    const posterPath = await savePosterImage(coverImage, id.toString())
 
     return await blogs.create({
         _id: id,
@@ -31,7 +32,8 @@ export const createBlog = async (
         description: req.description,
         content: req.content,
         topics: blogTopics,
-        coverImage:coverImagePath
+        coverImage:coverImagePath,
+        posterImage: posterPath
     })
 }
 

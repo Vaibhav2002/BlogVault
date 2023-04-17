@@ -1,8 +1,8 @@
 import sharp from "sharp";
 import env from "../utils/CleanEnv";
 
-const COVER_IMAGE_WIDTH = 1920
-const COVER_IMAGE_HEIGHT = 1080
+const COVER_IMAGE_WIDTH = 1280
+const COVER_IMAGE_HEIGHT = 720
 
 const POSTER_IMAGE_WIDTH = 512
 const POSTER_IMAGE_HEIGHT = 512

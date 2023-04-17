@@ -6,6 +6,8 @@ import BlogMetaSection from "@/components/screenComponents/createBlog/BlogMetaSe
 import {useEffect, useState} from "react";
 import {getAllTopics} from "@/data/dataSources/TopicDataSource";
 import {BlogData, createBlog} from "@/data/dataSources/BlogDataSource";
+import {router} from "next/client";
+import {useRouter} from "next/router";
 
 export interface BlogInput {
     title: string
@@ -27,6 +29,8 @@ const CreateNewBlogPage = () => {
 
     const [error, setError] = useState<string | undefined>()
 
+    const router = useRouter()
+
     useEffect(() => {
         async function getTopics() {
             const topics = await getAllTopics()
@@ -46,8 +50,8 @@ const CreateNewBlogPage = () => {
                 topics: data.topics.map(topic => topic._id) ?? [],
                 coverImage: data.coverImage
             } as BlogData)
-            alert("Blog posted successfully")
             setError(undefined)
+            router.back()
         } catch (e) {
             console.error(e)
             if (e instanceof Error)

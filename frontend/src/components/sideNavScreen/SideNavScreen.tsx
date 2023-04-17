@@ -18,7 +18,7 @@ const SideNavScreen = ({children, className}: SideNavScreenProps) => {
                 sx={{
                     display: {
                         xs: "none",
-                        md: "block"
+                        sm: "block"
                     }
                 }}
             />

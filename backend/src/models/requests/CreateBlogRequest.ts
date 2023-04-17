@@ -3,7 +3,7 @@ interface CreateBlogRequest {
     title: string
     description: string
     content: string
-    topics: string[]
+    topics: string
 }
 
 export default CreateBlogRequest

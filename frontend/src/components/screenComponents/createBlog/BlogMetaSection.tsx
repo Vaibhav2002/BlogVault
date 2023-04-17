@@ -6,7 +6,7 @@ import {BlogInput} from "@/pages/blogs/create";
 import {generateSlug} from "@/utils/Helpers";
 import FormTextField from "@/components/form/FormTextField";
 import FormAutoComplete from "@/components/form/FormAutoComplete";
-import FormImagePicker from "@/components/FormImagePicker";
+import FormImagePicker from "@/components/form/FormImagePicker";
 
 interface BlogMetaSectionProps {
     topics: Topic[]
@@ -74,6 +74,7 @@ const BlogMetaSection = ({topics, form, error, className}: BlogMetaSectionProps)
                 <FormImagePicker
                     control={form.control}
                     name="coverImage"
+                    setValue={setValue}
                     rules={{required: "Cover Image is required"}}
                 />
 

@@ -4,17 +4,17 @@ import styles from "@/styles/CreateBlogPage.module.css"
 import {useForm} from "react-hook-form";
 import BlogMetaSection from "@/components/screenComponents/createBlog/BlogMetaSection";
 import {useEffect, useState} from "react";
-import {getAllTags} from "@/data/dataSources/TopicDataSource";
+import {getAllTopics} from "@/data/dataSources/TopicDataSource";
 import {BlogData, createBlog} from "@/data/dataSources/BlogDataSource";
 
 export interface BlogInput {
-    title: string,
-    description: string,
-    content: string,
+    title: string
+    description: string
+    content: string
+    slug: string
+    topics: Topic[]
+    coverImage: File
 
-    slug: string,
-
-    tags: Topic[]
 }
 
 const CreateNewBlogPage = () => {
@@ -23,18 +23,17 @@ const CreateNewBlogPage = () => {
 
     const {handleSubmit, register, watch, setValue, formState: {errors}} = form
 
-    const [tags, setTags] = useState<Topic[]>([])
+    const [topics, setTopics] = useState<Topic[]>([])
 
     const [error, setError] = useState<string | undefined>()
 
     useEffect(() => {
-        async function fetchTags() {
-            const tags = await getAllTags()
-            setTags(tags)
-            console.log(JSON.stringify(tags))
+        async function getTopics() {
+            const topics = await getAllTopics()
+            setTopics(topics)
         }
 
-        fetchTags()
+        getTopics()
     }, [])
 
     const onSubmit = async (data: BlogInput) => {
@@ -44,8 +43,10 @@ const CreateNewBlogPage = () => {
                 description: data.description,
                 content: data.content,
                 slug: data.slug,
-                tags: data.tags ? data.tags.map(tag => tag._id) : []
+                topics: data.topics.map(topic => topic._id) ?? [],
+                coverImage: data.coverImage
             } as BlogData)
+            alert("Blog posted successfully")
             setError(undefined)
         } catch (e) {
             console.error(e)
@@ -71,7 +72,7 @@ const CreateNewBlogPage = () => {
                     flex={0.4}
                     sx={{height: {xs: "auto", md: "100%"}}}
                 >
-                    <BlogMetaSection tags={tags} form={form} error={error}/>
+                    <BlogMetaSection topics={topics} form={form} error={error}/>
 
                 </Box>
 

@@ -6,4 +6,6 @@ export default interface Blog {
     topics: Topic[]
     createdAt: string
     updatedAt: string
+
+    coverImage: string
 }

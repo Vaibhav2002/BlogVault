@@ -7,4 +7,7 @@ const router = express.Router()
 router.get('/', controller.getAllBlogs)
 router.post('/', coverImageMiddleware.single("coverImage"), controller.createBlog)
 
+router.get('/slugs', controller.getAllSlugs)
+router.get('/:slug', controller.getBlogBySlug)
+
 export default router

@@ -37,6 +37,18 @@ export const createBlog = async (
     })
 }
 
+export const getAllSlugs = async() => {
+    const allBlogs = await blogs.find().select('slug').exec()
+    const slugs = allBlogs.map(blog => blog.slug)
+    return slugs
+}
+
+export const getBlogBySlug = async (slug: string) => {
+    const blog = await blogs.findOne({slug: slug}).exec()
+    if (!blog) throw createHttpError('404', 'Blog not found')
+    return blog
+}
+
 export const getAllBlogs = async () => {
     return await blogs.find().exec()
 }

@@ -22,5 +22,22 @@ export const createBlog: RequestHandler<unknown, unknown, CreateBlogRequest, unk
     } catch (e) {
         next(e)
     }
+}
 
+export const getAllSlugs:RequestHandler = async (req, res, next) => {
+    try {
+        const slugs = await dataSource.getAllSlugs()
+        res.status(200).json(slugs)
+    } catch (e) {
+        next(e)
+    }
+}
+
+export const getBlogBySlug: RequestHandler = async (req, res, next) => {
+    try {
+        const blog = await dataSource.getBlogBySlug(req.params.slug)
+        res.status(200).json(blog)
+    } catch (e) {
+        next(e)
+    }
 }

@@ -1,6 +1,5 @@
 import api from "./AxiosInstance";
 import Blog from "@/data/models/Blog";
-import append from "react-hook-form/dist/utils/append";
 
 
 export interface BlogData {
@@ -32,4 +31,14 @@ export const createBlog = async (blog: BlogData) => {
 export const getAllBlogs = async () => {
     const response = await api.get<Blog[]>(`/blogs`)
     return response.data as Blog[]
+}
+
+export const getAllSlugs = async () => {
+    const response = await api.get<string[]>(`/blogs/slugs`)
+    return response.data as string[]
+}
+
+export const getBlogBySlug = async (slug: string) => {
+    const response = await api.get<Blog>(`/blogs/${slug}`)
+    return response.data as Blog
 }

@@ -43,6 +43,8 @@ const BlogItem = ({blog: {title, description, createdAt, ...blog}, className, ..
                         variant={titleSize}
                         maxLines={1}
                         marginBottom="4px"
+                        textColor="text.primary"
+
                     >
                         {title}
                     </MultilineText>

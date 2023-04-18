@@ -1,14 +1,10 @@
 import {GetStaticPaths, GetStaticProps} from "next";
 import {getAllSlugs, getBlogBySlug} from "@/data/dataSources/BlogDataSource";
 import Blog from "@/data/models/Blog";
-import {Box, Stack, Typography} from "@mui/material";
-import Image from "next/image";
-import MultilineText from "@/components/styled/MultilineText";
-import {formatDate} from "@/utils/Helpers";
-import {useMemo} from "react";
-import styles from "@/components/screenComponents/blog/BlogPage.module.css";
-import ReactMarkdown from "react-markdown";
-import CenteredBox from "@/components/styled/CenteredBox";
+import {Stack} from "@mui/material";
+import BlogHeader from "@/components/screenComponents/blog/BlogHeader";
+import BlogContent from "@/components/screenComponents/blog/BlogContent";
+import BlogFooter from "@/components/screenComponents/blog/BlogFooter";
 
 export const getStaticPaths: GetStaticPaths = async () => {
     const slugs = await getAllSlugs();
@@ -38,33 +34,23 @@ interface BlogPageProps {
 
 const BlogPage = ({blog}: BlogPageProps) => {
 
-    const time = useMemo(() => (
-        (blog.updatedAt > blog.createdAt)
-            ? <>Updated {formatDate(blog.updatedAt)}</>
-            : <>{formatDate(blog.createdAt)}</>
-    ), [blog.createdAt, blog.updatedAt])
+    console.log(JSON.stringify(blog.topics.map(topic => topic.name)))
 
     return (
         <Stack
             sx={{
                 paddingX: {xs: "8%", sm: "10%", md: "15%"},
-                paddingY: "6rem"
+                paddingY: "6rem",
+                overflowX: "hidden"
             }}
-            spacing={4}
+            spacing={8}
             alignItems="center"
         >
-            <Box className={styles.coverImage}>
-                <Image src={blog.coverImage} alt={blog.title} fill/>
-            </Box>
+            <BlogHeader blog={blog}/>
 
-            <CenteredBox sx={{flexDirection:"column", gap:2}}>
-                <MultilineText variant="h4" maxLines={2} textAlign="center">{blog.title}</MultilineText>
-                <MultilineText variant="body1" color="text.secondary" maxLines={6} textAlign="center">{blog.description}</MultilineText>
-                <Typography variant="caption" color="text.secondary">{time}</Typography>
-            </CenteredBox>
+            <BlogContent blog={blog}/>
 
-
-            <ReactMarkdown className={styles.blogContext}>{blog.content}</ReactMarkdown>
+            <BlogFooter blog={blog}/>
 
         </Stack>
     )

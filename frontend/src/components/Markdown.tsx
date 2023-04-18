@@ -37,7 +37,7 @@ const Markdown = ({children, className}: MarkdownProps) => {
                     ) : (
                         <code {...props} className={className}>{children}</code>
                     )
-                },
+                }
             }}
         >
             {children}

@@ -6,12 +6,20 @@ import topicRoutes from "./routes/TopicRoutes";
 import userRoutes from "./routes/UserRoutes";
 import cors from "cors";
 import env from "./utils/CleanEnv";
+import session from "express-session";
+import sessionOptions from "./config/session";
+import passport from "passport";
+import "./config/passport"
 
 const app = express()
 
 app.use(cors({
     origin: env.WEBSITE_URL
 }))
+
+app.use(session(sessionOptions))
+
+app.use(passport.authenticate('session'))
 
 app.use(express.json())
 

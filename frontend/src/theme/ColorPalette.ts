@@ -15,7 +15,7 @@ const colorPalette: PaletteOptions = {
     },
     background: {
         paper: '#ffffff',
-        default: '#f2f2f2',
+        default: '#fdfdfd',
     },
     text: {
         primary: '#2c3e50',

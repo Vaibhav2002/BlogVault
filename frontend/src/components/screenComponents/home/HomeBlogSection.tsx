@@ -3,8 +3,8 @@ import Blog from "@/data/models/Blog";
 import BlogItem from "@/components/blogItem/BlogItem";
 import {Box, Stack, StackProps} from "@mui/material";
 import {AnimatePresence, motion} from "framer-motion";
-import Link from "next/link";
 import {getBlogRoute} from "@/utils/Routes";
+import {useRouter} from "next/router";
 
 interface HomeBlogSectionProps {
     blogs: Blog[]
@@ -12,6 +12,12 @@ interface HomeBlogSectionProps {
 }
 
 const HomeBlogSection = ({blogs, className, ...props}: HomeBlogSectionProps & StackProps) => {
+
+    const router = useRouter()
+    const onBlogClick = async (blog: Blog) => {
+        await router.push(getBlogRoute(blog.slug))
+    }
+
     return (
         <Stack gap={4} className={className} {...props}>
             {blogs.map((blog, index) =>
@@ -25,8 +31,7 @@ const HomeBlogSection = ({blogs, className, ...props}: HomeBlogSectionProps & St
                         <BlogItem
                             blog={blog}
                             sx={{height: {xs: "7rem", sm: "9rem", md: "12rem"}}}
-                            component={Link}
-                            href={getBlogRoute(blog.slug)}
+                            onClick={() => onBlogClick(blog)}
                         />
 
                     </Box>

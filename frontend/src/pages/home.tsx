@@ -34,13 +34,11 @@ const HomeScreen = ({blogs}: HomeScreenProps) => {
             >
 
                 <HomeBlogSection
-                    className={styles.blogSection}
                     sx={{
                         flex: {xs: 1, md: 0.7},
-                        padding: {sx: 2, md: 8},
-                        overflowX: "hidden",
-                        overflowY: "auto"
+                        padding: {sx: 2, md: 8}
                     }}
+                    className={styles.blogSection}
                     blogs={blogs}
                 />
 

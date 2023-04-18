@@ -16,7 +16,7 @@ interface BlogItemProps {
 
 const BlogItem = ({blog: {title, description, createdAt, ...blog}, className, ...props}: BlogItemProps & BoxProps) => {
 
-    const isBelowSm = useMediaQuery((theme:Theme)=> theme.breakpoints.down("sm"))
+    const isBelowSm = useMediaQuery((theme: Theme) => theme.breakpoints.down("sm"))
     const titleSize = isBelowSm ? "h6" : "h5"
     const descriptionSize = isBelowSm ? "caption" : "body2"
     const descriptionMaxLines = isBelowSm ? 2 : 3
@@ -43,7 +43,7 @@ const BlogItem = ({blog: {title, description, createdAt, ...blog}, className, ..
                         variant={titleSize}
                         maxLines={1}
                         marginBottom="4px"
-                        textColor="text.primary"
+                        color="text.primary"
 
                     >
                         {title}
@@ -75,6 +75,7 @@ const BlogItem = ({blog: {title, description, createdAt, ...blog}, className, ..
                         size="small"
                         startIcon={<CiBookmark/>}
                         variant="text"
+                        onClick={e => e.stopPropagation()}
                         sx={{paddingLeft: 0, color: "text.secondary"}}
                     >
                         Save for later

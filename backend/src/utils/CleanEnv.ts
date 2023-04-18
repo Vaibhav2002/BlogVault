@@ -1,10 +1,11 @@
-import {cleanEnv, port, str} from "envalid";
+import {cleanEnv, num, port, str} from "envalid";
 
 const env = cleanEnv(process.env, {
     PORT: port(),
     MONGO_CONNECTION_STRING: str(),
     WEBSITE_URL: str(),
-    SERVER_URL: str()
+    SERVER_URL: str(),
+    PWD_SALTING_ROUNDS: num()
 })
 
 export default env

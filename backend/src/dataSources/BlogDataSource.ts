@@ -44,7 +44,7 @@ export const getAllSlugs = async() => {
 }
 
 export const getBlogBySlug = async (slug: string) => {
-    const blog = await blogs.findOne({slug: slug}).exec()
+    const blog = await blogs.findOne({slug: slug}).populate("topics").exec()
     if (!blog) throw createHttpError('404', 'Blog not found')
     return blog
 }

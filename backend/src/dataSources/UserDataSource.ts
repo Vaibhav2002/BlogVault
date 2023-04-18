@@ -23,3 +23,7 @@ export const registerUser = async ({username, email, password:passwordRaw}: Regi
 
     return user
 }
+
+export const getUserByUsername = async (username: string, select:string = "") => {
+    return await users.findOne({username: username}).select(select).exec()
+}

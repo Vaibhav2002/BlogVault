@@ -33,9 +33,7 @@ interface BlogPageProps {
 
 
 const BlogPage = ({blog}: BlogPageProps) => {
-
-    console.log(JSON.stringify(blog.topics.map(topic => topic.name)))
-
+    
     return (
         <Stack
             sx={{

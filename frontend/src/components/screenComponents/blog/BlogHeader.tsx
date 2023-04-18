@@ -28,6 +28,8 @@ const BlogHeader = ({blog, className, ...props}: BlogHeaderProps & BoxProps) => 
                     alt={blog.title}
                     fill
                     style={{borderRadius: "8px"}}
+                    sizes="(max-width: 1200px) 100vw, 1280px"
+                    priority
                 />
             </Box>
 

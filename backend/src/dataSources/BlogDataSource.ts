@@ -5,10 +5,7 @@ import createHttpError from "http-errors";
 import {saveCoverImage, savePosterImage} from "./ImageDataSource";
 import * as mongoose from "mongoose";
 
-export const createBlog = async (
-    coverImage: Express.Multer.File,
-    req: CreateBlogRequest
-) => {
+export const createBlog = async (coverImage: Express.Multer.File, req: CreateBlogRequest) => {
 
     const topics = (await getAllTopics()).map(topic => topic._id.toString())
     const blogTopics = JSON.parse(req.topics) as string[]
@@ -18,7 +15,7 @@ export const createBlog = async (
     if (!areAllTopicsValid) throw createHttpError('400', 'Invalid topic')
 
     const isSlugUsed = await blogs.findOne({slug: req.slug}).exec()
-    if (isSlugUsed) throw createHttpError('400', 'Slug already used')
+    if (isSlugUsed) throw createHttpError('409', 'Slug already used')
 
     const id = new mongoose.Types.ObjectId()
 
@@ -32,12 +29,12 @@ export const createBlog = async (
         description: req.description,
         content: req.content,
         topics: blogTopics,
-        coverImage:coverImagePath,
+        coverImage: coverImagePath,
         posterImage: posterPath
     })
 }
 
-export const getAllSlugs = async() => {
+export const getAllSlugs = async () => {
     const allBlogs = await blogs.find().select('slug').exec()
     const slugs = allBlogs.map(blog => blog.slug)
     return slugs

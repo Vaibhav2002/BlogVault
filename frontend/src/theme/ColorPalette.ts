@@ -20,7 +20,7 @@ const colorPalette: PaletteOptions = {
     text: {
         primary: '#2c3e50',
         secondary: '#333333',
-        disabled: '#b2b2b2',
+        disabled: '#a6a5a5',
     },
     error: {
         main: '#e74c3c',

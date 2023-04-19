@@ -74,7 +74,6 @@ const BlogMetaSection = ({topics, form, error, className}: BlogMetaSectionProps)
                 <FormImagePicker
                     control={form.control}
                     name="coverImage"
-                    setValue={setValue}
                     rules={{required: "Cover Image is required"}}
                 />
 

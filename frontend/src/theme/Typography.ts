@@ -73,6 +73,7 @@ const typography: TypographyOptions = {
         fontWeight: 600,
         fontSize: '0.875rem',
         letterSpacing: '0.02857em',
+        textTransform: 'capitalize'
     },
     caption: {
         fontFamily: 'Open Sans',

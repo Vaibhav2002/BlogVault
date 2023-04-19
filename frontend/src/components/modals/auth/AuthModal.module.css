@@ -1,0 +1,14 @@
+.container {
+    align-items: center;
+    gap: 3rem;
+    display: flex;
+    flex-direction: column;
+}
+
+.switchAuthContainer {
+    display: flex;
+    gap: calc(1rem / 4);
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+}

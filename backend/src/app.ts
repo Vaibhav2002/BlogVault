@@ -14,7 +14,8 @@ import "./config/passport"
 const app = express()
 
 app.use(cors({
-    origin: env.WEBSITE_URL
+    origin: env.WEBSITE_URL,
+    credentials: true
 }))
 
 app.use(session(sessionOptions))

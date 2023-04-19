@@ -52,7 +52,7 @@ const LoginModal = ({onLoginSuccess, onDismiss, onMoveToRegister, className}: Lo
                         <FormPasswordField
                             control={control}
                             name="password"
-                            label="password"
+                            label="Password"
                             placeholder="Enter your password"
                         />
 

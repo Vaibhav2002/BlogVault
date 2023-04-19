@@ -58,7 +58,7 @@ const RegisterModal = ({onDismiss, onMoveToLogin, onRegisterSuccess}: RegisterMo
                         <FormPasswordField
                             control={control}
                             name="password"
-                            label="password"
+                            label="Password"
                             placeholder="Enter your password"
                         />
 

@@ -1,11 +1,10 @@
 import React from 'react';
 import {Control, Controller, RegisterOptions} from "react-hook-form";
-import {FormControl, FormControlProps, FormHelperText, TextField, TextFieldProps} from "@mui/material";
+import {FormControl, FormHelperText, TextField, TextFieldProps} from "@mui/material";
 
 interface FormTextFieldProps {
     control: Control<any>
     name: string
-    label?: string
     className?: string
     maxLength?: number
     showLength?: boolean
@@ -16,13 +15,12 @@ const FormTextField = (
     {
         control,
         name,
-        label,
         className,
         maxLength,
         showLength,
         rules,
         ...props
-    }: FormTextFieldProps & TextFieldProps & FormControlProps
+    }: FormTextFieldProps & TextFieldProps
 ) => {
     const getLength = (value?: string) => {
         if (value && value.length > 0) return value.length + "/" + maxLength
@@ -32,6 +30,12 @@ const FormTextField = (
         ...rules,
         maxLength: maxLength
     } as RegisterOptions
+
+    const inputProps = {
+        ...props.inputProps,
+        maxLength: maxLength
+    }
+
 
     return (
         <Controller
@@ -47,10 +51,10 @@ const FormTextField = (
                         multiline
                         {...field}
                         {...props}
-                        label={label}
                         error={!!error}
                         helperText={error?.message}
-                        inputProps={{maxLength: maxLength}}
+                        inputProps={inputProps}
+                        fullWidth
                     />
 
                     {showLength && getLength(field.value) &&

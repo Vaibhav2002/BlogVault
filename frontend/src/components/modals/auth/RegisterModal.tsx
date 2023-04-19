@@ -1,11 +1,12 @@
-import React from 'react';
-import {Box, Button, Modal, Stack, Typography} from "@mui/material";
+import React, {useState} from 'react';
+import {Alert, Box, Button, Collapse, Stack, Typography} from "@mui/material";
 import {useForm} from "react-hook-form";
 import FormTextField from "@/components/form/FormTextField";
 import FormPasswordField from "@/components/form/FormPasswordField";
 import PrimaryButton from "@/components/styled/PrimaryButton";
 import styles from "./AuthModal.module.css";
 import PrimaryModal from "@/components/modals/PrimaryModal";
+import {registerUser} from "@/data/dataSources/AuthDataSource";
 
 interface RegisterModalProps {
     onDismiss: () => void
@@ -23,11 +24,15 @@ const RegisterModal = ({onDismiss, onMoveToLogin, onRegisterSuccess}: RegisterMo
 
     const {control, handleSubmit, formState: {isSubmitting}} = useForm<RegisterFormValues>()
 
-    console.log(JSON.stringify(control))
+    const [error, setError] = useState<string | undefined>(undefined)
 
-    const onSubmit = (data: RegisterFormValues) => {
-        alert(JSON.stringify(data))
-        onRegisterSuccess()
+
+    const onSubmit = async (data: RegisterFormValues) => {
+        try {
+            const response = await registerUser(data)
+        } catch (e) {
+            if (e instanceof Error) setError(e.message)
+        }
     }
 
     return (
@@ -35,8 +40,13 @@ const RegisterModal = ({onDismiss, onMoveToLogin, onRegisterSuccess}: RegisterMo
             <Box className={styles.container}>
                 <Box>
                     <Typography variant="h5" textAlign="center" marginBottom={0.5}>Welcome to BlogVault</Typography>
-                    <Typography variant="subtitle2" textAlign="center" color="text.disabled">Sign up to continue reading blogs on BlogVault</Typography>
+                    <Typography variant="subtitle2" textAlign="center" color="text.disabled">Sign up to continue reading
+                        blogs on BlogVault</Typography>
                 </Box>
+
+                <Collapse in={!!error} className={styles.errorAlert}>
+                    <Alert severity="error">{error}</Alert>
+                </Collapse>
 
                 <form onSubmit={handleSubmit(onSubmit)} style={{width: "100%"}}>
                     <Stack spacing={2}>
@@ -45,6 +55,7 @@ const RegisterModal = ({onDismiss, onMoveToLogin, onRegisterSuccess}: RegisterMo
                             name="username"
                             label="Username"
                             type="text"
+                            rules={{required: 'Username is required'}}
                             placeholder="Enter your username"/>
 
                         <FormTextField
@@ -53,12 +64,14 @@ const RegisterModal = ({onDismiss, onMoveToLogin, onRegisterSuccess}: RegisterMo
                             label="Email"
                             type="email"
                             inputMode="email"
+                            rules={{required: 'Email is required'}}
                             placeholder="Enter your email"/>
 
                         <FormPasswordField
                             control={control}
                             name="password"
                             label="Password"
+                            rules={{required: 'Password is required'}}
                             placeholder="Enter your password"
                         />
 

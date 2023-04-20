@@ -90,6 +90,8 @@ const userLoggedInView = (user: User, onLogoutClick: () => void) => {
             <Avatar
                 src={user.profilePicUrl}
                 sx={{cursor: "pointer"}}
+                component={motion.div}
+                whileHover={{scale: 1.3}}
             />
             {
                 getContainedIcon(

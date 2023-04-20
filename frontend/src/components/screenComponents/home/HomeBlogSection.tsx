@@ -30,7 +30,6 @@ const HomeBlogSection = ({blogs, className, ...props}: HomeBlogSectionProps & St
                     >
                         <BlogItem
                             blog={blog}
-                            sx={{height: {xs: "7rem", sm: "9rem", md: "12rem"}}}
                             onClick={() => onBlogClick(blog)}
                         />
 

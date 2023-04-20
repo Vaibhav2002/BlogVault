@@ -21,7 +21,10 @@ export const getAuthenticatedUser: RequestHandler = async (req, res, next) => {
 export const registerUser: RequestHandler<unknown, unknown, RegisterRequest, unknown> = async (req, res, next) => {
     try {
         const user = await dataSource.registerUser(req.body)
-        res.status(201).send(user)
+        req.login(user, err => {
+            if (err) throw err
+            else res.status(201).send(user)
+        })
     } catch (error) {
         next(error)
     }

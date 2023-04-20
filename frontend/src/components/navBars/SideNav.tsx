@@ -1,5 +1,5 @@
 import React, {ReactElement, useMemo, useState} from 'react';
-import {Avatar, Stack, StackProps} from "@mui/material";
+import {Avatar, Stack, StackProps, Tooltip} from "@mui/material";
 import ContainedIcon from "@/components/ContainedIcon";
 import {CiBookmark, CiGrid42, CiHome, CiLogin, CiLogout, CiSquarePlus} from "react-icons/ci";
 import {useRouter} from "next/router";
@@ -39,17 +39,6 @@ interface SideNavProps {
     onLogoutClick: () => void
 }
 
-
-const getContainedIcon = (icon: ReactElement, bgColor: string, onClick: () => void, key?: number) =>
-    <ContainedIcon
-        key={key}
-        icon={icon}
-        onClick={onClick}
-        sx={{backgroundColor: bgColor, cursor: "pointer"}}
-        component={motion.div}
-        whileHover={{scale: 1.3}}
-    />
-
 const SideNav = ({user, selected = 0, className, onLoginClick, onLogoutClick, ...props}: SideNavProps & StackProps) => {
 
     const [selectedIndex, setSelectedIndex] = useState(selected)
@@ -71,46 +60,84 @@ const SideNav = ({user, selected = 0, className, onLoginClick, onLogoutClick, ..
     return (
         <Stack spacing={4} className={className} padding={3} {...props}>
 
-            {navItems.map((item, index) => (
-                getContainedIcon(
-                    item.icon,
-                    getIconBgColor(selectedIndex === index),
-                    () => onIconSelected(index),
-                    index
-                )))
+            {navItems.map((item, index) =>
+                <SideNavIcon
+                    key={index}
+                    icon={item.icon}
+                    bgColor={getIconBgColor(selectedIndex === index)}
+                    text={item.navItem.name}
+                    onClick={() => onIconSelected(index)}
+                />
+            )}
+
+            {user
+                ? <UserLoggedInView user={user} onLogoutClick={onLogoutClick}/>
+                : <UserLoggedOutView onLoginClick={onLoginClick}/>
             }
-            {user ? userLoggedInView(user, onLogoutClick) : userLoggedOutView(onLoginClick)}
         </Stack>
     )
 }
 
-const userLoggedInView = (user: User, onLogoutClick: () => void) => {
+interface SideNavIconsProps {
+    text: string
+    icon: ReactElement
+    bgColor: string
+    onClick: () => void
+}
+
+const SideNavIcon = ({text, icon, bgColor, onClick}: SideNavIconsProps) => {
+    return (
+        <ContainedIcon
+            title={text}
+            icon={icon}
+            onClick={onClick}
+            sx={{backgroundColor: bgColor, cursor: "pointer"}}
+            component={motion.div}
+            whileHover={{scale: 1.3}}
+        />
+    )
+}
+
+
+interface LoggedInViewProps {
+    user: User
+    onLogoutClick: () => void
+}
+
+const UserLoggedInView = ({user, onLogoutClick}: LoggedInViewProps) => {
     return (
         <>
-            <Avatar
-                src={user.profilePicUrl}
-                sx={{cursor: "pointer"}}
-                component={motion.div}
-                whileHover={{scale: 1.3}}
+            <Tooltip title="Profile" enterDelay={500}>
+                <Avatar
+                    src={user.profilePicUrl}
+                    sx={{cursor: "pointer"}}
+                    component={motion.div}
+                    whileHover={{scale: 1.3}}
+                />
+            </Tooltip>
+
+            <SideNavIcon
+                text="Logout"
+                icon={<CiLogout size={iconSize} color={getIconColor(false)}/>}
+                bgColor={getIconBgColor(false)}
+                onClick={onLogoutClick}
             />
-            {
-                getContainedIcon(
-                    <CiLogout size={iconSize} color={getIconColor(false)}/>,
-                    getIconBgColor(false),
-                    onLogoutClick
-                )
-            }
         </>
     )
 }
 
-const userLoggedOutView = (onLoginClick: () => void) => {
+interface LoggedOutViewProps {
+    onLoginClick: () => void
+}
+
+const UserLoggedOutView = ({onLoginClick}: LoggedOutViewProps) => {
     return (
-        getContainedIcon(
-            <CiLogin size={iconSize} color={getIconColor(false)}/>,
-            getIconBgColor(false),
-            onLoginClick
-        )
+        <SideNavIcon
+            text="Login"
+            icon={<CiLogin size={iconSize} color={getIconColor(false)}/>}
+            bgColor={getIconBgColor(false)}
+            onClick={onLoginClick}
+        />
     )
 }
 

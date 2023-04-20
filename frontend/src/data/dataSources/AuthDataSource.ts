@@ -13,11 +13,21 @@ export const registerUser = async (data: RegisterData) => {
 }
 
 export interface LoginData {
-    email: string
+    username: string
     password: string
 }
 
 export const loginUser = async (data:LoginData) => {
     const response = await api.post(`/users/login`, data)
     return response.data as User
+}
+
+export const getAuthenticatedUser = async () => {
+    const response = await api.get(`/users/me`)
+    return response.data as User
+}
+
+export const logoutUser = async () => {
+    const response = await api.post(`/users/logout`)
+    return response.data
 }

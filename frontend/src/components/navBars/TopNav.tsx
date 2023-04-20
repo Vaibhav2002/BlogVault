@@ -1,16 +1,19 @@
 import React, {useMemo, useState} from 'react';
-import {AppBar, IconButton, Menu, MenuItem, Stack, Toolbar, Typography} from "@mui/material";
+import {AppBar, Avatar, IconButton, Menu, MenuItem, Stack, Toolbar, Typography} from "@mui/material";
 import {NavOptions, navOptions} from "@/components/navBars/NavOptions";
 import {MdMenu} from "react-icons/md";
 import PrimaryButton from "@/components/styled/PrimaryButton";
 import {useRouter} from "next/router";
+import User from "@/data/models/User";
 
 interface AppBarProps {
+    user?: User
     onLoginClick: () => void
+    onLogoutClick: () => void
     className?: string
 }
 
-const TopNav = ({onLoginClick, className}: AppBarProps) => {
+const TopNav = ({user, onLoginClick, onLogoutClick, className}: AppBarProps) => {
 
     const router = useRouter()
     const [anchor, setAnchor] = useState<HTMLElement | null>(null)
@@ -26,11 +29,18 @@ const TopNav = ({onLoginClick, className}: AppBarProps) => {
         await router.push(option.href)
     }
 
-    const menuItems = useMemo(() => (
-        navOptions.map(option =>
-            <MenuItem onClick={() => onNavOptionClick(option)}>{option.name}</MenuItem>)
-    ), [])
+    const onLogoutPress = () => {
+        closeMenu()
+        onLogoutClick()
+    }
 
+    const menuItems = useMemo(() => {
+        const options = navOptions.map(option =>
+            <MenuItem onClick={() => onNavOptionClick(option)}>{option.name}</MenuItem>)
+
+        if (!user) return options
+        return [...options, <MenuItem onClick={onLogoutPress}>Logout</MenuItem>]
+    }, [])
 
     const menu = <div>
         <IconButton
@@ -68,11 +78,20 @@ const TopNav = ({onLoginClick, className}: AppBarProps) => {
                 >
                     {menu}
                     <Typography variant="h6" color="text.primary">BlogVault</Typography>
-                    <PrimaryButton variant="text" onClick={onLoginClick}>Login</PrimaryButton>
+
+                    {user ? LoggedInView(user) : LoggedOutView(onLoginClick)}
                 </Stack>
             </Toolbar>
         </AppBar>
     )
+}
+
+const LoggedInView = (user: User) => {
+    return <Avatar src={user.profilePicUrl} sx={{cursor:"pointer"}}/>
+}
+
+const LoggedOutView = (onLoginClick:()=>void) => {
+    return <PrimaryButton variant="text" onClick={onLoginClick}>Login</PrimaryButton>
 }
 
 export default TopNav;

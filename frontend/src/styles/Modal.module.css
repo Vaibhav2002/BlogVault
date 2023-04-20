@@ -1,8 +1,10 @@
-.modal {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
+.modalContainer {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.modal{
     border-radius: 0.5rem;
-    padding: 2rem;
+    padding: 2rem
 }

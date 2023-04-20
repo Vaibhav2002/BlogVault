@@ -3,6 +3,7 @@ import createHttpError from "http-errors";
 import bcrypt from "bcrypt";
 import env from "../utils/CleanEnv";
 import RegisterRequest from "../models/requests/RegisterRequest";
+import * as mongoose from "mongoose";
 
 export const registerUser = async ({username, email, password:passwordRaw}: RegisterRequest) => {
     const existingUser = await users.findOne({username: username})
@@ -26,4 +27,8 @@ export const registerUser = async ({username, email, password:passwordRaw}: Regi
 
 export const getUserByUsername = async (username: string, select:string = "") => {
     return await users.findOne({username: username}).select(select).exec()
+}
+
+export const getUserById = async (id: mongoose.Types.ObjectId, select:string = "") => {
+    return await users.findById(id).select(select).exec()
 }

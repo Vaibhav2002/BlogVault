@@ -11,7 +11,8 @@ import {registerUser} from "@/data/dataSources/AuthDataSource";
 interface RegisterModalProps {
     onDismiss: () => void
     onMoveToLogin: () => void
-    onRegisterSuccess: () => void
+
+    className?:string
 }
 
 interface RegisterFormValues {
@@ -20,7 +21,7 @@ interface RegisterFormValues {
     password: string
 }
 
-const RegisterModal = ({onDismiss, onMoveToLogin, onRegisterSuccess}: RegisterModalProps) => {
+const RegisterModal = ({onDismiss, onMoveToLogin, className}: RegisterModalProps) => {
 
     const {control, handleSubmit, formState: {isSubmitting}} = useForm<RegisterFormValues>()
 
@@ -36,7 +37,7 @@ const RegisterModal = ({onDismiss, onMoveToLogin, onRegisterSuccess}: RegisterMo
     }
 
     return (
-        <PrimaryModal open onDismiss={onDismiss}>
+        <PrimaryModal open onDismiss={onDismiss} className={className}>
             <Box className={styles.container}>
                 <Box>
                     <Typography variant="h5" textAlign="center" marginBottom={0.5}>Welcome to BlogVault</Typography>

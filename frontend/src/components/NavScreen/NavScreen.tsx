@@ -3,8 +3,8 @@ import {Box, Stack, Theme, useMediaQuery} from "@mui/material";
 import SideNav from "@/components/navBars/SideNav";
 import styles from "./NavScreen.module.css";
 import TopNav from "@/components/navBars/TopNav";
-import LoginModal from "@/components/modals/auth/LoginModal";
-import RegisterModal from "@/components/modals/auth/RegisterModal";
+import useAuthModal from "@/hooks/UseAuthModal";
+import AuthModal from "@/components/modals/auth/AuthModal";
 
 interface SideNavScreenProps {
     selected: number
@@ -16,21 +16,7 @@ const NavScreen = ({selected, children, className}: SideNavScreenProps) => {
 
     const isBelowSm = useMediaQuery((theme: Theme) => theme.breakpoints.down('sm'));
 
-    const [showLogin, setShowLogin] = useState(false)
-    const [showRegister, setShowRegister] = useState(false)
-
-    const onLoginClick = () => setShowLogin(true)
-    const closeLogin = () => setShowLogin(false)
-    const onRegisterClick = () => setShowRegister(true)
-    const closeRegister = () => setShowRegister(false)
-    const onMovieToLogin = () => {
-        closeRegister()
-        onLoginClick()
-    }
-    const onMoveToRegister = () => {
-        closeLogin()
-        onRegisterClick()
-    }
+    const [auth, showAuth] = useState(false);
 
     return (
         <Stack
@@ -39,14 +25,13 @@ const NavScreen = ({selected, children, className}: SideNavScreenProps) => {
         >
 
             {isBelowSm
-                ? <TopNav onLoginClick={onLoginClick}/>
+                ? <TopNav onLoginClick={() => showAuth(true)}/>
                 : <SideNav selected={selected} className={styles.sideNav}/>
             }
 
             <Box className={styles.content}>{children}</Box>
 
-            {showLogin && <LoginModal onDismiss={closeLogin} onMoveToRegister={onMoveToRegister}/>}
-            {showRegister && <RegisterModal onDismiss={closeRegister} onMoveToLogin={onMovieToLogin}/>}
+            {auth && <AuthModal onDismiss={() => showAuth(false)}/>}
 
         </Stack>
     )

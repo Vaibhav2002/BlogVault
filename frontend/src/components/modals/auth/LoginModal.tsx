@@ -9,7 +9,6 @@ import PrimaryModal from "@/components/modals/PrimaryModal";
 import {loginUser} from "@/data/dataSources/AuthDataSource";
 
 interface LoginModalProps {
-    onLoginSuccess: () => void
     onDismiss: () => void
     onMoveToRegister: () => void
     className?: string
@@ -20,7 +19,7 @@ interface LoginFormValues {
     password: string
 }
 
-const LoginModal = ({onLoginSuccess, onDismiss, onMoveToRegister, className}: LoginModalProps) => {
+const LoginModal = ({onDismiss, onMoveToRegister, className}: LoginModalProps) => {
     const {control, handleSubmit, formState: {isSubmitting}} = useForm<LoginFormValues>()
 
     const [error, setError] = useState<string | undefined>(undefined)
@@ -35,7 +34,7 @@ const LoginModal = ({onLoginSuccess, onDismiss, onMoveToRegister, className}: Lo
     }
 
     return (
-        <PrimaryModal open onDismiss={onDismiss}>
+        <PrimaryModal open onDismiss={onDismiss} className={className}>
             <Box className={styles.container}>
                 <Box>
                     <Typography variant="h5" textAlign="center" marginBottom={0.5}>Welcome back</Typography>

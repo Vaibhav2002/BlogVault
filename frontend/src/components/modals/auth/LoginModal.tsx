@@ -7,6 +7,7 @@ import FormPasswordField from "@/components/form/FormPasswordField";
 import PrimaryButton from "@/components/styled/PrimaryButton";
 import PrimaryModal from "@/components/modals/PrimaryModal";
 import {loginUser} from "@/data/dataSources/AuthDataSource";
+import useAuthenticatedUser from "@/hooks/useAuthenticatedUser";
 
 interface LoginModalProps {
     onDismiss: () => void
@@ -15,11 +16,13 @@ interface LoginModalProps {
 }
 
 interface LoginFormValues {
-    email: string
+    username: string
     password: string
 }
 
 const LoginModal = ({onDismiss, onMoveToRegister, className}: LoginModalProps) => {
+    const { mutateUser } = useAuthenticatedUser()
+
     const {control, handleSubmit, formState: {isSubmitting}} = useForm<LoginFormValues>()
 
     const [error, setError] = useState<string | undefined>(undefined)
@@ -28,6 +31,8 @@ const LoginModal = ({onDismiss, onMoveToRegister, className}: LoginModalProps) =
     const onSubmit = async (data: LoginFormValues) => {
         try {
             const response = await loginUser(data)
+            await mutateUser(response)
+            onDismiss()
         } catch (e) {
             if (e instanceof Error) setError(e.message)
         }
@@ -50,12 +55,11 @@ const LoginModal = ({onDismiss, onMoveToRegister, className}: LoginModalProps) =
 
                         <FormTextField
                             control={control}
-                            name="email"
-                            label="Email"
-                            type="email"
-                            inputMode="email"
-                            rules={{required: 'Email is required'}}
-                            placeholder="Enter your email"/>
+                            name="username"
+                            label="Username"
+                            type="text"
+                            rules={{required: 'Username is required'}}
+                            placeholder="Enter your username"/>
 
                         <FormPasswordField
                             control={control}

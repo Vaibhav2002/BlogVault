@@ -7,6 +7,7 @@ import PrimaryButton from "@/components/styled/PrimaryButton";
 import styles from "./AuthModal.module.css";
 import PrimaryModal from "@/components/modals/PrimaryModal";
 import {registerUser} from "@/data/dataSources/AuthDataSource";
+import useAuthenticatedUser from "@/hooks/useAuthenticatedUser";
 
 interface RegisterModalProps {
     onDismiss: () => void
@@ -22,6 +23,7 @@ interface RegisterFormValues {
 }
 
 const RegisterModal = ({onDismiss, onMoveToLogin, className}: RegisterModalProps) => {
+    const { mutateUser } = useAuthenticatedUser()
 
     const {control, handleSubmit, formState: {isSubmitting}} = useForm<RegisterFormValues>()
 
@@ -31,6 +33,8 @@ const RegisterModal = ({onDismiss, onMoveToLogin, className}: RegisterModalProps
     const onSubmit = async (data: RegisterFormValues) => {
         try {
             const response = await registerUser(data)
+            await mutateUser(response)
+            onDismiss()
         } catch (e) {
             if (e instanceof Error) setError(e.message)
         }

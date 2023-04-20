@@ -8,6 +8,7 @@ import {getAllTopics} from "@/data/dataSources/TopicDataSource";
 import {BlogData, createBlog} from "@/data/dataSources/BlogDataSource";
 import {router} from "next/client";
 import {useRouter} from "next/router";
+import {getBlogRoute} from "@/utils/Routes";
 
 export interface BlogInput {
     title: string
@@ -42,6 +43,7 @@ const CreateNewBlogPage = () => {
 
     const onSubmit = async (data: BlogInput) => {
         try {
+            setError(undefined)
             await createBlog({
                 title: data.title,
                 description: data.description,
@@ -50,8 +52,7 @@ const CreateNewBlogPage = () => {
                 topics: data.topics.map(topic => topic._id) ?? [],
                 coverImage: data.coverImage
             } as BlogData)
-            setError(undefined)
-            router.back()
+            await router.push(getBlogRoute(data.slug))
         } catch (e) {
             console.error(e)
             if (e instanceof Error)

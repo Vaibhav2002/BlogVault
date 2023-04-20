@@ -10,7 +10,7 @@ export const registerUser = async ({username, email, password:passwordRaw}: Regi
         .collation({locale: "en", strength: 2})
         .exec()
 
-    if(existingUser) throw createHttpError("Username already taken")
+    if(existingUser) throw createHttpError(409, "Username already taken")
 
     const hashedPassword = await bcrypt.hash(passwordRaw, env.PWD_SALTING_ROUNDS)
 

@@ -5,16 +5,13 @@ export default function useAuthModal() {
     const [showRegister, setShowRegister] = useState(false)
 
     const onLoginClick = () => setShowLogin(true)
-    const closeLogin = () => setShowLogin(false)
-    const onRegisterClick = () => setShowRegister(true)
-    const closeRegister = () => setShowRegister(false)
     const onMovieToLogin = () => {
-        closeRegister()
-        onLoginClick()
+        setShowRegister(false)
+        setShowLogin(true)
     }
     const onMoveToRegister = () => {
-        closeLogin()
-        onRegisterClick()
+        setShowLogin(false)
+        setShowRegister(true)
     }
 
     return {

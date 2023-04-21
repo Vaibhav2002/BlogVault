@@ -7,7 +7,7 @@ import {useRouter} from "next/router";
 import User from "@/data/models/User";
 
 interface AppBarProps {
-    user?: User
+    user?: User | null
     onLoginClick: () => void
     onLogoutClick: () => void
     className?: string
@@ -36,7 +36,7 @@ const TopNav = ({user, onLoginClick, onLogoutClick, className}: AppBarProps) => 
 
     const menuItems = useMemo(() => {
         const options = navOptions.map(option =>
-            <MenuItem onClick={() => onNavOptionClick(option)}>{option.name}</MenuItem>)
+            <MenuItem onClick={() => onNavOptionClick(option)}>{option.screen}</MenuItem>)
 
         if (!user) return options
         return [...options, <MenuItem onClick={onLogoutPress}>Logout</MenuItem>]

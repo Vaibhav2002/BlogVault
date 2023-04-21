@@ -32,7 +32,7 @@ interface SideNavItem {
 }
 
 interface SideNavProps {
-    user?: User
+    user?: User | null
     selected: number
     className: string
     onLoginClick: () => void

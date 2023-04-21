@@ -17,7 +17,7 @@ interface BlogItemProps {
 const BlogItem = ({blog: {title, description, createdAt, ...blog}, className, ...props}: BlogItemProps & BoxProps) => {
 
     const isBelowSm = useMediaQuery((theme: Theme) => theme.breakpoints.down("sm"))
-    const titleSize = isBelowSm ? "h6" : "h5"
+    const titleSize = isBelowSm ? "subtitle2" : "h5"
     const descriptionSize = isBelowSm ? "caption" : "body2"
     const descriptionMaxLines = isBelowSm ? 2 : 3
 
@@ -36,12 +36,20 @@ const BlogItem = ({blog: {title, description, createdAt, ...blog}, className, ..
             </Box>
 
 
-            <Box className={styles.blogContent}>
+            <Box className={styles.blogContent} sx={{gap: isBelowSm? 1:2}}>
 
-                <Box>
+                <Box className={styles.userInfoSection}>
+                    <Box className={styles.userInfo}>
+                        <Avatar variant="circular" className={styles.userAvatar} src={blog.user.profilePicUrl}/>
+                        <Typography variant="caption" color="text.secondary">{blog.user.username}</Typography>
+                    </Box>
+                    <Typography variant="caption" color="text.secondary">{formatDate(createdAt)}</Typography>
+                </Box>
+
+                <Box marginBottom={isBelowSm?0:3}>
                     <MultilineText
                         variant={titleSize}
-                        maxLines={1}
+                        maxLines={2}
                         marginBottom="4px"
                         color="text.primary"
 
@@ -52,18 +60,10 @@ const BlogItem = ({blog: {title, description, createdAt, ...blog}, className, ..
                         variant={descriptionSize}
                         color="text.secondary"
                         maxLines={descriptionMaxLines}
+                        sx={{display: {xs: "none", sm: "block"}}}
                     >
                         {description}
                     </MultilineText>
-                </Box>
-
-
-                <Box className={styles.userInfoSection}>
-                    <Box className={styles.userInfo}>
-                        <Avatar variant="circular" className={styles.userAvatar} src={blog.user.profilePicUrl}/>
-                        <Typography variant="body2" color="text.secondary">{blog.user.username}</Typography>
-                    </Box>
-                    <Typography variant="body2" color="text.secondary">{formatDate(createdAt)}</Typography>
                 </Box>
 
 

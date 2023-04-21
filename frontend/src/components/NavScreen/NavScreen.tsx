@@ -24,7 +24,7 @@ const NavScreen = ({selected, children, className}: SideNavScreenProps) => {
     const logout = async () => {
         try {
             await logoutUser()
-            await mutateUser(undefined)
+            await mutateUser(null)
         } catch (e) {
             if (e instanceof Error)
                 alert(e.message)

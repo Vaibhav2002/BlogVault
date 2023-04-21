@@ -44,7 +44,7 @@ const HomeScreen = ({blogs}: HomeScreenProps) => {
                 />
 
                 <Box
-                    sx={{display: {xs: "none", lg: "block"}}}
+                    sx={{display: {xs: "none", md: "block"}}}
                     className={styles.discoverSection}
                 >
 

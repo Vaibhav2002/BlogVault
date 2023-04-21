@@ -30,9 +30,7 @@ export type BlogInput = yup.InferType<typeof blogSchema>
 
 const CreateNewBlogPage = () => {
 
-    const form = useForm<BlogInput>({
-        resolver: yupResolver(blogSchema)
-    })
+    const form = useForm<BlogInput>({resolver: yupResolver(blogSchema)})
 
     const {handleSubmit, register, watch, setValue, formState: {errors}} = form
 

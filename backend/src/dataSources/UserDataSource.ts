@@ -12,6 +12,9 @@ export const registerUser = async ({username, email, password:passwordRaw}: Regi
 
     if(existingUser) throw createHttpError(409, "Username already taken")
 
+    const existingUserByEmail = await getUserByEmail(email)
+    if(existingUserByEmail) throw createHttpError(409, "Email already taken")
+
     const hashedPassword = await bcrypt.hash(passwordRaw, env.PWD_SALTING_ROUNDS)
 
     const result = await users.create({
@@ -31,4 +34,8 @@ export const getUserByUsername = async (username: string, select:string = "") =>
 
 export const getUserById = async (id: mongoose.Types.ObjectId, select:string = "") => {
     return await users.findById(id).select(select).exec()
+}
+
+export const getUserByEmail = async (email: string, select:string = "") => {
+    return await users.findOne({email: email}).select(select).exec()
 }

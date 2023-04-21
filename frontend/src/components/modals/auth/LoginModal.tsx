@@ -8,6 +8,9 @@ import PrimaryButton from "@/components/styled/PrimaryButton";
 import PrimaryModal from "@/components/modals/PrimaryModal";
 import {loginUser} from "@/data/dataSources/AuthDataSource";
 import useAuthenticatedUser from "@/hooks/useAuthenticatedUser";
+import * as yup from "yup";
+import {requiredStringSchema} from "@/utils/Validation";
+import {yupResolver} from "@hookform/resolvers/yup";
 
 interface LoginModalProps {
     onDismiss: () => void
@@ -15,18 +18,21 @@ interface LoginModalProps {
     className?: string
 }
 
-interface LoginFormValues {
-    username: string
-    password: string
-}
+const loginSchema = yup.object({
+    username: requiredStringSchema,
+    password: requiredStringSchema
+})
+
+type LoginFormValues = yup.InferType<typeof loginSchema>
 
 const LoginModal = ({onDismiss, onMoveToRegister, className}: LoginModalProps) => {
     const { mutateUser } = useAuthenticatedUser()
 
-    const {control, handleSubmit, formState: {isSubmitting}} = useForm<LoginFormValues>()
+    const {control, handleSubmit, formState: {isSubmitting}} = useForm<LoginFormValues>({
+        resolver: yupResolver(loginSchema)
+    })
 
     const [error, setError] = useState<string | undefined>(undefined)
-
 
     const onSubmit = async (data: LoginFormValues) => {
         try {
@@ -58,14 +64,12 @@ const LoginModal = ({onDismiss, onMoveToRegister, className}: LoginModalProps) =
                             name="username"
                             label="Username"
                             type="text"
-                            rules={{required: 'Username is required'}}
                             placeholder="Enter your username"/>
 
                         <FormPasswordField
                             control={control}
                             name="password"
                             label="Password"
-                            rules={{required: "Password is required"}}
                             placeholder="Enter your password"
                         />
 

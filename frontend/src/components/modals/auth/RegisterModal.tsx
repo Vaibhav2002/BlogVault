@@ -8,6 +8,9 @@ import styles from "./AuthModal.module.css";
 import PrimaryModal from "@/components/modals/PrimaryModal";
 import {registerUser} from "@/data/dataSources/AuthDataSource";
 import useAuthenticatedUser from "@/hooks/useAuthenticatedUser";
+import {emailSchema, passwordSchema, usernameSchema} from "@/utils/Validation";
+import * as yup from 'yup'
+import {yupResolver} from "@hookform/resolvers/yup";
 
 interface RegisterModalProps {
     onDismiss: () => void
@@ -16,19 +19,22 @@ interface RegisterModalProps {
     className?:string
 }
 
-interface RegisterFormValues {
-    username: string
-    email: string
-    password: string
-}
+const registerSchema = yup.object({
+    username: usernameSchema.required('Required'),
+    email: emailSchema.required('Required'),
+    password: passwordSchema.required('Required')
+})
+
+type RegisterFormValues = yup.InferType<typeof registerSchema>
 
 const RegisterModal = ({onDismiss, onMoveToLogin, className}: RegisterModalProps) => {
     const { mutateUser } = useAuthenticatedUser()
 
-    const {control, handleSubmit, formState: {isSubmitting}} = useForm<RegisterFormValues>()
+    const {control, handleSubmit, formState: {isSubmitting}} = useForm<RegisterFormValues>({
+        resolver: yupResolver(registerSchema)
+    })
 
     const [error, setError] = useState<string | undefined>(undefined)
-
 
     const onSubmit = async (data: RegisterFormValues) => {
         try {
@@ -60,7 +66,6 @@ const RegisterModal = ({onDismiss, onMoveToLogin, className}: RegisterModalProps
                             name="username"
                             label="Username"
                             type="text"
-                            rules={{required: 'Username is required'}}
                             placeholder="Enter your username"/>
 
                         <FormTextField
@@ -69,14 +74,12 @@ const RegisterModal = ({onDismiss, onMoveToLogin, className}: RegisterModalProps
                             label="Email"
                             type="email"
                             inputMode="email"
-                            rules={{required: 'Email is required'}}
                             placeholder="Enter your email"/>
 
                         <FormPasswordField
                             control={control}
                             name="password"
                             label="Password"
-                            rules={{required: 'Password is required'}}
                             placeholder="Enter your password"
                         />
 

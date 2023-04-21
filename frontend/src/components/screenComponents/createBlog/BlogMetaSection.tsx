@@ -46,7 +46,6 @@ const BlogMetaSection = ({topics, form, error, className}: BlogMetaSectionProps)
                     showLength
                     maxLength={100}
                     onBlur={setSlug}
-                    rules={{required: "Title is required"}}
                     placeholder="Enter title"
                 />
 
@@ -55,7 +54,6 @@ const BlogMetaSection = ({topics, form, error, className}: BlogMetaSectionProps)
                     name="slug"
                     label="Slug"
                     showLength
-                    rules={{required: "Slug is required"}}
                     maxLength={100}
                     placeholder="Enter slug"
                 />
@@ -65,23 +63,17 @@ const BlogMetaSection = ({topics, form, error, className}: BlogMetaSectionProps)
                     name="description"
                     label="Description"
                     showLength
-                    rules={{required: "Description is required"}}
                     maxLength={300}
                     placeholder="Enter description"
                     maxRows={6}
                 />
 
-                <FormImagePicker
-                    control={form.control}
-                    name="coverImage"
-                    rules={{required: "Cover Image is required"}}
-                />
+                <FormImagePicker control={form.control} name="coverImage"/>
 
                 <FormAutoComplete
                     control={form.control}
                     name="topics"
                     options={topics}
-                    rules={{required: "Topics are required"}}
                     placeholder="Select Topics"
                     max={3}
                     getOptionLabel={(topic: Topic) => topic.name}

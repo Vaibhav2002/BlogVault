@@ -5,24 +5,34 @@ import {useForm} from "react-hook-form";
 import BlogMetaSection from "@/components/screenComponents/createBlog/BlogMetaSection";
 import {useEffect, useState} from "react";
 import {getAllTopics} from "@/data/dataSources/TopicDataSource";
-import {BlogData, createBlog} from "@/data/dataSources/BlogDataSource";
-import {router} from "next/client";
+import {createBlog} from "@/data/dataSources/BlogDataSource";
 import {useRouter} from "next/router";
 import {getBlogRoute} from "@/utils/Routes";
+import {requiredFileSchema, requiredStringSchema, slugSchema} from "@/utils/Validation";
+import * as yup from 'yup'
+import {yupResolver} from "@hookform/resolvers/yup";
 
-export interface BlogInput {
-    title: string
-    description: string
-    content: string
-    slug: string
-    topics: Topic[]
-    coverImage: File
 
-}
+const blogSchema = yup.object({
+    title: requiredStringSchema.max(100, "Title cannot be more than 100 characters"),
+    description: requiredStringSchema.max(300, "Description cannot be more than 300 characters"),
+    slug: slugSchema.concat(requiredStringSchema).max(100, "Slug cannot be more than 100 characters"),
+    content: requiredStringSchema.required('Blog Content is required'),
+    topics: yup.array()
+        .min(1, "At least one topic is required")
+        .max(3, 'At most 3 topics are allowed')
+        .required("Topics are required"),
+    coverImage: requiredFileSchema
+
+})
+
+export type BlogInput = yup.InferType<typeof blogSchema>
 
 const CreateNewBlogPage = () => {
 
-    const form = useForm<BlogInput>()
+    const form = useForm<BlogInput>({
+        resolver: yupResolver(blogSchema)
+    })
 
     const {handleSubmit, register, watch, setValue, formState: {errors}} = form
 
@@ -45,13 +55,9 @@ const CreateNewBlogPage = () => {
         try {
             setError(undefined)
             await createBlog({
-                title: data.title,
-                description: data.description,
-                content: data.content,
-                slug: data.slug,
+                ...data,
                 topics: data.topics.map(topic => topic._id) ?? [],
-                coverImage: data.coverImage
-            } as BlogData)
+            })
             await router.push(getBlogRoute(data.slug))
         } catch (e) {
             console.error(e)
@@ -82,7 +88,7 @@ const CreateNewBlogPage = () => {
                 </Box>
 
                 <MarkdownEditor
-                    register={register('content', {required: "Blog content is required"})}
+                    register={register('content')}
                     error={errors.content}
                     value={watch('content')}
                     setValue={setValue}

@@ -1,6 +1,6 @@
 import React from 'react';
 import {Autocomplete, FormControl, FormHelperText, FormLabel, TextField} from "@mui/material";
-import {Control, Controller, RegisterOptions} from "react-hook-form";
+import {Control, Controller} from "react-hook-form";
 
 interface FormAutoCompleteProps {
     control: Control<any>
@@ -9,11 +9,10 @@ interface FormAutoCompleteProps {
     options: any[]
     placeholder?: string
     max: number
-    rules?: RegisterOptions
     getOptionLabel: (option: any) => string
 }
 
-const FormAutoComplete = ({control, name, label, max, rules, ...props}: FormAutoCompleteProps) => {
+const FormAutoComplete = ({control, name, label, max, ...props}: FormAutoCompleteProps) => {
 
     const filterOptions = (availableOptions: Topic[], selectedValues: Topic[]) => {
         return availableOptions.filter((option) => {
@@ -22,17 +21,10 @@ const FormAutoComplete = ({control, name, label, max, rules, ...props}: FormAuto
         });
     };
 
-    const autoCompleteRules: RegisterOptions = {
-        ...rules,
-        validate:(value:Topic[]) => value.length > max ? `Select upto ${max} topic` : true
-    }
-
-
     return (
         <Controller
             control={control}
             name={name}
-            rules={autoCompleteRules}
             render={({field, fieldState: {error}}) => (
                 <FormControl margin="none" error={!!error}>
                     {label && <FormLabel>{label}</FormLabel>}
@@ -44,14 +36,9 @@ const FormAutoComplete = ({control, name, label, max, rules, ...props}: FormAuto
                         filterOptions={(options) => filterOptions(options, field.value)}
                         {...field}
                         {...props}
-                        onChange={(_, newValue) => {
-                            if (newValue.length <= max) field.onChange(newValue)
-                        }}
+                        onChange={(_, newValue) => field.onChange(newValue)}
                         renderInput={(params) => (
-                            <TextField
-                                {...params}
-                                placeholder={props.placeholder}
-                            />
+                            <TextField{...params} placeholder={props.placeholder}/>
                         )}
                     />
 

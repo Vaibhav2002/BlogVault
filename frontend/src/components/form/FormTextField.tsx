@@ -1,5 +1,5 @@
 import React from 'react';
-import {Control, Controller, RegisterOptions} from "react-hook-form";
+import {Control, Controller} from "react-hook-form";
 import {FormControl, FormHelperText, TextField, TextFieldProps} from "@mui/material";
 
 interface FormTextFieldProps {
@@ -8,7 +8,6 @@ interface FormTextFieldProps {
     className?: string
     maxLength?: number
     showLength?: boolean
-    rules?: RegisterOptions
 }
 
 const FormTextField = (
@@ -18,7 +17,6 @@ const FormTextField = (
         className,
         maxLength,
         showLength,
-        rules,
         ...props
     }: FormTextFieldProps & TextFieldProps
 ) => {
@@ -26,10 +24,6 @@ const FormTextField = (
         if (value && value.length > 0) return value.length + "/" + maxLength
         else return null
     }
-    const fieldRules = {
-        ...rules,
-        maxLength: maxLength
-    } as RegisterOptions
 
     const inputProps = {
         ...props.inputProps,
@@ -41,7 +35,6 @@ const FormTextField = (
         <Controller
             name={name}
             control={control}
-            rules={fieldRules}
             render={({field, fieldState: {error}}) =>
 
                 <FormControl error={!!error}>

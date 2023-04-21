@@ -1,4 +1,4 @@
-import {Control, Controller, RegisterOptions} from "react-hook-form";
+import {Control, Controller} from "react-hook-form";
 import {useState} from "react";
 import {IconButton, TextField, TextFieldProps} from "@mui/material";
 import {MdVisibility, MdVisibilityOff} from "react-icons/md";
@@ -6,11 +6,10 @@ import {MdVisibility, MdVisibilityOff} from "react-icons/md";
 interface FormPasswordFieldProps {
     control: Control<any>,
     name: string,
-    rules?: RegisterOptions
     className?: string
 }
 
-const FormPasswordField = ({control, name, rules, className, ...props}: FormPasswordFieldProps & TextFieldProps) => {
+const FormPasswordField = ({control, name, className, ...props}: FormPasswordFieldProps & TextFieldProps) => {
 
     const [isPasswordVisible, setPasswordVisibility] = useState(false);
     const togglePasswordVisibility = () => {
@@ -21,7 +20,6 @@ const FormPasswordField = ({control, name, rules, className, ...props}: FormPass
         <Controller
             control={control}
             name={name}
-            rules={rules}
             render={({field, fieldState: {error}}) => (
                 <TextField
                     {...field}

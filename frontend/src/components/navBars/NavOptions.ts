@@ -1,27 +1,34 @@
 import {ReactNode} from "react";
 import {CiHome} from "react-icons/ci";
 
+export enum NavScreen {
+    Home = "Home",
+    Discover = "Discover",
+    Bookmarks = "Bookmarks",
+    Post = "Post"
+}
+
 export interface NavOptions {
-    name: string;
+    screen: NavScreen;
     href: string
 }
 
 
 export const navOptions: NavOptions[] = [
     {
-        name: "Home",
+        screen: NavScreen.Home,
         href: "/home"
     },
     {
-        name: "Discover",
+        screen: NavScreen.Discover,
         href: "/discover"
     },
     {
-        name: "Bookmarks",
+        screen: NavScreen.Bookmarks,
         href: "/bookmarks"
     },
     {
-        name:'Post',
+        screen: NavScreen.Post,
         href: '/blogs/create'
     }
 ]

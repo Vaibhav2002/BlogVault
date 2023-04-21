@@ -4,7 +4,7 @@ import ContainedIcon from "@/components/ContainedIcon";
 import {CiBookmark, CiGrid42, CiHome, CiLogin, CiLogout, CiSquarePlus} from "react-icons/ci";
 import {useRouter} from "next/router";
 import {motion} from "framer-motion";
-import {NavOptions, navOptions} from "@/components/navBars/NavOptions";
+import {NavOptions, navOptions, NavScreen} from "@/components/navBars/NavOptions";
 import User from "@/data/models/User";
 
 const iconSize = 24
@@ -14,19 +14,19 @@ const getIconColor = (isSelected: Boolean) => isSelected ? "white" : "black"
 const getIconBgColor = (isSelected: Boolean) => isSelected ? "primary.main" : "background"
 
 const getIconForNavItem = (option: NavOptions, selected: boolean) => {
-    switch (option.name) {
-        case "Home":
+    switch (option.screen) {
+        case NavScreen.Home:
             return <CiHome size={iconSize} color={getIconColor(selected)}/>
-        case "Discover":
+        case NavScreen.Discover:
             return <CiGrid42 size={iconSize} color={getIconColor(selected)}/>
-        case "Bookmarks":
+        case NavScreen.Bookmarks:
             return <CiBookmark size={iconSize} color={getIconColor(selected)}/>
-        case "Post":
+        case NavScreen.Post:
             return <CiSquarePlus size={iconSize} color={getIconColor(selected)}/>
     }
 }
 
-interface SideNavItems {
+interface SideNavItem {
     navItem: NavOptions
     icon: ReactElement
 }
@@ -41,20 +41,19 @@ interface SideNavProps {
 
 const SideNav = ({user, selected = 0, className, onLoginClick, onLogoutClick, ...props}: SideNavProps & StackProps) => {
 
-    const [selectedIndex, setSelectedIndex] = useState(selected)
-
     const navItems = useMemo(() => navOptions.map((option, index) => (
         {
             navItem: option,
-            icon: getIconForNavItem(option, selectedIndex === index)
-        } as SideNavItems
-    )), [selectedIndex])
+            icon: getIconForNavItem(option, selected === index)
+        } as SideNavItem
+    )), [selected])
 
     const router = useRouter()
 
-    const onIconSelected = (index: number) => {
-        setSelectedIndex(index)
-        router.push(navItems[index].navItem.href)
+    const onIconSelected = async (item:SideNavItem, index:number) => {
+        if(item.navItem.screen != NavScreen.Post || user)
+            await router.push(item.navItem.href)
+        else onLoginClick()
     }
 
     return (
@@ -64,9 +63,9 @@ const SideNav = ({user, selected = 0, className, onLoginClick, onLogoutClick, ..
                 <SideNavIcon
                     key={index}
                     icon={item.icon}
-                    bgColor={getIconBgColor(selectedIndex === index)}
-                    text={item.navItem.name}
-                    onClick={() => onIconSelected(index)}
+                    bgColor={getIconBgColor(selected === index)}
+                    text={item.navItem.screen}
+                    onClick={() => onIconSelected(item, index)}
                 />
             )}
 

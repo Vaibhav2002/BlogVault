@@ -60,8 +60,8 @@ const BlogItem = ({blog: {title, description, createdAt, ...blog}, className, ..
 
                 <Box className={styles.userInfoSection}>
                     <Box className={styles.userInfo}>
-                        <Avatar variant="circular" className={styles.userAvatar}/>
-                        <Typography variant="body2" color="text.secondary">User</Typography>
+                        <Avatar variant="circular" className={styles.userAvatar} src={blog.user.profilePicUrl}/>
+                        <Typography variant="body2" color="text.secondary">{blog.user.username}</Typography>
                     </Box>
                     <Typography variant="body2" color="text.secondary">{formatDate(createdAt)}</Typography>
                 </Box>

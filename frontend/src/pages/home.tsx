@@ -1,6 +1,6 @@
 import React from 'react';
 import {Box, Stack} from "@mui/material";
-import SideNavScreen from "@/components/sideNavScreen/SideNavScreen";
+import NavScreen from "@/components/NavScreen/NavScreen";
 import Blog from "@/data/models/Blog";
 import {getAllBlogs} from "@/data/dataSources/BlogDataSource";
 import {GetStaticProps} from "next";
@@ -24,8 +24,9 @@ interface HomeScreenProps {
 }
 
 const HomeScreen = ({blogs}: HomeScreenProps) => {
+
     return (
-        <SideNavScreen>
+        <NavScreen selected={0}>
 
             <Stack
                 direction="row"
@@ -35,7 +36,7 @@ const HomeScreen = ({blogs}: HomeScreenProps) => {
 
                 <HomeBlogSection
                     sx={{
-                        flex: {xs: 1, md: 0.7},
+                        flex: {xs: 1, lg: 0.7},
                         padding: {sx: 2, md: 8}
                     }}
                     className={styles.blogSection}
@@ -43,21 +44,17 @@ const HomeScreen = ({blogs}: HomeScreenProps) => {
                 />
 
                 <Box
-                    sx={{
-                        display: {
-                            xs: "none",
-                            md: "block"
-                        }
-                    }}
+                    sx={{display: {xs: "none", lg: "block"}}}
                     className={styles.discoverSection}
                 >
+
 
                 </Box>
 
 
             </Stack>
 
-        </SideNavScreen>
+        </NavScreen>
     )
 }
 

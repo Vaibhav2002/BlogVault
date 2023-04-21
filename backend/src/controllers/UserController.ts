@@ -1,17 +1,15 @@
 import {RequestHandler} from "express";
 import * as dataSource from "../dataSources/UserDataSource";
 import RegisterRequest from "../models/requests/RegisterRequest";
-import createHttpError from "http-errors";
 import ApiResponse from "../models/ApiResponse";
+import {assertIsDefined} from "../utils/Helpers";
 
 
 export const getAuthenticatedUser: RequestHandler = async (req, res, next) => {
     const userId = req.user?._id
     try {
-        if (!userId) throw createHttpError(401, "User not authenticated")
-
+        assertIsDefined(userId, "User Id")
         const user = await dataSource.getUserById(userId, "+email")
-
         res.status(200).json(user)
     } catch (e) {
         next(e)

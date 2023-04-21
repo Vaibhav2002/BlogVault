@@ -5,13 +5,12 @@ import createHttpError from "http-errors";
 import {saveCoverImage, savePosterImage} from "./ImageDataSource";
 import * as mongoose from "mongoose";
 
-export const createBlog = async (coverImage: Express.Multer.File, req: CreateBlogRequest) => {
+export const createBlog = async (userId: mongoose.Types.ObjectId, coverImage: Express.Multer.File, req: CreateBlogRequest) => {
 
     const topics = (await getAllTopics()).map(topic => topic._id.toString())
     const blogTopics = JSON.parse(req.topics) as string[]
 
     const areAllTopicsValid = blogTopics.every(topic => topics.includes(topic))
-
     if (!areAllTopicsValid) throw createHttpError('400', 'Invalid topic')
 
     const isSlugUsed = await blogs.findOne({slug: req.slug}).exec()
@@ -30,7 +29,8 @@ export const createBlog = async (coverImage: Express.Multer.File, req: CreateBlo
         content: req.content,
         topics: blogTopics,
         coverImage: coverImagePath,
-        posterImage: posterPath
+        posterImage: posterPath,
+        user: userId
     })
 }
 
@@ -41,11 +41,13 @@ export const getAllSlugs = async () => {
 }
 
 export const getBlogBySlug = async (slug: string) => {
-    const blog = await blogs.findOne({slug: slug}).populate("topics").exec()
+    const blog = await blogs.findOne({slug: slug})
+        .populate("topics user")
+        .exec()
     if (!blog) throw createHttpError('404', 'Blog not found')
     return blog
 }
 
 export const getAllBlogs = async () => {
-    return await blogs.find().exec()
+    return await blogs.find().populate('user').exec()
 }

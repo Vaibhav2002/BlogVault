@@ -13,11 +13,13 @@ export const getAllBlogs: RequestHandler = async (req, res, next) => {
 }
 
 export const createBlog: RequestHandler<unknown, unknown, CreateBlogRequest, unknown> = async (req, res, next) => {
+    const userId = req.user?._id
     try {
+        assertIsDefined(userId, "User Id")
         const blogReq = req.body
         const file = req.file
         assertIsDefined(file, "coverImage")
-        const blog = await dataSource.createBlog(file, blogReq)
+        const blog = await dataSource.createBlog(userId, file, blogReq)
         res.status(201).json(blog)
     } catch (e) {
         next(e)

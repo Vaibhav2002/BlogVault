@@ -5,7 +5,7 @@ export const imageSchema = yup.mixed<Express.Multer.File>().test(
     'is-image',
     'File must be an image',
     async (file) => {
-        if(!file) return false
+        if(!file) return true
         const isImage = await validateBufferMIMEType(file.buffer, {
             allowMimeTypes: ['image/jpeg', 'image/png']
         })

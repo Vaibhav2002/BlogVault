@@ -40,7 +40,7 @@ export const updateProfile = async (
     let profilePicUrl:string | undefined = undefined
     if(profilePic)
         profilePicUrl = await saveProfilePic(profilePic, userId.toString())
-            .then(path => path.replace(".png", `?lastUpdatedAt=${Date.now()}.png`))
+            .then(path => path+`?lastUpdatedAt=${Date.now()}`)
 
     const user = await users.findByIdAndUpdate(userId, {
         $set:{

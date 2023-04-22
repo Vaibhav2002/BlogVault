@@ -6,6 +6,9 @@ import {useRouter} from "next/router";
 import {motion} from "framer-motion";
 import {NavOptions, navOptions, NavScreen} from "@/components/navBars/NavOptions";
 import User from "@/data/models/User";
+import UserAvatar from "@/components/Avatar";
+import Link from "next/link";
+import {getUserRoute} from "@/utils/Routes";
 
 const iconSize = 24
 
@@ -107,12 +110,14 @@ const UserLoggedInView = ({user, onLogoutClick}: LoggedInViewProps) => {
     return (
         <>
             <Tooltip title="Profile" enterDelay={500}>
-                <Avatar
-                    src={user.profilePicUrl}
-                    sx={{cursor: "pointer"}}
-                    component={motion.div}
-                    whileHover={{scale: 1.3}}
-                />
+                <Link href={getUserRoute(user.username)} passHref>
+                    <UserAvatar
+                        url={user.profilePicUrl}
+                        sx={{cursor: "pointer"}}
+                        component={motion.div}
+                        whileHover={{scale: 1.3}}
+                    />
+                </Link>
             </Tooltip>
 
             <SideNavIcon

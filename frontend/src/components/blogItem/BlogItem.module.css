@@ -2,12 +2,13 @@
     display: flex;
     flex-direction: row;
     overflow: hidden;
-    align-items: center;
+    align-items: flex-start;
+    padding: 2rem 0;
 }
 
 
 .blogImage{
-    flex: 0.2;
+    flex:0.2;
     aspect-ratio: 1/1;
     position: relative;
 }
@@ -19,6 +20,7 @@
     justify-content: space-between;
     flex-direction: column;
     overflow: hidden;
+    gap: 0.5rem;
 }
 
 .userInfoSection{

@@ -8,6 +8,7 @@ import PrimaryButton from "@/components/styled/PrimaryButton";
 import {formatDate} from "@/utils/Helpers";
 import {CiBookmark} from "react-icons/ci";
 import Image from "next/image";
+import UserAvatar from "@/components/Avatar";
 
 interface BlogItemProps {
     blog: Blog
@@ -20,13 +21,14 @@ const BlogItem = ({blog: {title, description, createdAt, ...blog}, className, ..
     const titleSize = isBelowSm ? "subtitle2" : "h5"
     const descriptionSize = isBelowSm ? "caption" : "body2"
     const descriptionMaxLines = isBelowSm ? 2 : 3
+    const avatarSize = isBelowSm ? "small" : "medium"
 
     return (
         <Box
             className={`${styles.blogCard} ${className}`}
             {...props}
         >
-            <Box className={styles.blogImage}>
+            <Box className={styles.blogImage} flex={isBelowSm? 0.15: 0.2}>
                 <Image
                     layout="fill"
                     objectFit="cover"
@@ -36,11 +38,11 @@ const BlogItem = ({blog: {title, description, createdAt, ...blog}, className, ..
             </Box>
 
 
-            <Box className={styles.blogContent} sx={{gap: isBelowSm? 1:2}}>
+            <Box className={styles.blogContent}>
 
                 <Box className={styles.userInfoSection}>
                     <Box className={styles.userInfo}>
-                        <Avatar variant="circular" className={styles.userAvatar} src={blog.author.profilePicUrl}/>
+                        <UserAvatar size={avatarSize} url={blog.author.profilePicUrl}/>
                         <Typography variant="caption" color="text.secondary">{blog.author.username}</Typography>
                     </Box>
                     <Typography variant="caption" color="text.secondary">{formatDate(createdAt)}</Typography>
@@ -52,6 +54,7 @@ const BlogItem = ({blog: {title, description, createdAt, ...blog}, className, ..
                         maxLines={2}
                         marginBottom="4px"
                         color="text.primary"
+                        fontWeight="bold"
 
                     >
                         {title}

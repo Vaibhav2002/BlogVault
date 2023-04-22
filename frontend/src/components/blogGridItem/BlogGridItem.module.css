@@ -1,0 +1,27 @@
+.blogCard{
+    display: flex;
+    flex-direction: row;
+    overflow: hidden;
+    align-items: start;
+}
+
+.blogImage{
+    flex:0.2;
+    aspect-ratio: 1/1;
+    position: relative;
+}
+
+.blogContent{
+    flex: 0.8;
+    padding: 0 1rem;
+    display: flex;
+    justify-content: space-between;
+    flex-direction: column;
+    overflow: hidden;
+}
+
+
+.actionSection{
+    justify-content: space-between;
+    flex-direction: row;
+}

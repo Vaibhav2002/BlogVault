@@ -9,5 +9,5 @@ export default interface Blog {
     updatedAt: string
     coverImage: string
 
-    user: User
+    author: User
 }

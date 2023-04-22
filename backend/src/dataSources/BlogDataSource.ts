@@ -30,7 +30,7 @@ export const createBlog = async (userId: mongoose.Types.ObjectId, coverImage: Ex
         topics: blogTopics,
         coverImage: coverImagePath,
         posterImage: posterPath,
-        user: userId
+        author: userId
     })
 }
 

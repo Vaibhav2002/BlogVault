@@ -1,20 +1,21 @@
 import React from 'react';
-import {Box, Stack} from "@mui/material";
+import {Box, Stack, StackProps} from "@mui/material";
 import NavScreen from "@/components/NavScreen/NavScreen";
 import Blog from "@/data/models/Blog";
 import {getAllBlogs} from "@/data/dataSources/BlogDataSource";
 import {GetStaticProps} from "next";
-import HomeBlogSection from "@/components/screenComponents/home/HomeBlogSection";
 import styles from "@/styles/Home.module.css";
+import {useRouter} from "next/router";
+import {getBlogRoute} from "@/utils/Routes";
+import {AnimatePresence, motion} from "framer-motion";
+import BlogItem from "@/components/blogItem/BlogItem";
 
 
 export const getStaticProps: GetStaticProps<HomeScreenProps> = async () => {
     const blogs = await getAllBlogs()
         .then(blogs => blogs.sort((a, b) => a.createdAt > b.createdAt ? -1 : 1))
     return {
-        props: {
-            blogs: blogs
-        },
+        props: {blogs: blogs},
         revalidate: 15 * 60 //1 hour
     }
 }
@@ -55,6 +56,38 @@ const HomeScreen = ({blogs}: HomeScreenProps) => {
             </Stack>
 
         </NavScreen>
+    )
+}
+
+interface HomeBlogSectionProps {
+    blogs: Blog[]
+    className?: string
+}
+
+const HomeBlogSection = ({blogs, className, ...props}: HomeBlogSectionProps & StackProps) => {
+
+    const router = useRouter()
+    const onBlogClick = async (blog: Blog) => {
+        await router.push(getBlogRoute(blog.slug))
+    }
+
+    return (
+        <Stack gap={4} className={className} {...props}>
+            {blogs.map((blog, index) =>
+                <AnimatePresence>
+                    <Box
+                        component={motion.div}
+                        initial={{scale: 0.5}}
+                        animate={{scale: 1}}
+                        transition={{delay: index * 0.05, ease: "easeOut"}}
+                    >
+                        <BlogItem blog={blog} onClick={() => onBlogClick(blog)}/>
+
+                    </Box>
+                </AnimatePresence>
+            )}
+        </Stack>
+
     )
 }
 

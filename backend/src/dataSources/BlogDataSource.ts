@@ -3,7 +3,7 @@ import {getAllTopics} from "./TopicDataSource";
 import createHttpError from "http-errors";
 import {saveCoverImage, savePosterImage} from "./ImageDataSource";
 import * as mongoose from "mongoose";
-import {CreateBlogRequest} from "../validation/CreateBlogValidation";
+import {CreateBlogRequest} from "../validation/BlogValidation";
 
 export const createBlog = async (userId: mongoose.Types.ObjectId, coverImage: Express.Multer.File, req: CreateBlogRequest) => {
 
@@ -42,12 +42,13 @@ export const getAllSlugs = async () => {
 
 export const getBlogBySlug = async (slug: string) => {
     const blog = await blogs.findOne({slug: slug})
-        .populate("topics user")
+        .populate("topics author")
         .exec()
     if (!blog) throw createHttpError('404', 'Blog not found')
     return blog
 }
 
-export const getAllBlogs = async () => {
-    return await blogs.find().populate('user').exec()
+export const getAllBlogs = async (authorId:string | undefined) => {
+    const filter = authorId ? {author: authorId} : {}
+    return await blogs.find(filter).populate('author').exec()
 }

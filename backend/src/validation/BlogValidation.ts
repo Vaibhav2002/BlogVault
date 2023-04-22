@@ -1,5 +1,5 @@
 import * as yup from 'yup'
-import {imageSchema} from "../utils/Validation";
+import {imageSchema, mongoIdSchema} from "../utils/Validation";
 
 const blogRequestBodySchema = yup.object({
     title: yup.string().required().max(100),
@@ -20,10 +20,19 @@ const blogRequestBodySchema = yup.object({
     )
 })
 
-export const blogRequestSchema = yup.object({
+export const createBlogSchema = yup.object({
     body: blogRequestBodySchema,
     file: imageSchema.required()
 })
 
 
 export type CreateBlogRequest = yup.InferType<typeof blogRequestBodySchema>
+
+
+export const getBlogsSchema = yup.object({
+    query: yup.object({
+        authorId: mongoIdSchema
+    })
+})
+
+export type GetBlogsQuery = yup.InferType<typeof getBlogsSchema>['query']

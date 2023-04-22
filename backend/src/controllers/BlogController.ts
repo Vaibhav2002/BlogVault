@@ -1,11 +1,12 @@
 import * as dataSource from '../dataSources/BlogDataSource'
 import {RequestHandler} from "express";
 import {assertIsDefined} from "../utils/Helpers";
-import {CreateBlogRequest} from "../validation/CreateBlogValidation";
+import {CreateBlogRequest, GetBlogsQuery} from "../validation/BlogValidation";
 
-export const getAllBlogs: RequestHandler = async (req, res, next) => {
+export const getAllBlogs: RequestHandler<unknown, unknown, unknown, GetBlogsQuery> = async (req, res, next) => {
+    const authorId = req.query.authorId
     try {
-        const blogs = await dataSource.getAllBlogs()
+        const blogs = await dataSource.getAllBlogs(authorId)
         res.status(200).json(blogs)
     } catch (e) {
         next(e)

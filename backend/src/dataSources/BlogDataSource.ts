@@ -1,9 +1,9 @@
 import blogs from '../models/entities/Blog';
-import CreateBlogRequest from "../models/requests/CreateBlogRequest";
 import {getAllTopics} from "./TopicDataSource";
 import createHttpError from "http-errors";
 import {saveCoverImage, savePosterImage} from "./ImageDataSource";
 import * as mongoose from "mongoose";
+import {CreateBlogRequest} from "../validation/CreateBlogValidation";
 
 export const createBlog = async (userId: mongoose.Types.ObjectId, coverImage: Express.Multer.File, req: CreateBlogRequest) => {
 

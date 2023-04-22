@@ -1,8 +1,8 @@
 import {RequestHandler} from "express";
 import * as dataSource from "../dataSources/UserDataSource";
-import RegisterRequest from "../models/requests/RegisterRequest";
 import ApiResponse from "../models/ApiResponse";
 import {assertIsDefined} from "../utils/Helpers";
+import {RegisterRequest} from "../validation/UserValidation";
 
 
 export const getAuthenticatedUser: RequestHandler = async (req, res, next) => {
@@ -16,9 +16,22 @@ export const getAuthenticatedUser: RequestHandler = async (req, res, next) => {
     }
 }
 
+export const getUserProfile: RequestHandler = async (req, res, next) => {
+    const username = req.params.username
+
+    try {
+        assertIsDefined(username, "Username")
+        const user = await dataSource.getUserByUsername(username)
+        res.status(200).json(user)
+    } catch (e) {
+        next(e)
+    }
+}
+
 export const registerUser: RequestHandler<unknown, unknown, RegisterRequest, unknown> = async (req, res, next) => {
     try {
-        const user = await dataSource.registerUser(req.body)
+        const {username, email, password} = req.body
+        const user = await dataSource.registerUser(username, email, password)
         req.login(user, err => {
             if (err) throw err
             else res.status(201).send(user)

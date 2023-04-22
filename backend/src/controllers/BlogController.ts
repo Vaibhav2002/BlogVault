@@ -1,7 +1,7 @@
 import * as dataSource from '../dataSources/BlogDataSource'
 import {RequestHandler} from "express";
-import CreateBlogRequest from "../models/requests/CreateBlogRequest";
 import {assertIsDefined} from "../utils/Helpers";
+import {CreateBlogRequest} from "../validation/CreateBlogValidation";
 
 export const getAllBlogs: RequestHandler = async (req, res, next) => {
     try {

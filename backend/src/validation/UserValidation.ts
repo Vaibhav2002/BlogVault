@@ -14,5 +14,10 @@ export const registerSchema = yup.object({
     })
 })
 
-
 export type RegisterRequest = yup.InferType<typeof registerSchema>['body']
+
+export const getProfileSchema = yup.object({
+    params: yup.object({
+        username: usernameSchema.required()
+    })
+})

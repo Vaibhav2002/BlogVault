@@ -2,10 +2,9 @@ import users from './../models/entities/User';
 import createHttpError from "http-errors";
 import bcrypt from "bcrypt";
 import env from "../utils/CleanEnv";
-import RegisterRequest from "../models/requests/RegisterRequest";
 import * as mongoose from "mongoose";
 
-export const registerUser = async ({username, email, password:passwordRaw}: RegisterRequest) => {
+export const registerUser = async (username:string, email:string, passwordRaw:string) => {
     const existingUser = await users.findOne({username: username})
         .collation({locale: "en", strength: 2})
         .exec()

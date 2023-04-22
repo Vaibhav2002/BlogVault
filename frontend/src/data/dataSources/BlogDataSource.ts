@@ -33,6 +33,11 @@ export const getAllBlogs = async () => {
     return response.data as Blog[]
 }
 
+export const getBlogsOfUser = async(userId:string) => {
+    const response = await api.get<Blog[]>(`/blogs?authorId=${userId}`)
+    return response.data as Blog[]
+}
+
 export const getAllSlugs = async () => {
     const response = await api.get<string[]>(`/blogs/slugs`)
     return response.data as string[]

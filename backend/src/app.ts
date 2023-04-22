@@ -9,6 +9,7 @@ import env from "./utils/CleanEnv";
 import session from "express-session";
 import sessionOptions from "./config/session";
 import passport from "passport";
+import morgan from "morgan";
 import "./config/passport"
 
 const app = express()
@@ -17,6 +18,8 @@ app.use(cors({
     origin: env.WEBSITE_URL,
     credentials: true
 }))
+
+app.use(morgan('dev'))
 
 app.use(session(sessionOptions))
 

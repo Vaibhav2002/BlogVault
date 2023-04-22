@@ -5,6 +5,7 @@ interface User{
     displayName?:string
     about?:string
     profilePicUrl?:string
+    createdAt:string
 }
 
 export default User

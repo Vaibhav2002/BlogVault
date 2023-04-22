@@ -5,6 +5,7 @@ interface MultilineTextProps {
 }
 
 const MultilineText = styled(Typography)(({maxLines}: MultilineTextProps) => ({
+    whiteSpace: "pre-line",
     display: "-webkit-box",
     WebkitBoxOrient: "vertical",
     WebkitLineClamp: maxLines,

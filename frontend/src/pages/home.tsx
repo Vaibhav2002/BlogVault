@@ -1,5 +1,5 @@
 import React from 'react';
-import {Box, Stack, StackProps} from "@mui/material";
+import {Box, Divider, Stack, StackProps} from "@mui/material";
 import NavScreen from "@/components/NavScreen/NavScreen";
 import Blog from "@/data/models/Blog";
 import {getAllBlogs} from "@/data/dataSources/BlogDataSource";
@@ -82,6 +82,7 @@ const HomeBlogSection = ({blogs, className, ...props}: HomeBlogSectionProps & St
                         transition={{delay: index * 0.05, ease: "easeOut"}}
                     >
                         <BlogItem blog={blog} onClick={() => onBlogClick(blog)}/>
+                        <Divider />
 
                     </Box>
                 </AnimatePresence>

@@ -1,0 +1,12 @@
+.avatarContainer {
+    position: relative;
+    width: 100%;
+    aspect-ratio: 1/1;
+    max-height: 256px;
+    max-width: 256px;
+    min-width: 128px;
+}
+
+.avatar {
+    border-radius: 50%;
+}

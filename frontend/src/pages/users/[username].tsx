@@ -15,7 +15,6 @@ import Grid2 from "@mui/material/Unstable_Grid2";
 import {AnimatePresence, motion} from "framer-motion";
 import BlogGridSkeletonItem from "@/components/blogGridItem/BlogGridSkeletonItem";
 import Blog from "@/data/models/Blog";
-import PrimaryButton from "@/components/styled/PrimaryButton";
 import useAuthenticatedUser from "@/hooks/useAuthenticatedUser";
 
 export const getServerSideProps: GetServerSideProps<ProfilePageProps> = async ({params}) => {
@@ -44,8 +43,8 @@ const ProfilePage = ({user, className}: ProfilePageProps) => {
             sx={{overflowX: "hidden"}}
             spacing={{xs: 4, md: 8}}
         >
-            <ProfileHeaderSection user={user}/>
-            <ProfileBlogSection user={user}/>
+            <ProfileHeaderSection user={profileUser}/>
+            <ProfileBlogSection user={profileUser}/>
         </Stack>
 
     )

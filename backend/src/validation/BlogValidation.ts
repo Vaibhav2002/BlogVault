@@ -31,7 +31,8 @@ export type CreateBlogRequest = yup.InferType<typeof blogRequestBodySchema>
 
 export const getBlogsSchema = yup.object({
     query: yup.object({
-        authorId: mongoIdSchema
+        authorId: mongoIdSchema,
+        page: yup.number().integer().min(1)
     })
 })
 

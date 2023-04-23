@@ -48,7 +48,27 @@ export const getBlogBySlug = async (slug: string) => {
     return blog
 }
 
-export const getAllBlogs = async (authorId:string | undefined) => {
+export const getAllBlogs = async (page:number, authorId?:string) => {
     const filter = authorId ? {author: authorId} : {}
-    return await blogs.find(filter).populate('author topics').exec()
+    const pageSize = 10
+    const skip = (page - 1) * pageSize
+
+    const blogQuery = blogs.find(filter)
+        .sort({_id:-1})
+        .skip(skip)
+        .limit(pageSize)
+        .populate('author topics')
+        .exec()
+
+    const totalPagesQuery = blogs.countDocuments(filter).exec()
+
+    const [allBlogs, totalCount] = await Promise.all([blogQuery, totalPagesQuery])
+
+    const totalPages = Math.ceil(totalCount / pageSize)
+
+    return {
+        blogs: allBlogs,
+        page: page,
+        totalPages: totalPages
+    }
 }

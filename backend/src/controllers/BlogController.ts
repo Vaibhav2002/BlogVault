@@ -5,8 +5,9 @@ import {CreateBlogRequest, GetBlogsQuery} from "../validation/BlogValidation";
 
 export const getAllBlogs: RequestHandler<unknown, unknown, unknown, GetBlogsQuery> = async (req, res, next) => {
     const authorId = req.query.authorId
+    const page = req.query.page || 1
     try {
-        const blogs = await dataSource.getAllBlogs(authorId)
+        const blogs = await dataSource.getAllBlogs(page, authorId)
         res.status(200).json(blogs)
     } catch (e) {
         next(e)

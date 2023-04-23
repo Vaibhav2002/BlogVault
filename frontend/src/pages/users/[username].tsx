@@ -10,12 +10,9 @@ import {formatDate} from "@/utils/Helpers";
 import MultilineText from "@/components/styled/MultilineText";
 import useSWR from "swr";
 import * as blogApi from "@/data/dataSources/BlogDataSource";
-import BlogGridItem from "@/components/blogGridItem/BlogGridItem";
-import Grid2 from "@mui/material/Unstable_Grid2";
-import {AnimatePresence, motion} from "framer-motion";
-import BlogGridSkeletonItem from "@/components/blogGridItem/BlogGridSkeletonItem";
-import Blog from "@/data/models/Blog";
 import useAuthenticatedUser from "@/hooks/useAuthenticatedUser";
+import BlogSkeletonGrid from "@/components/blogGrid/BlogSkeletonGrid";
+import BlogGrid from "@/components/blogGrid/BlogGrid";
 
 export const getServerSideProps: GetServerSideProps<ProfilePageProps> = async ({params}) => {
     const username = params?.username as string
@@ -77,7 +74,7 @@ const ProfileHeaderSection = ({user, className}: ProfileHeaderSectionProps) => {
                 }
             </Box>
 
-            <Stack>
+            <Stack flex={1}>
                 <Stack direction="row" justifyContent="space-between">
                     <Typography variant="overline">{`Joined ${formatDate(user.createdAt)}`}</Typography>
                     {isAuthUser && <Button variant="outlined" sx={{width: 'fit-content'}}>Edit Profile</Button>}
@@ -105,38 +102,15 @@ const ProfileBlogSection = ({user}: ProfileBlogSectionProps) => {
 
     const {data: blogs, isLoading, error} = useSWR(user._id, blogApi.getBlogsOfUser)
 
-    const blogGrid = (blogs: Blog[]) =>
-        <Grid2 container spacing={6} columns={{xs: 1, md: 2}}>
-            <AnimatePresence>
-                {blogs.map((blog, index) =>
-                    <Grid2
-                        width={{xs: 1, md: 0.5}}
-                        component={motion.div}
-                        initial={{scale: 0}}
-                        animate={{scale: 1}}
-                        transition={{delay: index * 0.1, ease: "easeOut"}}
-                    ><BlogGridItem blog={blog} key={blog._id}/>
-                    </Grid2>
-                )}
-            </AnimatePresence>
-        </Grid2>
-
-
-    const skeleton = useMemo(() => (
-        <Grid2 container spacing={6} columns={{xs: 1, md: 2}}>
-            {[...Array(4)].map(item =>
-                <Grid2 width={{xs: 1, md: 0.5}}><BlogGridSkeletonItem/></Grid2>
-            )}
-        </Grid2>
-    ), [isLoading])
+    const myBlogs = blogs ? [...blogs, ...blogs, ...blogs, ...blogs] : []
 
     return (
         <Box>
             <Typography variant="h6" marginBottom={4}>Blogs</Typography>
-            {isLoading && skeleton}
+            {isLoading && <BlogSkeletonGrid count={4}/>}
             {error && <Typography variant="body1">Error loading blogs</Typography>}
             {blogs?.length === 0 && <Typography variant="body1">No blogs found</Typography>}
-            {blogs && blogGrid(blogs)}
+            {blogs && <BlogGrid blogs={myBlogs}/>}
         </Box>
     )
 }

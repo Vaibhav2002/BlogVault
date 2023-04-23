@@ -1,5 +1,5 @@
 import api from "./AxiosInstance";
-import Blog from "@/data/models/Blog";
+import Blog, {BlogPage} from "@/data/models/Blog";
 
 
 export interface BlogData {
@@ -28,14 +28,14 @@ export const createBlog = async (blog: BlogData) => {
     return response.data as Blog
 }
 
-export const getAllBlogs = async () => {
-    const response = await api.get<Blog[]>(`/blogs`)
-    return response.data as Blog[]
+export const getAllBlogs = async (page:number = 1) => {
+    const response = await api.get<BlogPage>(`/blogs?page=${page}`)
+    return response.data as BlogPage
 }
 
-export const getBlogsOfUser = async(userId:string) => {
-    const response = await api.get<Blog[]>(`/blogs?authorId=${userId}`)
-    return response.data as Blog[]
+export const getBlogsOfUser = async(userId:string, page:number = 1) => {
+    const response = await api.get<BlogPage>(`/blogs?authorId=${userId}&page=${page}`)
+    return response.data as BlogPage
 }
 
 export const getAllSlugs = async () => {

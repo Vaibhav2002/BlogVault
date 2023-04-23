@@ -13,3 +13,9 @@ export default interface Blog {
 
     author: User
 }
+
+export interface BlogPage {
+    page: number
+    blogs: Blog[]
+    totalPages: number
+}

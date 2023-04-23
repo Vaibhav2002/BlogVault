@@ -14,6 +14,7 @@ import useAuthenticatedUser from "@/hooks/useAuthenticatedUser";
 import BlogSkeletonGrid from "@/components/blogGrid/BlogSkeletonGrid";
 import BlogGrid from "@/components/blogGrid/BlogGrid";
 import UpdateProfileModal from "@/components/modals/updateProfile/UpdateProfileModal";
+import PaginationBar from "@/components/PaginationBar";
 
 export const getServerSideProps: GetServerSideProps<ProfilePageProps> = async ({params}) => {
     const username = params?.username as string
@@ -26,10 +27,15 @@ export const getServerSideProps: GetServerSideProps<ProfilePageProps> = async ({
 
 interface ProfilePageProps {
     user: User
-    className?: string
 }
 
-const ProfilePage = ({user, className}: ProfilePageProps) => {
+const ProfilePage = ({user}: ProfilePageProps) => {
+    return (
+        <Profile user={user} key={user._id}/>
+    )
+}
+
+const Profile = ({user}: ProfilePageProps) => {
 
     const [profileUser, setProfileUser] = useState(user)
     const [showUpdateModal, setShowUpdateModal] = useState(false)
@@ -118,17 +124,29 @@ interface ProfileBlogSectionProps {
 
 const ProfileBlogSection = ({user}: ProfileBlogSectionProps) => {
 
-    const {data: blogs, isLoading, error} = useSWR(user._id, blogApi.getBlogsOfUser)
+    const [page, setPage] = useState(1);
 
-    const myBlogs = blogs ? [...blogs, ...blogs, ...blogs, ...blogs] : []
+    const {data: blogPage, isLoading, error} = useSWR(
+        [user._id, page, "user-blogs"],
+        ([userId, page]) => blogApi.getBlogsOfUser(userId, page)
+    )
+
+
+    const blogs = blogPage?.blogs || []
+    const totalPages = blogPage?.totalPages || 0
 
     return (
         <Box>
             <Typography variant="h6" marginBottom={4}>Blogs</Typography>
             {isLoading && <BlogSkeletonGrid count={4}/>}
             {error && <Typography variant="body1">Error loading blogs</Typography>}
-            {blogs?.length === 0 && <Typography variant="body1">No blogs found</Typography>}
-            {blogs && <BlogGrid blogs={myBlogs}/>}
+            {!isLoading && blogs?.length === 0 && <Typography variant="body1">No blogs found</Typography>}
+            {blogs && blogs.length > 0 &&
+                <Stack spacing={2}>
+                    <BlogGrid blogs={blogs}/>
+                    <PaginationBar page={page} count={totalPages} onPageChange={setPage} sx={{alignSelf:"center"}}/>
+                </Stack>
+            }
         </Box>
     )
 }

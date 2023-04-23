@@ -161,7 +161,7 @@ const BlogMetaSection = ({topics, form, error, className}: BlogMetaSectionProps)
                     maxRows={6}
                 />
 
-                <FormImagePicker control={form.control} name="coverImage"/>
+                <FormImagePicker control={form.control} name="coverImage" label="Blog Cover Image"/>
 
                 <FormAutoComplete
                     control={form.control}

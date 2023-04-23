@@ -4,10 +4,11 @@ import {MuiFileInput} from "mui-file-input";
 interface ImagePickerProps {
     control: Control<any>
     name: string
+    label:string
     className?: string
 }
 
-const FormImagePicker = ({control, name, className}: ImagePickerProps) => {
+const FormImagePicker = ({control, name, label, className}: ImagePickerProps) => {
     return (
         <Controller
             control={control}
@@ -17,7 +18,7 @@ const FormImagePicker = ({control, name, className}: ImagePickerProps) => {
                     {...field}
                     error={!!error}
                     helperText={error?.message}
-                    label="Blog Cover Image"
+                    label={label}
                 />
             }
         />

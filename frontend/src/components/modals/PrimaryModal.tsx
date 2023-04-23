@@ -1,13 +1,14 @@
 import React, {ReactElement} from 'react';
 import styles from "@/styles/Modal.module.css"
-import {Box, Modal} from "@mui/material";
+import {Box, BoxProps, Modal} from "@mui/material";
 import {motion} from "framer-motion";
 
 interface ModalProps {
     open: boolean
     className?: string
     onDismiss: () => void
-    children: ReactElement
+    lgSize?: string
+    children: ReactElement[]
 }
 
 const spring = {
@@ -16,7 +17,7 @@ const spring = {
     stiffness: 100
 }
 
-const PrimaryModal = ({open, children, onDismiss, className}: ModalProps) => {
+const PrimaryModal = ({open, children, onDismiss, lgSize="35%", className, ...props}: ModalProps & BoxProps) => {
     return (
         <Modal
             open={open}
@@ -27,7 +28,7 @@ const PrimaryModal = ({open, children, onDismiss, className}: ModalProps) => {
         >
             <Box
                 sx={{
-                    width: {xs: '90%', sm: '60%', lg: '35%'},
+                    width: {xs: '90%', sm: '60%', lg: lgSize},
                     backgroundColor: 'background.paper',
                 }}
                 component={motion.div}
@@ -35,6 +36,8 @@ const PrimaryModal = ({open, children, onDismiss, className}: ModalProps) => {
                 initial={{scale: 0}}
                 animate={{scale: 1}}
                 className={styles.modal}
+                padding={4}
+                {...props}
             >
                 {children}
             </Box>

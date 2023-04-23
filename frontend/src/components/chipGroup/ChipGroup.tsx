@@ -16,11 +16,7 @@ const ChipGroup = <T extends unknown>({items, getLabel, gap=2, size = "medium", 
     return (
         <Box className={`${styles.container} ${className}`} gap={gap} {...props}>
             {items.map((chip, index) =>
-                <StyledChip
-                    key={index}
-                    label={getLabel(chip)}
-                    size={size}
-                />
+                <StyledChip key={index} label={getLabel(chip)} size={size}/>
             )}
         </Box>
     )

@@ -1,4 +1,4 @@
-import React, {useMemo, useState} from 'react';
+import React, {useState} from 'react';
 import User from "@/data/models/User";
 import {getUserProfile} from '@/data/dataSources/UserDataSource';
 import {GetServerSideProps} from "next";
@@ -13,6 +13,7 @@ import * as blogApi from "@/data/dataSources/BlogDataSource";
 import useAuthenticatedUser from "@/hooks/useAuthenticatedUser";
 import BlogSkeletonGrid from "@/components/blogGrid/BlogSkeletonGrid";
 import BlogGrid from "@/components/blogGrid/BlogGrid";
+import UpdateProfileModal from "@/components/modals/updateProfile/UpdateProfileModal";
 
 export const getServerSideProps: GetServerSideProps<ProfilePageProps> = async ({params}) => {
     const username = params?.username as string
@@ -31,6 +32,11 @@ interface ProfilePageProps {
 const ProfilePage = ({user, className}: ProfilePageProps) => {
 
     const [profileUser, setProfileUser] = useState(user)
+    const [showUpdateModal, setShowUpdateModal] = useState(false)
+
+    const onUserUpdated = (user: User) => {
+        setProfileUser(user)
+    }
 
     return (
         <Stack
@@ -40,8 +46,15 @@ const ProfilePage = ({user, className}: ProfilePageProps) => {
             sx={{overflowX: "hidden"}}
             spacing={{xs: 4, md: 8}}
         >
-            <ProfileHeaderSection user={profileUser}/>
+            <ProfileHeaderSection user={profileUser} onUpdateProfileClick={() => setShowUpdateModal(true)}/>
             <ProfileBlogSection user={profileUser}/>
+            {showUpdateModal &&
+                <UpdateProfileModal
+                    user={profileUser}
+                    onDismiss={() => setShowUpdateModal(false)}
+                    onUpdated={onUserUpdated}
+                />
+            }
         </Stack>
 
     )
@@ -49,12 +62,13 @@ const ProfilePage = ({user, className}: ProfilePageProps) => {
 
 interface ProfileHeaderSectionProps {
     user: User,
+    onUpdateProfileClick: () => void
     className?: string
 }
 
-const ProfileHeaderSection = ({user, className}: ProfileHeaderSectionProps) => {
+const ProfileHeaderSection = ({user, onUpdateProfileClick, className}: ProfileHeaderSectionProps) => {
 
-    const {user:authUser} = useAuthenticatedUser()
+    const {user: authUser} = useAuthenticatedUser()
     const isAuthUser = !!authUser && authUser?._id === user._id
 
     const isBelowSm = useMediaQuery((theme: Theme) => theme.breakpoints.down('sm'))
@@ -77,7 +91,11 @@ const ProfileHeaderSection = ({user, className}: ProfileHeaderSectionProps) => {
             <Stack flex={1}>
                 <Stack direction="row" justifyContent="space-between">
                     <Typography variant="overline">{`Joined ${formatDate(user.createdAt)}`}</Typography>
-                    {isAuthUser && <Button variant="outlined" sx={{width: 'fit-content'}}>Edit Profile</Button>}
+                    {isAuthUser &&
+                        <Button variant="outlined" onClick={onUpdateProfileClick} sx={{width: 'fit-content'}}>
+                            Edit Profile
+                        </Button>
+                    }
                 </Stack>
 
                 <MultilineText maxLines={2} variant={mainNameSize}>{user.displayName ?? user.username}</MultilineText>

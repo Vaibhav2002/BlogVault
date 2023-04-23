@@ -50,5 +50,5 @@ export const getBlogBySlug = async (slug: string) => {
 
 export const getAllBlogs = async (authorId:string | undefined) => {
     const filter = authorId ? {author: authorId} : {}
-    return await blogs.find(filter).populate('author').exec()
+    return await blogs.find(filter).populate('author topics').exec()
 }

@@ -4,16 +4,23 @@ import styles from "@/components/chipGroup/ChipGroup.module.css";
 import StyledChip from "@/components/styled/Chip";
 
 interface ChipGroupProps<T> {
-    chips: T[]
+    items: T[]
     getLabel: (chip: T) => string
+    gap?:number
+
+    size?: "small" | "medium"
     className?: string
 }
 
-const ChipGroup = <T extends unknown>({chips, getLabel, className, ...props}: ChipGroupProps<T> & BoxProps) => {
+const ChipGroup = <T extends unknown>({items, getLabel, gap=2, size = "medium", className, ...props}: ChipGroupProps<T> & BoxProps) => {
     return (
-        <Box className={`${styles.container} ${className}`} {...props}>
-            {chips.map((chip, index) =>
-                <StyledChip key={index} label={getLabel(chip)}/>
+        <Box className={`${styles.container} ${className}`} gap={gap} {...props}>
+            {items.map((chip, index) =>
+                <StyledChip
+                    key={index}
+                    label={getLabel(chip)}
+                    size={size}
+                />
             )}
         </Box>
     )

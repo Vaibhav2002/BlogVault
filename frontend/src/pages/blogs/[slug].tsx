@@ -120,7 +120,7 @@ interface BlogFooterProps {
 const BlogFooter = ({blog, className, ...props}: BlogFooterProps & BoxProps) => {
     return (
         <Box className={className} {...props}>
-            <ChipGroup chips={blog.topics} getLabel={(topic:Topic) => topic.name} />
+            <ChipGroup items={blog.topics} getLabel={(topic:Topic) => topic.name} />
         </Box>
     )
 }

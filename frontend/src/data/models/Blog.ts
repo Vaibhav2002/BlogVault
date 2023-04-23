@@ -1,3 +1,5 @@
+import User from "@/data/models/User";
+
 export default interface Blog {
     _id: string
     title: string

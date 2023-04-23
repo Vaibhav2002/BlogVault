@@ -9,6 +9,7 @@ import {formatDate} from "@/utils/Helpers";
 import {CiBookmark} from "react-icons/ci";
 import Image from "next/image";
 import UserAvatar from "@/components/Avatar";
+import ChipGroup from "@/components/chipGroup/ChipGroup";
 
 interface BlogItemProps {
     blog: Blog
@@ -22,6 +23,7 @@ const BlogItem = ({blog: {title, description, createdAt, ...blog}, className, ..
     const descriptionSize = isBelowSm ? "caption" : "body2"
     const descriptionMaxLines = isBelowSm ? 2 : 3
     const avatarSize = isBelowSm ? "small" : "medium"
+
 
     return (
         <Box
@@ -69,6 +71,12 @@ const BlogItem = ({blog: {title, description, createdAt, ...blog}, className, ..
                     </MultilineText>
                 </Box>
 
+                <ChipGroup
+                    items={blog.topics}
+                    getLabel={topic => topic.name}
+                    gap={1}
+                    size="small"
+                />
 
                 <Box
                     className={styles.actionSection}

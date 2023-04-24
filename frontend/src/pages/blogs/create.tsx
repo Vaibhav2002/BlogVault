@@ -15,6 +15,7 @@ import FormTextField from "@/components/form/FormTextField";
 import FormImagePicker from "@/components/form/FormImagePicker";
 import FormAutoComplete from "@/components/form/FormAutoComplete";
 import PrimaryButton from "@/components/styled/PrimaryButton";
+import useSWR from "swr";
 
 
 const blogSchema = yup.object({
@@ -37,19 +38,15 @@ const CreateNewBlogPage = () => {
     const form = useForm<BlogInput>({resolver: yupResolver(blogSchema)})
     const {handleSubmit, register, watch, setValue, formState: {errors}} = form
 
-    const [topics, setTopics] = useState<Topic[]>([])
+    const {data:topics, error:topicError} = useSWR('topics', getAllTopics)
+
     const [error, setError] = useState<string | undefined>()
 
     const router = useRouter()
 
     useEffect(() => {
-        async function getTopics() {
-            const topics = await getAllTopics()
-            setTopics(topics)
-        }
-
-        getTopics()
-    }, [])
+        setError(topicError?.message)
+    }, [topicError]);
 
     const onSubmit = async (data: BlogInput) => {
         try {
@@ -83,7 +80,7 @@ const CreateNewBlogPage = () => {
                     flex={0.4}
                     sx={{height: {xs: "auto", md: "100%"}}}
                 >
-                    <BlogMetaSection topics={topics} form={form} error={error}/>
+                    <BlogMetaSection topics={topics || []} form={form} error={error}/>
 
                 </Box>
 
@@ -115,7 +112,6 @@ const BlogMetaSection = ({topics, form, error, className}: BlogMetaSectionProps)
     const errorText = errors.content?.message ?? error
 
     const setSlug = () => {
-        console.log('title', getValues('title'))
         const title = getValues('title')
         const slug = generateSlug(title)
         setValue('slug', slug, {shouldValidate: true})
@@ -127,7 +123,7 @@ const BlogMetaSection = ({topics, form, error, className}: BlogMetaSectionProps)
             <Typography variant="h4">Create New Blog</Typography>
 
             <Collapse in={!!errorText}>
-                <Alert variant="filled" severity="error">{errorText}</Alert>
+                <Alert severity="error">{errorText}</Alert>
             </Collapse>
 
             <Stack spacing={3}>

@@ -20,10 +20,6 @@ export const createBlog = async (blog: BlogData) => {
         else formData.append(key, value)
     })
 
-    formData.forEach((value, key) => {
-        console.log(`${key} =  ${value}`)
-    })
-
     const response = await api.post<Blog>(`/blogs`, formData)
     return response.data as Blog
 }

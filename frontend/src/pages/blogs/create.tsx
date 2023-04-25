@@ -16,6 +16,9 @@ import FormImagePicker from "@/components/form/FormImagePicker";
 import FormAutoComplete from "@/components/form/FormAutoComplete";
 import PrimaryButton from "@/components/styled/PrimaryButton";
 import useSWR from "swr";
+import useFormImage from "@/hooks/useFormImage";
+import placeholder from "@/assets/images/placeholder.png"
+import Image from "next/image";
 
 
 const blogSchema = yup.object({
@@ -38,7 +41,7 @@ const CreateNewBlogPage = () => {
     const form = useForm<BlogInput>({resolver: yupResolver(blogSchema)})
     const {handleSubmit, register, watch, setValue, formState: {errors}} = form
 
-    const {data:topics, error:topicError} = useSWR('topics', getAllTopics)
+    const {data: topics, error: topicError} = useSWR('topics', getAllTopics)
 
     const [error, setError] = useState<string | undefined>()
 
@@ -67,12 +70,11 @@ const CreateNewBlogPage = () => {
         <form onSubmit={handleSubmit(onSubmit)}>
 
             <Box
-                height="100vh"
                 padding={2}
                 display="flex"
                 gap={2}
                 sx={{overflowX: "hidden", flexDirection: {xs: "column", md: "row"}}}
-                alignItems="flex-start"
+                alignItems="stretch"
             >
 
                 <Box
@@ -90,7 +92,10 @@ const CreateNewBlogPage = () => {
                     value={watch('content')}
                     setValue={setValue}
                     placeholder="Write your blog here..."
-                    className={styles.editor}/>
+                    className={styles.editor}
+                />
+
+
             </Box>
 
         </form>
@@ -107,7 +112,9 @@ interface BlogMetaSectionProps {
 
 const BlogMetaSection = ({topics, form, error, className}: BlogMetaSectionProps) => {
 
-    const {getValues, setValue, formState: {errors, isSubmitting}} = form
+    const {getValues, setValue, watch, formState: {errors, isSubmitting}} = form
+    const {fileUrl: coverImageUrl} = useFormImage('coverImage', watch)
+
 
     const errorText = errors.content?.message ?? error
 
@@ -127,6 +134,14 @@ const BlogMetaSection = ({topics, form, error, className}: BlogMetaSectionProps)
             </Collapse>
 
             <Stack spacing={3}>
+
+                <Box>
+                    <Box width={1} sx={{aspectRatio: "16/9"}} position="relative" marginBottom="1rem">
+                        <Image src={coverImageUrl ?? placeholder} alt="Cover Image" fill style={{borderRadius: "0.5rem"}}/>
+                    </Box>
+
+                    <FormImagePicker control={form.control} name="coverImage" label="Blog Cover Image"/>
+                </Box>
 
                 <FormTextField
                     control={form.control}
@@ -156,8 +171,6 @@ const BlogMetaSection = ({topics, form, error, className}: BlogMetaSectionProps)
                     placeholder="Enter description"
                     maxRows={6}
                 />
-
-                <FormImagePicker control={form.control} name="coverImage" label="Blog Cover Image"/>
 
                 <FormAutoComplete
                     control={form.control}

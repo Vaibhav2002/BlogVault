@@ -15,6 +15,7 @@ import FormImagePicker from "@/components/form/FormImagePicker";
 import useAuthenticatedUser from "@/hooks/useAuthenticatedUser";
 import * as userDataSource from "@/data/dataSources/UserDataSource"
 import {UpdateUserRequest} from "@/data/dataSources/UserDataSource"
+import useFormImage from "@/hooks/useFormImage";
 
 interface UpdateProfileModalProps {
     user: User
@@ -45,21 +46,8 @@ const UpdateProfileModal = ({user, onDismiss, onUpdated, className}: UpdateProfi
         resolver: yupResolver(updateProfileSchema)
     })
 
-    const [userProfilePic, setUserProfilePic] = useState<string | undefined>(user.profilePicUrl)
+    const {fileUrl: userProfilePic} = useFormImage('profilePic', watch, user.profilePicUrl)
     const [error, setError] = useState<string | null>(null)
-
-    useEffect(() => {
-        const file = watch('profilePic') as File;
-
-        if (!file) {
-            setUserProfilePic(user.profilePicUrl)
-            return
-        }
-
-        const fileBlob = new Blob([file], {type: file.type});
-        const url = URL.createObjectURL(fileBlob);
-        setUserProfilePic(url)
-    }, [watch('profilePic')])
 
 
     const onSubmit = async ({username, displayName, about, profilePic}: UpdateProfileValues) => {

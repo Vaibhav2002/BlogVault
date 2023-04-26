@@ -37,7 +37,10 @@ const Markdown = ({children, className}: MarkdownProps) => {
                     ) : (
                         <code {...props} className={className}>{children}</code>
                     )
-                }
+                },
+
+                img: ({node, ...props}) =>
+                    <img width="100%" style={{aspectRatio: `${props.width}/${props.height}`}} {...props}/>
             }}
         >
             {children}

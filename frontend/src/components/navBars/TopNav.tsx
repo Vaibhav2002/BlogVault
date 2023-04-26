@@ -1,8 +1,7 @@
 import React, {useMemo, useState} from 'react';
-import {AppBar, Avatar, IconButton, Menu, MenuItem, Stack, Toolbar, Typography} from "@mui/material";
+import {AppBar, Avatar, Button, IconButton, Menu, MenuItem, Stack, Toolbar, Typography} from "@mui/material";
 import {NavOptions, navOptions} from "@/components/navBars/NavOptions";
 import {MdMenu} from "react-icons/md";
-import PrimaryButton from "@/components/styled/PrimaryButton";
 import {useRouter} from "next/router";
 import User from "@/data/models/User";
 
@@ -91,7 +90,7 @@ const LoggedInView = (user: User) => {
 }
 
 const LoggedOutView = (onLoginClick:()=>void) => {
-    return <PrimaryButton variant="text" onClick={onLoginClick}>Login</PrimaryButton>
+    return <Button variant="text" onClick={onLoginClick}>Login</Button>
 }
 
 export default TopNav;

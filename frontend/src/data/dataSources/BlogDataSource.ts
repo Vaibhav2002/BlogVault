@@ -24,6 +24,30 @@ export const createBlog = async (blog: BlogData) => {
     return response.data as Blog
 }
 
+
+interface UpdateBlogData {
+    title: string
+    description: string
+    content: string
+    slug: string
+    topics: string[]
+    coverImage?: File
+}
+
+export const updateBlog = async (blogId: string, blog: UpdateBlogData) => {
+    const formData = new FormData()
+
+    console.log(JSON.stringify(blog.topics))
+    Object.entries(blog).forEach(([key, value]) => {
+        if(key === "topics" && value !== undefined) formData.append(key, JSON.stringify(value))
+        else if(value !== undefined) formData.append(key, value)
+    })
+
+    console.log(formData.get("topics"))
+
+    await api.patch<Blog>(`/blogs/${blogId}`, formData)
+}
+
 export const getAllBlogs = async (page:number = 1) => {
     const response = await api.get<BlogPage>(`/blogs?page=${page}`)
     return response.data as BlogPage

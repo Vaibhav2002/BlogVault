@@ -5,7 +5,7 @@ const PrimaryButton = styled(Button)(() => ({
     borderRadius: '8px',
     textTransform: 'none',
     textDecoration:'none',
-    padding: '0.7rem'
+    padding: '0.7rem 4rem'
 }))
 
 export default PrimaryButton

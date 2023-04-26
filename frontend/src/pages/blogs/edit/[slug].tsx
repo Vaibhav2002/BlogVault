@@ -4,21 +4,24 @@ import {useForm} from "react-hook-form";
 import {yupResolver} from "@hookform/resolvers/yup";
 import useSWR from "swr";
 import {getAllTopics} from "@/data/dataSources/TopicDataSource";
-import React, {useEffect, useState} from "react";
+import React, {useEffect, useMemo, useState} from "react";
 import {useRouter} from "next/router";
-import {getBlogRoute} from "@/utils/Routes";
-import {Box} from "@mui/material";
+import Routes, {getBlogRoute} from "@/utils/Routes";
+import {Box, Stack, Typography} from "@mui/material";
 import MarkdownEditor from "@/components/form/MarkdownEditor";
 import styles from "@/styles/CreateBlogPage.module.css";
 import BlogMetaSection from "@/components/BlogMetaSection";
 import Blog from "@/data/models/Blog";
 import {GetServerSideProps} from "next";
-import {getBlogBySlug, updateBlog} from "@/data/dataSources/BlogDataSource";
+import {deleteBlog, getBlogBySlug, updateBlog} from "@/data/dataSources/BlogDataSource";
 import useUnsavedChangesWarning from "@/hooks/useUnsavedChangesWarning";
+import PrimaryButton from "@/components/styled/PrimaryButton";
+import useDevices from "@/hooks/useDevices";
+import ConfirmationModal from "@/components/modals/ConfirmationModal";
 
-export const getServerSideProps:GetServerSideProps<EditBlogPageProps> = async ({params}) => {
+export const getServerSideProps: GetServerSideProps<EditBlogPageProps> = async ({params}) => {
     const slug = params?.slug?.toString()
-    if(!slug) throw new Error("Slug is required")
+    if (!slug) throw new Error("Slug is required")
 
     const blog = await getBlogBySlug(slug)
     return {
@@ -42,11 +45,11 @@ const updateBlogSchema = yup.object({
 
 export type BlogInput = yup.InferType<typeof updateBlogSchema>
 
-interface EditBlogPageProps{
+interface EditBlogPageProps {
     blog: Blog
 }
 
-const EditBlogPage = ({blog}:EditBlogPageProps) => {
+const EditBlogPage = ({blog}: EditBlogPageProps) => {
 
     const form = useForm<BlogInput>({
         defaultValues: {
@@ -64,7 +67,11 @@ const EditBlogPage = ({blog}:EditBlogPageProps) => {
 
     const [error, setError] = useState<string | undefined>()
 
+    const [showDeleteConfirmation, setShowDeleteConfirmation] = useState(false);
+    const [isDeleting, setIsDeleting] = useState(false);
     const router = useRouter()
+
+    const {isMobile} = useDevices()
 
     useUnsavedChangesWarning(isDirty && !isSubmitting)
 
@@ -88,25 +95,56 @@ const EditBlogPage = ({blog}:EditBlogPageProps) => {
         }
     }
 
+    const onDeleteConfirmed = async () => {
+        setShowDeleteConfirmation(false)
+        setIsDeleting(true)
+        try {
+            await deleteBlog(blog._id)
+            await router.push(Routes.Home)
+        } catch (e) {
+            setIsDeleting(false)
+            console.error(e)
+            if (e instanceof Error) setError(e.message)
+        }
+    }
+
+    const buttonsEnabled = isSubmitting || isDeleting
+
+    const submitButton = useMemo(() => (
+        <PrimaryButton type="submit" variant="contained" disabled={buttonsEnabled}>Publish</PrimaryButton>
+    ), [buttonsEnabled]);
+
+    const deleteButton = useMemo(() => (
+        <PrimaryButton variant="outlined" color="error" disabled={buttonsEnabled} onClick={() => setShowDeleteConfirmation(true)}>
+            Delete Blog
+        </PrimaryButton>
+    ), [buttonsEnabled])
+
     return (
         <form onSubmit={handleSubmit(onSubmit)}>
 
             <Box
-                padding={2}
+                padding={4}
                 display="flex"
-                gap={2}
+                gap={3}
                 sx={{overflowX: "hidden", flexDirection: {xs: "column", md: "row"}}}
                 alignItems="stretch"
             >
 
-                <Box
+                <Stack
                     position="static"
                     flex={0.4}
-                    sx={{height: {xs: "auto", md: "100%"}}}
+                    direction='column'
+                    spacing={2}
                 >
-                    <BlogMetaSection topics={topics || []} form={form} error={error} coverImage={blog.coverImage} isForUpdate/>
+                    <Typography variant="h4">Edit Blog</Typography>
 
-                </Box>
+                    <BlogMetaSection topics={topics || []} form={form} error={error} coverImage={blog.coverImage}/>
+
+                    {!isMobile && submitButton}
+                    {!isMobile && deleteButton}
+
+                </Stack>
 
                 <MarkdownEditor
                     register={register('content')}
@@ -117,7 +155,20 @@ const EditBlogPage = ({blog}:EditBlogPageProps) => {
                     className={styles.editor}
                 />
 
+                {isMobile && submitButton}
+                {isMobile && deleteButton}
+
             </Box>
+
+            {showDeleteConfirmation &&
+                <ConfirmationModal
+                    open={showDeleteConfirmation}
+                    title="Delete blog?"
+                    message="Are you sure that you want to delete this blog? This action cannot be undone."
+                    onPositiveClick={onDeleteConfirmed}
+                    onNegativeClick={() => setShowDeleteConfirmation(false)}
+                />
+            }
 
         </form>
 

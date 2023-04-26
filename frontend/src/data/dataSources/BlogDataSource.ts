@@ -67,3 +67,7 @@ export const getBlogBySlug = async (slug: string) => {
     const response = await api.get<Blog>(`/blogs/${slug}`)
     return response.data as Blog
 }
+
+export const deleteBlog = async(blogId:string) => {
+    await api.delete(`/blogs/${blogId}`)
+}

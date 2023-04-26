@@ -1,5 +1,6 @@
 import sharp from "sharp";
 import env from "../utils/CleanEnv";
+import fs from "fs";
 
 const COVER_IMAGE_WIDTH = 1280
 const COVER_IMAGE_HEIGHT = 720
@@ -44,6 +45,15 @@ export async function saveProfilePic(image: Express.Multer.File, filename: strin
     return env.SERVER_URL+filePath
 }
 
+export const removeImage = (url: string) => {
+    const path = extractPathFromUrl(url)
+    fs.unlinkSync('.' + path)
+}
+
+
+const extractPathFromUrl = (url: string) => {
+    return url.split(env.SERVER_URL)[1].split("?")[0]
+}
 
 async function saveImage(
     image: Express.Multer.File,

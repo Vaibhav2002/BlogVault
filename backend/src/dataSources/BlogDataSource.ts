@@ -1,11 +1,11 @@
 import blogs from '../models/entities/Blog';
 import * as topicDataSource from "./TopicDataSource";
-import {getAllTopics} from "./TopicDataSource";
 import createHttpError from "http-errors";
-import {saveCoverImage, savePosterImage} from "./ImageDataSource";
+import {removeImage, saveCoverImage, savePosterImage} from "./ImageDataSource";
 import * as mongoose from "mongoose";
 import {BlogBody} from "../validation/BlogValidation";
 import {appendLastUpdated, MongoId} from "../utils/Helpers";
+import env from "../utils/CleanEnv";
 
 export const createBlog = async (userId: mongoose.Types.ObjectId, coverImage: Express.Multer.File, req: BlogBody) => {
 
@@ -78,13 +78,7 @@ export const updateBlog = async (userId: MongoId, blogId: string, blogBody: Blog
     if (await isSlugTaken(blogBody.slug, blogId))
         throw createHttpError(409, 'Slug already used')
 
-    const blog = await blogs.findById(blogId).populate("author").exec()
-
-    if (!blog)
-        throw createHttpError(404, 'Blog not found')
-
-    if (!blog.author._id.equals(userId))
-        throw createHttpError(401, 'You are not authorized to edit this blog as you are not the author')
+    const blog = await assertBlogExistsAndIsOfUser(userId, blogId)
 
     if (!(await topicDataSource.areTopicsValid(JSON.parse(blogBody.topics))))
         throw createHttpError(400, 'Invalid topics present')
@@ -104,6 +98,27 @@ export const updateBlog = async (userId: MongoId, blogId: string, blogBody: Blog
     if(posterImagePath) blog.posterImage = appendLastUpdated(posterImagePath)
 
     await blog.save()
+}
+
+export const deleteBlog = async (userId: MongoId, blogId: string) => {
+    const blog = await assertBlogExistsAndIsOfUser(userId, blogId)
+
+    if(blog.coverImage.startsWith(env.SERVER_URL)) removeImage(blog.coverImage)
+    if(blog.posterImage.startsWith(env.SERVER_URL)) removeImage(blog.posterImage)
+
+    await blog.deleteOne()
+}
+
+
+const assertBlogExistsAndIsOfUser = async (userId: MongoId, blogId: string) => {
+    const blog = await blogs.findById(blogId).populate("author").exec()
+
+    if (!blog) throw createHttpError(404, 'Blog not found')
+
+    if (!blog.author._id.equals(userId))
+        throw createHttpError(401, 'You are not authorized to access this blog')
+
+    return blog
 }
 
 const isSlugTaken = async (slug: string, blogId?: string) => {

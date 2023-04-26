@@ -1,7 +1,7 @@
 import * as dataSource from '../dataSources/BlogDataSource'
 import {RequestHandler} from "express";
 import {assertIsDefined} from "../utils/Helpers";
-import {BlogBody, GetBlogsQuery, UpdateBlogParams} from "../validation/BlogValidation";
+import {BlogBody, BlogIdParam, GetBlogsQuery} from "../validation/BlogValidation";
 import ApiResponse from "../models/ApiResponse";
 
 export const getAllBlogs: RequestHandler<unknown, unknown, unknown, GetBlogsQuery> = async (req, res, next) => {
@@ -47,7 +47,7 @@ export const getBlogBySlug: RequestHandler = async (req, res, next) => {
     }
 }
 
-export const updateBlog:RequestHandler<UpdateBlogParams, unknown, BlogBody, unknown> = async (req, res, next) => {
+export const updateBlog:RequestHandler<BlogIdParam, unknown, BlogBody, unknown> = async (req, res, next) => {
     const userId = req.user?._id
     try {
         assertIsDefined(userId, "User Id")
@@ -56,6 +56,18 @@ export const updateBlog:RequestHandler<UpdateBlogParams, unknown, BlogBody, unkn
         const file = req.file
         await dataSource.updateBlog(userId, blogId, blogReq, file)
         res.status(200).json({message: "Blog updated successfully"} as ApiResponse)
+    } catch (e) {
+        next(e)
+    }
+}
+
+export const deleteBlog:RequestHandler<BlogIdParam,unknown, unknown, unknown> = async (req, res, next) => {
+    const userId = req.user?._id
+    try {
+        assertIsDefined(userId, "User Id")
+        const blogId = req.params.blogId
+        await dataSource.deleteBlog(userId, blogId)
+        res.status(200).json({message: "Blog deleted successfully"} as ApiResponse)
     } catch (e) {
         next(e)
     }

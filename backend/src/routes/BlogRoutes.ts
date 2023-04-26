@@ -2,12 +2,14 @@ import express from "express";
 import * as controller from "../controllers/BlogController";
 import {coverImageMiddleware} from "../middlewares/FileMiddleware";
 import validateRequest from "../middlewares/validateRequest";
-import {createBlogSchema, getBlogsSchema, updateBlogSchema} from "../validation/BlogValidation";
+import {createBlogSchema, deleteBlogSchema, getBlogsSchema, updateBlogSchema} from "../validation/BlogValidation";
 import requiresAuth from "../middlewares/AuthMiddleware";
 
 const router = express.Router()
 
 router.get('/', validateRequest(getBlogsSchema), controller.getAllBlogs)
+router.get('/slugs', controller.getAllSlugs)
+router.get('/:slug', controller.getBlogBySlug)
 
 router.post(
     '/',
@@ -25,7 +27,6 @@ router.patch(
     controller.updateBlog
 )
 
-router.get('/slugs', controller.getAllSlugs)
-router.get('/:slug', controller.getBlogBySlug)
+router.delete('/:blogId', requiresAuth, validateRequest(deleteBlogSchema), controller.deleteBlog)
 
 export default router

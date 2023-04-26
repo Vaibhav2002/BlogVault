@@ -38,13 +38,18 @@ export const getBlogsSchema = yup.object({
 
 export type GetBlogsQuery = yup.InferType<typeof getBlogsSchema>['query']
 
+const blogIdParamSchema = yup.object({
+    blogId: mongoIdSchema.required()
+})
+
+export type BlogIdParam = yup.InferType<typeof blogIdParamSchema>
 
 export const updateBlogSchema = yup.object({
-    params: yup.object({
-        blogId: mongoIdSchema.required()
-    }),
+    params: blogIdParamSchema,
     body: blogBodySchema,
     file: imageSchema
 })
 
-export type UpdateBlogParams = yup.InferType<typeof updateBlogSchema>['params']
+export const deleteBlogSchema = yup.object({
+    params: blogIdParamSchema
+})

@@ -24,12 +24,7 @@ const BlogMetaSection = ({topics, form, error, coverImage, isForUpdate, classNam
     const {getValues, setValue, watch, formState: {errors, isSubmitting}} = form
     const {fileUrl: coverImageUrl} = useFormImage('coverImage', watch, coverImage)
 
-    const [errorText, setErrorText] = useState(error)
-
-    useEffect(() => {
-        if(errors.content?.message)
-            setErrorText(errors.content?.message?.toString())
-    }, [errors.content])
+    const errorText = error ?? errors?.content?.message?.toString()
 
     const setSlug = () => {
         const title = getValues('title')

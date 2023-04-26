@@ -75,7 +75,7 @@ const EditBlogPage = ({blog}: EditBlogPageProps) => {
 
     const {isMobile} = useDevices()
 
-    useUnsavedChangesWarning(isDirty && !isSubmitting)
+    useUnsavedChangesWarning(isDirty && !isSubmitting && !isDeleting)
 
     useEffect(() => {
         setError(topicError?.message)

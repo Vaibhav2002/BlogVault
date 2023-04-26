@@ -1,7 +1,7 @@
 import {GetStaticPaths, GetStaticProps} from "next";
 import {getAllSlugs, getBlogBySlug} from "@/data/dataSources/BlogDataSource";
 import Blog from "@/data/models/Blog";
-import {Box, BoxProps, Stack, Typography} from "@mui/material";
+import {Box, BoxProps, Stack, StackProps, Typography} from "@mui/material";
 import Markdown from "@/components/Markdown";
 import styles from "@/styles/BlogPage.module.css";
 import React, {useMemo} from "react";
@@ -10,6 +10,7 @@ import Image from "next/image";
 import CenteredBox from "@/components/styled/CenteredBox";
 import MultilineText from "@/components/styled/MultilineText";
 import ChipGroup from "@/components/chipGroup/ChipGroup";
+import BlogAuthorSection from "@/components/BlogAuthorSection";
 
 export const getStaticPaths: GetStaticPaths = async () => {
     const slugs = await getAllSlugs();
@@ -65,7 +66,7 @@ interface BlogHeaderProps {
     className?: string
 }
 
-const BlogHeader = ({blog, className, ...props}: BlogHeaderProps & BoxProps) => {
+const BlogHeader = ({blog, className, ...props}: BlogHeaderProps & StackProps) => {
 
     const time = useMemo(() => (
         (blog.updatedAt > blog.createdAt)
@@ -74,7 +75,7 @@ const BlogHeader = ({blog, className, ...props}: BlogHeaderProps & BoxProps) => 
     ), [blog.createdAt, blog.updatedAt])
 
     return (
-        <Box className={className} {...props}>
+        <Stack className={className} gap={4} {...props}>
             <Box className={styles.coverImage}>
                 <Image
                     src={blog.coverImage}
@@ -93,7 +94,9 @@ const BlogHeader = ({blog, className, ...props}: BlogHeaderProps & BoxProps) => 
                 </MultilineText>
                 <Typography variant="body2" color="text.secondary">{time}</Typography>
             </CenteredBox>
-        </Box>
+
+            <BlogAuthorSection slug={blog.slug} author={blog.author} />
+        </Stack>
     )
 }
 

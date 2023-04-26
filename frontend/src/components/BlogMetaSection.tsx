@@ -27,7 +27,8 @@ const BlogMetaSection = ({topics, form, error, coverImage, isForUpdate, classNam
     const [errorText, setErrorText] = useState(error)
 
     useEffect(() => {
-        setErrorText(error)
+        if(errors.content?.message)
+            setErrorText(errors.content?.message?.toString())
     }, [errors.content])
 
     const setSlug = () => {

@@ -28,7 +28,7 @@ function stringToColor(string: string) {
 
 const UserAvatar = ({url, username, size = "medium", className, ...avatarProps}: UserAvatarProps & AvatarProps) => {
 
-    const avatarSize = size === "small" ? 16 : size === "medium" ? 24 : size === "large" ? 32 : "100%";
+    const avatarSize = size === "small" ? 16 : size === "medium" ? 24 : size === "large" ? 48 : "100%";
     const props = {
         className: className,
         sx:{

@@ -1,7 +1,7 @@
 import * as yup from 'yup'
 import {imageSchema, mongoIdSchema} from "../utils/Validation";
 
-const blogRequestBodySchema = yup.object({
+const blogBodySchema = yup.object({
     title: yup.string().required().max(100),
     description: yup.string().required().max(300),
     slug: yup.string().required().matches(/^[a-zA-Z0-9_-]*$/),
@@ -21,12 +21,12 @@ const blogRequestBodySchema = yup.object({
 })
 
 export const createBlogSchema = yup.object({
-    body: blogRequestBodySchema,
+    body: blogBodySchema,
     file: imageSchema.required()
 })
 
 
-export type BlogBody = yup.InferType<typeof blogRequestBodySchema>
+export type BlogBody = yup.InferType<typeof blogBodySchema>
 
 
 export const getBlogsSchema = yup.object({
@@ -37,3 +37,14 @@ export const getBlogsSchema = yup.object({
 })
 
 export type GetBlogsQuery = yup.InferType<typeof getBlogsSchema>['query']
+
+
+export const updateBlogSchema = yup.object({
+    params: yup.object({
+        blogId: mongoIdSchema.required()
+    }),
+    body: blogBodySchema,
+    file: imageSchema
+})
+
+export type UpdateBlogParams = yup.InferType<typeof updateBlogSchema>['params']

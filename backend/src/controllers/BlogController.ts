@@ -1,7 +1,8 @@
 import * as dataSource from '../dataSources/BlogDataSource'
 import {RequestHandler} from "express";
 import {assertIsDefined} from "../utils/Helpers";
-import {BlogBody, GetBlogsQuery} from "../validation/BlogValidation";
+import {BlogBody, GetBlogsQuery, UpdateBlogParams} from "../validation/BlogValidation";
+import ApiResponse from "../models/ApiResponse";
 
 export const getAllBlogs: RequestHandler<unknown, unknown, unknown, GetBlogsQuery> = async (req, res, next) => {
     const authorId = req.query.authorId
@@ -41,6 +42,20 @@ export const getBlogBySlug: RequestHandler = async (req, res, next) => {
     try {
         const blog = await dataSource.getBlogBySlug(req.params.slug)
         res.status(200).json(blog)
+    } catch (e) {
+        next(e)
+    }
+}
+
+export const updateBlog:RequestHandler<UpdateBlogParams, unknown, BlogBody, unknown> = async (req, res, next) => {
+    const userId = req.user?._id
+    try {
+        assertIsDefined(userId, "User Id")
+        const blogId = req.params.blogId
+        const blogReq = req.body
+        const file = req.file
+        await dataSource.updateBlog(userId, blogId, blogReq, file)
+        res.status(200).json({message: "Blog updated successfully"} as ApiResponse)
     } catch (e) {
         next(e)
     }

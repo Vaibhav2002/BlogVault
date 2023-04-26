@@ -2,4 +2,5 @@
     height: 100vh;
     border-radius: 16px;
     flex: 1;
+    min-height: 20rem;
 }

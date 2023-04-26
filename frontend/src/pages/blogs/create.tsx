@@ -1,8 +1,8 @@
-import {Box} from "@mui/material";
+import {Box, Stack, Theme, Typography, useMediaQuery} from "@mui/material";
 import MarkdownEditor from "@/components/form/MarkdownEditor";
 import styles from "@/styles/CreateBlogPage.module.css"
 import {useForm} from "react-hook-form";
-import React, {useEffect, useState} from "react";
+import React, {useEffect, useMemo, useState} from "react";
 import {getAllTopics} from "@/data/dataSources/TopicDataSource";
 import {createBlog} from "@/data/dataSources/BlogDataSource";
 import {useRouter} from "next/router";
@@ -13,6 +13,7 @@ import {yupResolver} from "@hookform/resolvers/yup";
 import useSWR from "swr";
 import BlogMetaSection from "@/components/BlogMetaSection";
 import useUnsavedChangesWarning from "@/hooks/useUnsavedChangesWarning";
+import PrimaryButton from "@/components/styled/PrimaryButton";
 
 
 const blogSchema = yup.object({
@@ -41,6 +42,8 @@ const CreateNewBlogPage = () => {
 
     const router = useRouter()
 
+    const isBelowSm = useMediaQuery((theme: Theme) => theme.breakpoints.down('sm'))
+
     useUnsavedChangesWarning(isDirty && !isSubmitting)
 
     useEffect(() => {
@@ -62,26 +65,35 @@ const CreateNewBlogPage = () => {
         }
     }
 
+    const submitButton = useMemo(() => (
+        <PrimaryButton type="submit" variant="contained" fullWidth disabled={isSubmitting}>Publish</PrimaryButton>
+    ), [isSubmitting]);
 
     return (
         <form onSubmit={handleSubmit(onSubmit)}>
 
             <Box
-                padding={2}
+                padding={4}
                 display="flex"
                 gap={2}
                 sx={{overflowX: "hidden", flexDirection: {xs: "column", md: "row"}}}
                 alignItems="stretch"
             >
 
-                <Box
+                <Stack
                     position="static"
                     flex={0.4}
-                    sx={{height: {xs: "auto", md: "100%"}}}
+                    direction='column'
+                    spacing={2}
                 >
+                    <Typography variant="h4">Create New Blog</Typography>
+
                     <BlogMetaSection topics={topics || []} form={form} error={error}/>
 
-                </Box>
+                    {/*Desktop View*/}
+                    {!isBelowSm && submitButton}
+
+                </Stack>
 
                 <MarkdownEditor
                     register={register('content')}
@@ -92,11 +104,15 @@ const CreateNewBlogPage = () => {
                     className={styles.editor}
                 />
 
+                {/*Mobile View*/}
+                {isBelowSm && submitButton}
+
             </Box>
 
         </form>
 
     )
 }
+
 
 export default CreateNewBlogPage;

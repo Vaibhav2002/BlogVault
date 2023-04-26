@@ -5,23 +5,20 @@ import createHttpError from "http-errors";
 import {saveCoverImage, savePosterImage} from "./ImageDataSource";
 import * as mongoose from "mongoose";
 import {BlogBody} from "../validation/BlogValidation";
-import {MongoId} from "../utils/Helpers";
+import {appendLastUpdated, MongoId} from "../utils/Helpers";
 
 export const createBlog = async (userId: mongoose.Types.ObjectId, coverImage: Express.Multer.File, req: BlogBody) => {
 
-    const topics = (await getAllTopics()).map(topic => topic._id.toString())
-    const blogTopics = JSON.parse(req.topics) as string[]
+    if (await isSlugTaken(req.slug)) throw createHttpError('409', 'Slug already used')
 
-    const areAllTopicsValid = blogTopics.every(topic => topics.includes(topic))
-    if (!areAllTopicsValid) throw createHttpError('400', 'Invalid topic')
-
-    const isSlugUsed = await blogs.findOne({slug: req.slug}).exec()
-    if (isSlugUsed) throw createHttpError('409', 'Slug already used')
+    if(await topicDataSource.areTopicsValid(JSON.parse(req.topics)))
+        throw createHttpError('400', 'Invalid topics')
 
     const id = new mongoose.Types.ObjectId()
 
-    const coverImagePath = await saveCoverImage(coverImage, id.toString())
-    const posterPath = await savePosterImage(coverImage, id.toString())
+    const [coverImagePath, posterPath] = await Promise.all([
+        saveCoverImage(coverImage, id.toString()), savePosterImage(coverImage, id.toString())
+    ])
 
     return await blogs.create({
         _id: id,
@@ -29,7 +26,7 @@ export const createBlog = async (userId: mongoose.Types.ObjectId, coverImage: Ex
         title: req.title,
         description: req.description,
         content: req.content,
-        topics: blogTopics,
+        topics: JSON.parse(req.topics),
         coverImage: coverImagePath,
         posterImage: posterPath,
         author: userId
@@ -103,13 +100,14 @@ export const updateBlog = async (userId: MongoId, blogId: string, blogBody: Blog
     blog.content = blogBody.content
     blog.topics = JSON.parse(blogBody.topics)
 
-    if(coverImagePath) blog.coverImage = coverImagePath
-    if(posterImagePath) blog.posterImage = posterImagePath
+    if(coverImagePath) blog.coverImage = appendLastUpdated(coverImagePath)
+    if(posterImagePath) blog.posterImage = appendLastUpdated(posterImagePath)
 
     await blog.save()
 }
 
-const isSlugTaken = async (slug: string, blogId: string) => {
+const isSlugTaken = async (slug: string, blogId?: string) => {
     const blog = await blogs.findOne({slug: slug}).populate("author").exec()
-    return blog && !blog._id.equals(blogId)
+    if(blogId) return blog && !blog._id.equals(blogId)
+    return blog
 }

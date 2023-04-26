@@ -1,7 +1,7 @@
-import {Alert, Box, Collapse, Stack, Typography} from "@mui/material";
+import {Box} from "@mui/material";
 import MarkdownEditor from "@/components/form/MarkdownEditor";
 import styles from "@/styles/CreateBlogPage.module.css"
-import {useForm, UseFormReturn} from "react-hook-form";
+import {useForm} from "react-hook-form";
 import React, {useEffect, useState} from "react";
 import {getAllTopics} from "@/data/dataSources/TopicDataSource";
 import {createBlog} from "@/data/dataSources/BlogDataSource";
@@ -12,6 +12,7 @@ import * as yup from 'yup'
 import {yupResolver} from "@hookform/resolvers/yup";
 import useSWR from "swr";
 import BlogMetaSection from "@/components/BlogMetaSection";
+import useUnsavedChangesWarning from "@/hooks/useUnsavedChangesWarning";
 
 
 const blogSchema = yup.object({
@@ -32,13 +33,15 @@ export type BlogInput = yup.InferType<typeof blogSchema>
 const CreateNewBlogPage = () => {
 
     const form = useForm<BlogInput>({resolver: yupResolver(blogSchema)})
-    const {handleSubmit, register, watch, setValue, formState: {errors}} = form
+    const {handleSubmit, register, watch, setValue, formState: {errors, isSubmitting, isDirty}} = form
 
     const {data: topics, error: topicError} = useSWR('topics', getAllTopics)
 
     const [error, setError] = useState<string | undefined>()
 
     const router = useRouter()
+
+    useUnsavedChangesWarning(isDirty && !isSubmitting)
 
     useEffect(() => {
         setError(topicError?.message)

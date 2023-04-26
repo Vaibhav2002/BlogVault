@@ -14,6 +14,7 @@ import BlogMetaSection from "@/components/BlogMetaSection";
 import Blog from "@/data/models/Blog";
 import {GetServerSideProps} from "next";
 import {getBlogBySlug, updateBlog} from "@/data/dataSources/BlogDataSource";
+import useUnsavedChangesWarning from "@/hooks/useUnsavedChangesWarning";
 
 export const getServerSideProps:GetServerSideProps<EditBlogPageProps> = async ({params}) => {
     const slug = params?.slug?.toString()
@@ -57,13 +58,15 @@ const EditBlogPage = ({blog}:EditBlogPageProps) => {
         },
         resolver: yupResolver(updateBlogSchema)
     })
-    const {handleSubmit, register, watch, setValue, formState: {errors}} = form
+    const {handleSubmit, register, watch, setValue, formState: {errors, isSubmitting, isDirty}} = form
 
     const {data: topics, error: topicError} = useSWR('topics', getAllTopics)
 
     const [error, setError] = useState<string | undefined>()
 
     const router = useRouter()
+
+    useUnsavedChangesWarning(isDirty && !isSubmitting)
 
     useEffect(() => {
         setError(topicError?.message)

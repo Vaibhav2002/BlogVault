@@ -36,24 +36,24 @@ interface SideNavItem {
 
 interface SideNavProps {
     user?: User | null
-    selected: number
+    selected: NavScreen
     className: string
     onLoginClick: () => void
     onLogoutClick: () => void
 }
 
-const SideNav = ({user, selected = 0, className, onLoginClick, onLogoutClick, ...props}: SideNavProps & StackProps) => {
+const SideNav = ({user, selected, className, onLoginClick, onLogoutClick, ...props}: SideNavProps & StackProps) => {
 
-    const navItems = useMemo(() => navOptions.map((option, index) => (
+    const navItems = useMemo(() => navOptions.map((option) => (
         {
             navItem: option,
-            icon: getIconForNavItem(option, selected === index)
+            icon: getIconForNavItem(option, selected === option.screen)
         } as SideNavItem
     )), [selected])
 
     const router = useRouter()
 
-    const onIconSelected = async (item:SideNavItem, index:number) => {
+    const onIconSelected = async (item:SideNavItem) => {
         if(item.navItem.screen != NavScreen.Post || user)
             await router.push(item.navItem.href)
         else onLoginClick()
@@ -62,13 +62,13 @@ const SideNav = ({user, selected = 0, className, onLoginClick, onLogoutClick, ..
     return (
         <Stack spacing={4} className={className} padding={3} {...props}>
 
-            {navItems.map((item, index) =>
+            {navItems.map((item) =>
                 <SideNavIcon
-                    key={index}
+                    key={item.navItem.href}
                     icon={item.icon}
-                    bgColor={getIconBgColor(selected === index)}
+                    bgColor={getIconBgColor(selected === item.navItem.screen)}
                     text={item.navItem.screen}
-                    onClick={() => onIconSelected(item, index)}
+                    onClick={() => onIconSelected(item)}
                 />
             )}
 

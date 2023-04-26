@@ -7,7 +7,7 @@ import {getAllTopics} from "@/data/dataSources/TopicDataSource";
 import React, {useEffect, useMemo, useState} from "react";
 import {useRouter} from "next/router";
 import Routes, {getBlogRoute} from "@/utils/Routes";
-import {Box, Stack, Typography} from "@mui/material";
+import {Box, CircularProgress, Stack, Typography} from "@mui/material";
 import MarkdownEditor from "@/components/form/MarkdownEditor";
 import styles from "@/styles/CreateBlogPage.module.css";
 import BlogMetaSection from "@/components/BlogMetaSection";
@@ -18,6 +18,8 @@ import useUnsavedChangesWarning from "@/hooks/useUnsavedChangesWarning";
 import PrimaryButton from "@/components/styled/PrimaryButton";
 import useDevices from "@/hooks/useDevices";
 import ConfirmationModal from "@/components/modals/ConfirmationModal";
+import useAuthenticatedUser from "@/hooks/useAuthenticatedUser";
+import CenteredBox from "@/components/styled/CenteredBox";
 
 export const getServerSideProps: GetServerSideProps<EditBlogPageProps> = async ({params}) => {
     const slug = params?.slug?.toString()
@@ -50,7 +52,7 @@ interface EditBlogPageProps {
 }
 
 const EditBlogPage = ({blog}: EditBlogPageProps) => {
-
+    const {user, userLoading} = useAuthenticatedUser()
     const form = useForm<BlogInput>({
         defaultValues: {
             title: blog.title,
@@ -115,10 +117,21 @@ const EditBlogPage = ({blog}: EditBlogPageProps) => {
     ), [buttonsEnabled]);
 
     const deleteButton = useMemo(() => (
-        <PrimaryButton variant="outlined" color="error" disabled={buttonsEnabled} onClick={() => setShowDeleteConfirmation(true)}>
+        <PrimaryButton variant="outlined" color="error" disabled={buttonsEnabled}
+                       onClick={() => setShowDeleteConfirmation(true)}>
             Delete Blog
         </PrimaryButton>
     ), [buttonsEnabled])
+
+    const isCurrentUserAuthor = user?._id === blog.author._id
+
+    if (!isCurrentUserAuthor)
+        return <CenteredBox height="100vh">
+            <Typography variant="h4">You are not authorized to edit this blog</Typography>
+        </CenteredBox>
+
+    if (userLoading)
+        return <CenteredBox height="100vh"><CircularProgress/></CenteredBox>
 
     return (
         <form onSubmit={handleSubmit(onSubmit)}>

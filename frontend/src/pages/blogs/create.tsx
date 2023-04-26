@@ -1,4 +1,4 @@
-import {Box, Stack, Theme, Typography, useMediaQuery} from "@mui/material";
+import {Box, CircularProgress, Stack, Theme, Typography, useMediaQuery} from "@mui/material";
 import MarkdownEditor from "@/components/form/MarkdownEditor";
 import styles from "@/styles/CreateBlogPage.module.css"
 import {useForm} from "react-hook-form";
@@ -6,7 +6,7 @@ import React, {useEffect, useMemo, useState} from "react";
 import {getAllTopics} from "@/data/dataSources/TopicDataSource";
 import {createBlog} from "@/data/dataSources/BlogDataSource";
 import {useRouter} from "next/router";
-import {getBlogRoute} from "@/utils/Routes";
+import Routes, {getBlogRoute} from "@/utils/Routes";
 import {requiredFileSchema, requiredStringSchema, slugSchema} from "@/utils/Validation";
 import * as yup from 'yup'
 import {yupResolver} from "@hookform/resolvers/yup";
@@ -14,6 +14,10 @@ import useSWR from "swr";
 import BlogMetaSection from "@/components/BlogMetaSection";
 import useUnsavedChangesWarning from "@/hooks/useUnsavedChangesWarning";
 import PrimaryButton from "@/components/styled/PrimaryButton";
+import NavScreen from "@/components/NavScreen/NavScreen";
+import {NavScreen as NavPage} from "@/components/navBars/NavOptions";
+import useAuthenticatedUser from "@/hooks/useAuthenticatedUser";
+import CenteredBox from "@/components/styled/CenteredBox";
 
 
 const blogSchema = yup.object({
@@ -33,6 +37,7 @@ export type BlogInput = yup.InferType<typeof blogSchema>
 
 const CreateNewBlogPage = () => {
 
+    const {user, userLoading} = useAuthenticatedUser()
     const form = useForm<BlogInput>({resolver: yupResolver(blogSchema)})
     const {handleSubmit, register, watch, setValue, formState: {errors, isSubmitting, isDirty}} = form
 
@@ -69,48 +74,53 @@ const CreateNewBlogPage = () => {
         <PrimaryButton type="submit" variant="contained" fullWidth disabled={isSubmitting}>Publish</PrimaryButton>
     ), [isSubmitting]);
 
+    if(!user && !userLoading) router.push(Routes.Home)
+
+    if(userLoading) return <CenteredBox><CircularProgress/></CenteredBox>
+
     return (
-        <form onSubmit={handleSubmit(onSubmit)}>
+        <NavScreen selected={NavPage.Post}>
+            <form onSubmit={handleSubmit(onSubmit)}>
 
-            <Box
-                padding={4}
-                display="flex"
-                gap={2}
-                sx={{overflowX: "hidden", flexDirection: {xs: "column", md: "row"}}}
-                alignItems="stretch"
-            >
-
-                <Stack
-                    position="static"
-                    flex={0.4}
-                    direction='column'
-                    spacing={2}
+                <Box
+                    padding={4}
+                    display="flex"
+                    gap={2}
+                    sx={{overflowX: "hidden", flexDirection: {xs: "column", md: "row"}}}
+                    alignItems="stretch"
                 >
-                    <Typography variant="h4">Create New Blog</Typography>
 
-                    <BlogMetaSection topics={topics || []} form={form} error={error}/>
+                    <Stack
+                        position="static"
+                        flex={0.4}
+                        direction='column'
+                        spacing={2}
+                    >
+                        <Typography variant="h4">Create New Blog</Typography>
 
-                    {/*Desktop View*/}
-                    {!isBelowSm && submitButton}
+                        <BlogMetaSection topics={topics || []} form={form} error={error}/>
 
-                </Stack>
+                        {/*Desktop View*/}
+                        {!isBelowSm && submitButton}
 
-                <MarkdownEditor
-                    register={register('content')}
-                    error={errors.content}
-                    value={watch('content')}
-                    setValue={setValue}
-                    placeholder="Write your blog here..."
-                    className={styles.editor}
-                />
+                    </Stack>
 
-                {/*Mobile View*/}
-                {isBelowSm && submitButton}
+                    <MarkdownEditor
+                        register={register('content')}
+                        error={errors.content}
+                        value={watch('content')}
+                        setValue={setValue}
+                        placeholder="Write your blog here..."
+                        className={styles.editor}
+                    />
 
-            </Box>
+                    {/*Mobile View*/}
+                    {isBelowSm && submitButton}
 
-        </form>
+                </Box>
 
+            </form>
+        </NavScreen>
     )
 }
 

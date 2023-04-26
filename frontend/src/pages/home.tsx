@@ -11,6 +11,7 @@ import {AnimatePresence, motion} from "framer-motion";
 import BlogItem from "@/components/blogItem/BlogItem";
 import PaginationBar from "@/components/PaginationBar";
 import {stringify} from "querystring";
+import {NavScreen as NavPage} from "@/components/navBars/NavOptions";
 
 
 export const getServerSideProps: GetServerSideProps<HomeScreenProps> = async ({query}) => {
@@ -44,7 +45,7 @@ interface HomeScreenProps {
 const HomeScreen = ({blogPage: {page, blogs, totalPages}}: HomeScreenProps) => {
 
     return (
-        <NavScreen selected={0}>
+        <NavScreen selected={NavPage.Home}>
 
             <Stack
                 direction="row"

@@ -6,9 +6,10 @@ import TopNav from "@/components/navBars/TopNav";
 import AuthModal from "@/components/modals/auth/AuthModal";
 import useAuthenticatedUser from "@/hooks/useAuthenticatedUser";
 import {logoutUser} from "@/data/dataSources/AuthDataSource";
+import {NavScreen as NavPage} from "@/components/navBars/NavOptions";
 
 interface SideNavScreenProps {
-    selected: number
+    selected: NavPage
     children: React.ReactNode
     className?: string
 }

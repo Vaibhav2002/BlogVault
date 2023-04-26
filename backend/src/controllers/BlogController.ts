@@ -1,7 +1,7 @@
 import * as dataSource from '../dataSources/BlogDataSource'
 import {RequestHandler} from "express";
 import {assertIsDefined} from "../utils/Helpers";
-import {CreateBlogRequest, GetBlogsQuery} from "../validation/BlogValidation";
+import {BlogBody, GetBlogsQuery} from "../validation/BlogValidation";
 
 export const getAllBlogs: RequestHandler<unknown, unknown, unknown, GetBlogsQuery> = async (req, res, next) => {
     const authorId = req.query.authorId
@@ -14,7 +14,7 @@ export const getAllBlogs: RequestHandler<unknown, unknown, unknown, GetBlogsQuer
     }
 }
 
-export const createBlog: RequestHandler<unknown, unknown, CreateBlogRequest, unknown> = async (req, res, next) => {
+export const createBlog: RequestHandler<unknown, unknown, BlogBody, unknown> = async (req, res, next) => {
     const userId = req.user?._id
     try {
         assertIsDefined(userId, "User Id")

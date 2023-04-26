@@ -26,7 +26,7 @@ export const createBlogSchema = yup.object({
 })
 
 
-export type CreateBlogRequest = yup.InferType<typeof blogRequestBodySchema>
+export type BlogBody = yup.InferType<typeof blogRequestBodySchema>
 
 
 export const getBlogsSchema = yup.object({

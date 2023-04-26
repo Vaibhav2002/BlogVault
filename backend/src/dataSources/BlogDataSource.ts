@@ -3,9 +3,9 @@ import {getAllTopics} from "./TopicDataSource";
 import createHttpError from "http-errors";
 import {saveCoverImage, savePosterImage} from "./ImageDataSource";
 import * as mongoose from "mongoose";
-import {CreateBlogRequest} from "../validation/BlogValidation";
+import {BlogBody} from "../validation/BlogValidation";
 
-export const createBlog = async (userId: mongoose.Types.ObjectId, coverImage: Express.Multer.File, req: CreateBlogRequest) => {
+export const createBlog = async (userId: mongoose.Types.ObjectId, coverImage: Express.Multer.File, req: BlogBody) => {
 
     const topics = (await getAllTopics()).map(topic => topic._id.toString())
     const blogTopics = JSON.parse(req.topics) as string[]

@@ -1,6 +1,6 @@
 import React, {useState} from 'react';
 import {useForm} from "react-hook-form";
-import {Alert, Box, Button, Collapse, Stack, Typography} from "@mui/material";
+import {Alert, Box, Button, Collapse, Divider, Stack, Typography} from "@mui/material";
 import styles from "@/components/modals/auth/AuthModal.module.css";
 import FormTextField from "@/components/form/FormTextField";
 import FormPasswordField from "@/components/form/FormPasswordField";
@@ -11,6 +11,7 @@ import useAuthenticatedUser from "@/hooks/useAuthenticatedUser";
 import * as yup from "yup";
 import {requiredStringSchema} from "@/utils/Validation";
 import {yupResolver} from "@hookform/resolvers/yup";
+import SocialAuthSection from "@/components/auth/SocialAuthSection";
 
 interface LoginModalProps {
     onDismiss: () => void
@@ -86,6 +87,10 @@ const LoginModal = ({onDismiss, onMoveToRegister, className}: LoginModalProps) =
                         </Box>
                     </Stack>
                 </form>
+
+                <Divider variant="middle" flexItem/>
+
+                <SocialAuthSection width={1}/>
 
             </Box>
         </PrimaryModal>

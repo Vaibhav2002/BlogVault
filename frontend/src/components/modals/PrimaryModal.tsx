@@ -8,7 +8,7 @@ interface ModalProps {
     className?: string
     onDismiss: () => void
     lgSize?: string
-    children: ReactElement[]
+    children: ReactElement[] | ReactElement
 }
 
 const spring = {

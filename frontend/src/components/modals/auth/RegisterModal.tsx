@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import {Alert, Box, Button, Collapse, Stack, Typography} from "@mui/material";
+import {Alert, Box, Button, Collapse, Divider, Stack, Typography} from "@mui/material";
 import {useForm} from "react-hook-form";
 import FormTextField from "@/components/form/FormTextField";
 import FormPasswordField from "@/components/form/FormPasswordField";
@@ -11,6 +11,7 @@ import useAuthenticatedUser from "@/hooks/useAuthenticatedUser";
 import {emailSchema, passwordSchema, usernameSchema} from "@/utils/Validation";
 import * as yup from 'yup'
 import {yupResolver} from "@hookform/resolvers/yup";
+import SocialAuthSection from "@/components/auth/SocialAuthSection";
 
 interface RegisterModalProps {
     onDismiss: () => void
@@ -96,6 +97,10 @@ const RegisterModal = ({onDismiss, onMoveToLogin, className}: RegisterModalProps
                         </Box>
                     </Stack>
                 </form>
+
+                <Divider variant="middle" flexItem/>
+
+                <SocialAuthSection width={1}/>
 
             </Box>
         </PrimaryModal>

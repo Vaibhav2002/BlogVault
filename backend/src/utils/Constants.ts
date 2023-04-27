@@ -1,0 +1,1 @@
+export const googleRedirectUrl = "/users/oauth2/redirect/google"

@@ -4,6 +4,7 @@ import bcrypt from "bcrypt";
 import env from "../utils/CleanEnv";
 import * as mongoose from "mongoose";
 import {saveProfilePic} from "./ImageDataSource";
+import {Profile as GoogleProfile} from "passport-google-oauth20";
 
 
 export const registerUser = async (username: string, email: string, passwordRaw: string) => {
@@ -54,6 +55,14 @@ export const updateProfile = async (
     return user
 }
 
+export const registerGoogleUser = async (profile:GoogleProfile) => {
+    return await users.create({
+        googleId: profile.id,
+        displayName: profile.displayName,
+        profilePicUrl: profile.photos?.[0].value
+    })
+}
+
 const isExistingUsername = async (username: string) =>{
     const existingUser = await users.findOne({username: username})
         .collation({locale: "en", strength: 2})
@@ -64,6 +73,10 @@ const isExistingUsername = async (username: string) =>{
 
 export const getUserByUsername = async (username: string, select: string = "") => {
     return await users.findOne({username: username}).select(select).exec()
+}
+
+export const getUserByGoogleId = async (googleId:string, select: string = "") => {
+    return await users.findOne({googleId: googleId}).select(select).exec()
 }
 
 export const getUserById = async (id: mongoose.Types.ObjectId, select: string = "") => {

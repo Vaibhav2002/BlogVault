@@ -1,9 +1,12 @@
 import passport from "passport";
 import {Strategy as LocalStrategy} from "passport-local";
-import {getUserByUsername} from "../dataSources/UserDataSource";
+import {Strategy as GoogleStrategy} from "passport-google-oauth20";
+import * as userDataSource from "../dataSources/UserDataSource";
 import bcrypt from "bcrypt";
 import {assertIsDefined} from "../utils/Helpers";
 import * as mongoose from "mongoose";
+import env from "../utils/CleanEnv";
+import {googleRedirectUrl} from "../utils/Constants";
 
 passport.serializeUser((user, done) => {
     done(null, user._id);
@@ -15,13 +18,15 @@ passport.deserializeUser(async (id: string, done) => {
 
 passport.use(new LocalStrategy(async (username, password, done) => {
     try {
-        const existingUser = await getUserByUsername(username, "+email +password")
-        if (!existingUser) return done(null, false, {message: "User does not exist"})
+        const existingUser = await userDataSource.getUserByUsername(username, "+email +password")
+        if (!existingUser)
+            return done(null, false, {message: "User does not exist"})
 
         assertIsDefined(existingUser.password, "password")
 
         const isPasswordCorrect = await bcrypt.compare(password, existingUser.password)
-        if (!isPasswordCorrect) return done(null, false, {message: "Password is incorrect"})
+        if (!isPasswordCorrect)
+            return done(null, false, {message: "Password is incorrect"})
 
         const user = existingUser.toObject()
         delete user.password
@@ -31,3 +36,20 @@ passport.use(new LocalStrategy(async (username, password, done) => {
         done(e)
     }
 }));
+
+passport.use(new GoogleStrategy({
+    clientID: env.GOOGLE_CLIENT_ID,
+    clientSecret: env.GOOGLE_CLIENT_SECRET,
+    callbackURL: env.SERVER_URL + googleRedirectUrl,
+    scope: ["profile"]
+}, async (accessToken, refreshToken, profile, cb) => {
+    try {
+        let user = await userDataSource.getUserByGoogleId(profile.id)
+        if(!user) user = await userDataSource.registerGoogleUser(profile)
+        cb(null, user)
+    } catch(e){
+        if(e instanceof Error)
+            cb(e)
+        else throw e
+    }
+}))

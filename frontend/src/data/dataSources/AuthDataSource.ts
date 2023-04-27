@@ -31,3 +31,7 @@ export const logoutUser = async () => {
     const response = await api.post(`/users/logout`)
     return response.data
 }
+
+export const googleLoginUrl = (returnTo:string) => {
+    return process.env.NEXT_PUBLIC_BACKEND_URL + `/users/login/google?returnTo=${returnTo}`
+}

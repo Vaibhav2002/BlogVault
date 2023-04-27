@@ -9,6 +9,8 @@ const env = cleanEnv(process.env, {
     SESSION_SECRET: str(),
     GOOGLE_CLIENT_ID: str(),
     GOOGLE_CLIENT_SECRET: str(),
+    GITHUB_CLIENT_ID: str(),
+    GITHUB_CLIENT_SECRET: str(),
 })
 
 export default env

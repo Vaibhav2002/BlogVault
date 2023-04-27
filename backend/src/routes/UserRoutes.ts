@@ -22,6 +22,12 @@ router.get('/oauth2/redirect/google', passport.authenticate('google',{
     keepSessionInfo: true
 }))
 
+router.get('/login/github', setSessionReturnTo, passport.authenticate('github'))
+router.get('/oauth2/redirect/github', passport.authenticate('github',{
+    successReturnToOrRedirect: env.WEBSITE_URL,
+    keepSessionInfo: true
+}))
+
 router.patch(
     '/me',
     requiresAuth,

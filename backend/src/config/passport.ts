@@ -1,12 +1,14 @@
 import passport from "passport";
 import {Strategy as LocalStrategy} from "passport-local";
 import {Strategy as GoogleStrategy} from "passport-google-oauth20";
+import {VerifyCallback} from "passport-oauth2";
+import {Profile, Strategy as GithubStrategy} from "passport-github2";
 import * as userDataSource from "../dataSources/UserDataSource";
 import bcrypt from "bcrypt";
 import {assertIsDefined} from "../utils/Helpers";
 import * as mongoose from "mongoose";
 import env from "../utils/CleanEnv";
-import {googleRedirectUrl} from "../utils/Constants";
+import {githubRedirectUrl, googleRedirectUrl} from "../utils/Constants";
 
 passport.serializeUser((user, done) => {
     done(null, user._id);
@@ -46,6 +48,22 @@ passport.use(new GoogleStrategy({
     try {
         let user = await userDataSource.getUserByGoogleId(profile.id)
         if(!user) user = await userDataSource.registerGoogleUser(profile)
+        cb(null, user)
+    } catch(e){
+        if(e instanceof Error)
+            cb(e)
+        else throw e
+    }
+}))
+
+passport.use(new GithubStrategy({
+    clientID: env.GITHUB_CLIENT_ID,
+    clientSecret: env.GITHUB_CLIENT_SECRET,
+    callbackURL: env.SERVER_URL + githubRedirectUrl,
+}, async (accessToken:string, refreshToken:string, profile:Profile, cb:VerifyCallback) => {
+    try{
+        let user = await userDataSource.getUserByGithubId(profile.id)
+        if(!user) user = await userDataSource.registerGithubUser(profile)
         cb(null, user)
     } catch(e){
         if(e instanceof Error)

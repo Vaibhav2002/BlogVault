@@ -59,7 +59,7 @@ export const registerGoogleUser = async (profile:GoogleProfile) => {
     return await users.create({
         googleId: profile.id,
         displayName: profile.displayName,
-        profilePicUrl: profile.photos?.[0].value
+        profilePicUrl: profile.photos?.[0].value.replace("s96-c", "s512-c")
     })
 }
 

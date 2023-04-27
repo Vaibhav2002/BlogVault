@@ -51,7 +51,7 @@ const BlogAuthorSection = ({slug, author, className}: BlogAuthorSectionProps) =>
                 </Stack>
 
                 {isAuthenticatedUserAuthor &&
-                    <PrimaryButton variant="outlined" fullWidth={isBelowSm} sx={{paddingX: 4}} onClick={onUpdatePress}>
+                    <PrimaryButton variant="outlined" color="secondary" fullWidth={isBelowSm} sx={{paddingX: 4}} onClick={onUpdatePress}>
                         Edit Blog
                     </PrimaryButton>
                 }

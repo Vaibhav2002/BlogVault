@@ -1,46 +1,36 @@
-import {PaletteOptions} from "@mui/material";
-
-const colorPalette: PaletteOptions = {
-    secondary: {
-        main: '#c0392b',
-        light: '#e74c3c',
-        dark: '#962d22',
-        contrastText: '#ffffff',
-    },
+const colorPalette = {
     primary: {
-        main: '#f39c12',
-        light: '#f8c471',
-        dark: '#ba7f0e',
-        contrastText: '#ffffff',
+        main: '#051923',
+        light: '#3A4750',
+        dark: '#000000',
+        contrastText: '#FFFFFF',
+    },
+    secondary: {
+        main: '#00A6FB',
+        light: '#63C8FF',
+        dark: '#007DBE',
+        contrastText: '#FFFFFF',
+    },
+    tertiary: {
+        main: '#006494',
+        light: '#4387A2',
+        dark: '#003D51',
+        contrastText: '#FFFFFF',
+    },
+    quaternary: {
+        main: '#003554',
+        light: '#34677F',
+        dark: '#001526',
+        contrastText: '#FFFFFF',
     },
     background: {
-        paper: '#ffffff',
-        default: '#fdfdfd',
+        default: '#FFFFFF',
+        paper: '#F5F5F5',
     },
     text: {
-        primary: '#2c3e50',
-        secondary: '#333333',
-        disabled: '#a6a5a5',
-    },
-    error: {
-        main: '#e74c3c',
-        light: '#f38181',
-        dark: '#a02a26',
-    },
-    warning: {
-        main: '#f1c40f',
-        light: '#ffd44f',
-        dark: '#c77c0e',
-    },
-    info: {
-        main: '#3498db',
-        light: '#81cfe0',
-        dark: '#217dbb',
-    },
-    success: {
-        main: '#2ecc71',
-        light: '#87c38f',
-        dark: '#239f58',
+        primary: '#051923',
+        secondary: '#5A5A5A',
+        disabled: '#A2A2A2',
     },
 }
 

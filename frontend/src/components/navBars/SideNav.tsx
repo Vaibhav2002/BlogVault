@@ -14,7 +14,7 @@ const iconSize = 24
 
 const getIconColor = (isSelected: Boolean) => isSelected ? "white" : "black"
 
-const getIconBgColor = (isSelected: Boolean) => isSelected ? "primary.main" : "background"
+const getIconBgColor = (isSelected: Boolean) => isSelected ? "secondary.main" : "background"
 
 const getIconForNavItem = (option: NavOptions, selected: boolean) => {
     switch (option.screen) {

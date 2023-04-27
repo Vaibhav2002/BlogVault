@@ -2,7 +2,7 @@ import React from 'react';
 import PrimaryButton from "@/components/styled/PrimaryButton";
 import {FcGoogle} from "react-icons/fc";
 import {BsGithub} from "react-icons/bs";
-import {googleLoginUrl} from "@/data/dataSources/AuthDataSource";
+import {githubLoginUrl, googleLoginUrl} from "@/data/dataSources/AuthDataSource";
 import {useRouter} from "next/router";
 
 interface GoogleButtonProps {
@@ -30,8 +30,15 @@ interface GithubButtonProps {
 }
 
 const GithubButton = ({className}: GithubButtonProps) => {
+    const router = useRouter()
     return (
-        <PrimaryButton fullWidth variant="outlined" startIcon={ <BsGithub/> } className={className}>
+        <PrimaryButton
+            fullWidth
+            variant="outlined"
+            startIcon={ <BsGithub/> }
+            className={className}
+            href={githubLoginUrl(router.asPath)}
+        >
             Continue with GitHub
         </PrimaryButton>
     )

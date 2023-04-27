@@ -35,3 +35,7 @@ export const logoutUser = async () => {
 export const googleLoginUrl = (returnTo:string) => {
     return process.env.NEXT_PUBLIC_BACKEND_URL + `/users/login/google?returnTo=${returnTo}`
 }
+
+export const githubLoginUrl = (returnTo:string) => {
+    return process.env.NEXT_PUBLIC_BACKEND_URL + `/users/login/github?returnTo=${returnTo}`
+}

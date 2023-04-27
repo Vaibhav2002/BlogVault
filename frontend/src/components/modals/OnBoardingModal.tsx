@@ -66,6 +66,7 @@ const OnBoardingModal = ({className}: OnBoardingModalProps) => {
                             control={control}
                             name="username"
                             label="Username"
+                            multiline={false}
                             placeholder="Enter your username"
                         />
 

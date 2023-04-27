@@ -2,7 +2,7 @@
 const nextConfig = {
     reactStrictMode: true,
     images: {
-        domains: ["localhost"],
+        domains: ["localhost", "lh3.googleusercontent.com"],
         deviceSizes: [600, 900, 1200, 1536]
     }
 }

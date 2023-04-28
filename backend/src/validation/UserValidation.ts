@@ -12,6 +12,9 @@ export const registerSchema = yup.object({
         username: usernameSchema.required(),
         email: emailSchema.required(),
         password: passwordSchema.required(),
+        code: yup.number().integer()
+            .test('len', 'Must be exactly 6 digits', val => val?.toString().length === 6)
+            .required()
     })
 })
 
@@ -34,3 +37,11 @@ export const updateProfileSchema = yup.object({
 })
 
 export type UpdateProfileRequest = yup.InferType<typeof updateProfileSchema>['body']
+
+export const requestVerificationCodeSchema = yup.object({
+    body: yup.object({
+        email: emailSchema.required()
+    })
+})
+
+export type RequestVerificationCodeRequest = yup.InferType<typeof requestVerificationCodeSchema>['body']

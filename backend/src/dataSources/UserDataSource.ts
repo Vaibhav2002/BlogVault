@@ -6,15 +6,16 @@ import * as mongoose from "mongoose";
 import {saveProfilePic} from "./ImageDataSource";
 import {Profile as GoogleProfile} from "passport-google-oauth20";
 import {Profile as GithubProfile} from "passport-github2";
+import {appendLastUpdated} from "../utils/Helpers";
+import * as verificationDataSource from "./VerificationDataSource";
 
 
-export const registerUser = async (username: string, email: string, passwordRaw: string) => {
+export const registerUser = async (username: string, email: string, passwordRaw: string, code:number) => {
 
     if (await isExistingUsername(username))
         throw createHttpError(409, "Username already taken")
 
-    const existingUserByEmail = await getUserByEmail(email)
-    if (existingUserByEmail) throw createHttpError(409, "Email already taken")
+    await verificationDataSource.verifyCode(email, code)
 
     const hashedPassword = await bcrypt.hash(passwordRaw, env.PWD_SALTING_ROUNDS)
 
@@ -42,7 +43,7 @@ export const updateProfile = async (
     let profilePicUrl:string | undefined = undefined
     if(profilePic)
         profilePicUrl = await saveProfilePic(profilePic, userId.toString())
-            .then(path => path+`?lastUpdatedAt=${Date.now()}`)
+            .then(path => appendLastUpdated(path))
 
     const user = await users.findByIdAndUpdate(userId, {
         $set:{
@@ -74,6 +75,14 @@ export const registerGithubUser = async (profile:GithubProfile) => {
 
 const isExistingUsername = async (username: string) =>{
     const existingUser = await users.findOne({username: username})
+        .collation({locale: "en", strength: 2})
+        .exec()
+
+    return !!existingUser
+}
+
+export const isExistingEmail = async (email: string) => {
+    const existingUser = await users.findOne({email: email})
         .collation({locale: "en", strength: 2})
         .exec()
 

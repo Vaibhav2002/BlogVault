@@ -1,12 +1,11 @@
 import useSWR from 'swr'
-import {getAuthenticatedUser} from "@/data/dataSources/AuthDataSource"
+import {getAuthenticatedUser} from "@/data/dataSources/UserDataSource"
 import {UnauthorizedError} from "@/data/HttpErrors";
 
 export default function useAuthenticatedUser() {
     const {data, isLoading, error, mutate} = useSWR('user', async () => {
         try {
-            const response = await getAuthenticatedUser()
-            return response
+            return await getAuthenticatedUser()
         } catch (e) {
             if (e instanceof UnauthorizedError) return null
             else throw e

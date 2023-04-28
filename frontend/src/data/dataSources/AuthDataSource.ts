@@ -8,7 +8,7 @@ export interface RegisterData {
 }
 
 export const registerUser = async (data: RegisterData) => {
-    const response = await api.post(`/users/register`, data)
+    const response = await api.post(`/auth/register`, data)
     return response.data as User
 }
 
@@ -18,24 +18,19 @@ export interface LoginData {
 }
 
 export const loginUser = async (data:LoginData) => {
-    const response = await api.post(`/users/login`, data)
-    return response.data as User
-}
-
-export const getAuthenticatedUser = async () => {
-    const response = await api.get(`/users/me`)
+    const response = await api.post(`/auth/login`, data)
     return response.data as User
 }
 
 export const logoutUser = async () => {
-    const response = await api.post(`/users/logout`)
+    const response = await api.post(`/auth/logout`)
     return response.data
 }
 
 export const googleLoginUrl = (returnTo:string) => {
-    return process.env.NEXT_PUBLIC_BACKEND_URL + `/users/login/google?returnTo=${returnTo}`
+    return process.env.NEXT_PUBLIC_BACKEND_URL + `/auth/login/google?returnTo=${returnTo}`
 }
 
 export const githubLoginUrl = (returnTo:string) => {
-    return process.env.NEXT_PUBLIC_BACKEND_URL + `/users/login/github?returnTo=${returnTo}`
+    return process.env.NEXT_PUBLIC_BACKEND_URL + `/auth/login/github?returnTo=${returnTo}`
 }

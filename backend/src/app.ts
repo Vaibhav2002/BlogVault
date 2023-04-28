@@ -4,6 +4,7 @@ import {errorMiddleware, notFoundMiddleware} from "./middlewares/ErrorMiddleware
 import blogRoutes from "./routes/BlogRoutes";
 import topicRoutes from "./routes/TopicRoutes";
 import userRoutes from "./routes/UserRoutes";
+import authRoutes from "./routes/AuthRoutes";
 import cors from "cors";
 import env from "./utils/CleanEnv";
 import session from "express-session";
@@ -29,6 +30,7 @@ app.use(express.json())
 
 app.use("/uploads", express.static("uploads"))
 
+app.use('auth', authRoutes)
 app.use('/users', userRoutes)
 app.use("/blogs", blogRoutes)
 app.use("/topics", topicRoutes)

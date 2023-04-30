@@ -13,7 +13,7 @@ export const registerUser = async (data: RegisterData) => {
 }
 
 export const sendVerificationCode = async (email: string) => {
-    const response = await api.post(`/auth/requestVerificationCode`, {email})
+    const response = await api.post(`/auth/request/emailVerificationCode`, {email})
     return response.data
 }
 

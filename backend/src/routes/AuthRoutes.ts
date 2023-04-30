@@ -12,7 +12,7 @@ const router = express.Router()
 router.post('/register', validateRequest(registerSchema), controller.registerUser)
 router.post('/login', passport.authenticate('local'), controller.loginUser)
 router.post('/logout', requiresAuth, controller.logoutUser)
-router.post('/requestVerificationCode', validateRequest(requestVerificationCodeSchema), controller.requestVerificationCode)
+router.post('/request/emailVerificationCode', validateRequest(requestVerificationCodeSchema), controller.requestVerificationCode)
 router.post('/request/resetPasswordCode', validateRequest(requestVerificationCodeSchema), controller.requestPasswordResetCode)
 router.post('/resetPassword', validateRequest(resetPasswordSchema), controller.resetPassword)
 

@@ -13,7 +13,8 @@ import * as yup from 'yup'
 import {yupResolver} from "@hookform/resolvers/yup";
 import SocialAuthSection from "@/components/auth/SocialAuthSection";
 import {HttpError} from "@/data/HttpErrors";
-import useCountdown from "@/hooks/useCountdown";
+import useVerificationCode from "@/hooks/useVerificationCode";
+import VerificationCodeField from "@/components/form/VerificationCodeField";
 
 interface RegisterModalProps {
     onDismiss: () => void
@@ -37,14 +38,11 @@ const RegisterModal = ({onDismiss, onMoveToLogin, className}: RegisterModalProps
         resolver: yupResolver(registerSchema)
     })
 
-    const coolDownTime = 30
-    const {secondsLeft:codeCoolDown, start:startCodeCoolDown} = useCountdown()
-    const [verificationPending, setVerificationPending] = useState(false)
-    const [verificationCodeSending, setVerificationCodeSending] = useState(false)
+    const {verificationPending, verificationCodeSending, coolDownLeft, ...verificationEvents} = useVerificationCode()
     const [error, setError] = useState<string | undefined>(undefined)
 
     const onSubmit = async (data: RegisterFormValues) => {
-        setVerificationPending(false)
+        verificationEvents.removePending()
         setError(undefined)
         try {
             const response = await dataSource.registerUser(data)
@@ -59,19 +57,16 @@ const RegisterModal = ({onDismiss, onMoveToLogin, className}: RegisterModalProps
         const isValidEmail = await trigger('email')
         if (!isValidEmail) return
         const email = getValues('email')
-        setVerificationPending(false)
         setError(undefined)
-        setVerificationCodeSending(true)
+        verificationEvents.sendVerificationCode()
         try {
             await dataSource.sendVerificationCode(email)
-            setVerificationPending(true)
-            startCodeCoolDown(coolDownTime)
+            verificationEvents.onVerificationCodeSent()
         } catch (e) {
             if (e instanceof HttpError)
                 setError(e.message)
             console.error(e)
-        } finally {
-            setVerificationCodeSending(false)
+            verificationEvents.onVerificationCodeSendFailed()
         }
     }
 
@@ -88,7 +83,7 @@ const RegisterModal = ({onDismiss, onMoveToLogin, className}: RegisterModalProps
                     <Alert severity="error">{error}</Alert>
                 </Collapse>
 
-                <Collapse in={verificationPending} sx={{width:'100%'}}>
+                <Collapse in={verificationPending} sx={{width: '100%'}}>
                     <Alert severity='warning'>We sent you a verification code. Please check your inbox!</Alert>
                 </Collapse>
 
@@ -117,35 +112,21 @@ const RegisterModal = ({onDismiss, onMoveToLogin, className}: RegisterModalProps
                             placeholder="Enter your password"
                         />
 
+                        <VerificationCodeField
+                            control={control}
+                            name="verificationCode"
+                            onSendCode={sendVerificationCode}
+                            verificationCodeSending={verificationCodeSending}
+                            coolDownLeft={coolDownLeft}
+                        />
 
-                        <Stack direction='row' spacing={1}>
-                            <Box flex={1}>
-                                <FormTextField
-                                    control={control}
-                                    name='verificationCode'
-                                    label='Verification Code'
-                                    placeholder='Enter your code'
-                                    type='number'
-                                    maxLength={6}/>
-                            </Box>
-
-                            <Button
-                                onClick={sendVerificationCode} disabled={verificationCodeSending || codeCoolDown > 0}>
-                                {codeCoolDown > 0 ? `Resend in ${codeCoolDown}` : 'Send Code'}
-                            </Button>
-                        </Stack>
-
-
-                        <PrimaryButton
-                            type="submit"
-                            variant="contained"
-                            disabled={isSubmitting}
-                        >Register
+                        <PrimaryButton type="submit" variant="contained" disabled={isSubmitting}>
+                            Register
                         </PrimaryButton>
 
                         <Box className={styles.switchAuthContainer}>
                             <Typography variant="body2">Already have an account?</Typography>
-                            <Button variant="text" sx={{padding: '0'}} onClick={onMoveToLogin}>Login</Button>
+                            <Button variant="text" sx={{padding: 0}} onClick={onMoveToLogin}>Login</Button>
                         </Box>
                     </Stack>
                 </form>

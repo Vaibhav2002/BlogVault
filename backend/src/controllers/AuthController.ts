@@ -16,8 +16,8 @@ export const requestVerificationCode:RequestHandler<unknown, unknown, RequestVer
 
 export const registerUser: RequestHandler<unknown, unknown, RegisterRequest, unknown> = async (req, res, next) => {
     try {
-        const {username, email, password, code} = req.body
-        const user = await dataSource.registerUser(username, email, password, code)
+        const {username, email, password, verificationCode} = req.body
+        const user = await dataSource.registerUser(username, email, password, verificationCode)
         req.login(user, err => {
             if (err) throw err
             else res.status(201).send(user)

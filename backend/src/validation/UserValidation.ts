@@ -12,7 +12,7 @@ export const registerSchema = yup.object({
         username: usernameSchema.required(),
         email: emailSchema.required(),
         password: passwordSchema.required(),
-        code: yup.number().integer()
+        verificationCode: yup.number().integer()
             .test('len', 'Must be exactly 6 digits', val => val?.toString().length === 6)
             .required()
     })

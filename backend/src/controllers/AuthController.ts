@@ -1,5 +1,5 @@
 import {RequestHandler} from "express";
-import {RegisterRequest, RequestVerificationCodeRequest} from "../validation/UserValidation";
+import {RegisterRequest, RequestVerificationCodeRequest, ResetPasswordRequest} from "../validation/UserValidation";
 import * as verificationDataSource from "../dataSources/VerificationDataSource";
 import ApiResponse from "../models/ApiResponse";
 import * as dataSource from "../dataSources/UserDataSource";
@@ -36,4 +36,27 @@ export const logoutUser: RequestHandler = (req, res, next) => {
         if (err) throw err
         else res.status(200).json({message: "User logged out"} as ApiResponse)
     })
+}
+
+export const requestPasswordResetCode:RequestHandler<unknown, unknown, RequestVerificationCodeRequest, unknown> = async (req, res, next) => {
+    try{
+        const { email } = req.body
+        await verificationDataSource.sendPasswordResetVerificationCode(email)
+        res.status(200).json({message: 'Password reset code sent'} as ApiResponse)
+    } catch(e){
+        next(e)
+    }
+}
+
+export const resetPassword:RequestHandler<unknown, unknown, ResetPasswordRequest, unknown> = async (req, res, next) => {
+    try{
+        const { email, newPassword, verificationCode } = req.body
+        const user = await dataSource.resetPassword(email, newPassword, verificationCode)
+        req.login(user, err => {
+            if (err) throw err
+            else res.status(200).send(user)
+        })
+    } catch(e){
+        next(e)
+    }
 }

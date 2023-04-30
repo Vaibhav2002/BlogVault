@@ -2,7 +2,7 @@ import users from './../models/entities/User';
 import createHttpError from "http-errors";
 import bcrypt from "bcrypt";
 import env from "../utils/CleanEnv";
-import * as mongoose from "mongoose";
+import mongoose from "mongoose";
 import {saveProfilePic} from "./ImageDataSource";
 import {Profile as GoogleProfile} from "passport-google-oauth20";
 import {Profile as GithubProfile} from "passport-github2";
@@ -25,6 +25,24 @@ export const registerUser = async (username: string, email: string, passwordRaw:
         password: hashedPassword
     })
     const user = result.toObject()
+    delete user.password
+
+    return user
+}
+
+export const resetPassword = async (email: string, newPassword: string, code:number) => {
+    let user = await getUserByEmail(email, "+email")
+    if(!user) throw createHttpError(404, "User not found")
+
+    await verificationDataSource.verifyPasswordResetCode(email, code)
+    const hashedPassword = await bcrypt.hash(newPassword, env.PWD_SALTING_ROUNDS)
+
+    user.password = hashedPassword
+    await user.save()
+
+    await revokeAllSessions(user._id)
+
+    user = user.toObject()
     delete user.password
 
     return user
@@ -73,6 +91,13 @@ export const registerGithubUser = async (profile:GithubProfile) => {
     })
 }
 
+const revokeAllSessions = async (userId: mongoose.Types.ObjectId) => {
+    const idMatcher = new RegExp(`^${userId.toString()}`)
+    await mongoose.connection.db.collection('sessions').deleteMany({_id: idMatcher})
+}
+
+
+
 const isExistingUsername = async (username: string) =>{
     const existingUser = await users.findOne({username: username})
         .collation({locale: "en", strength: 2})
@@ -105,6 +130,6 @@ export const getUserById = async (id: mongoose.Types.ObjectId, select: string = 
     return await users.findById(id).select(select).exec()
 }
 
-export const getUserByEmail = async (email: string, select: string = "") => {
+const getUserByEmail = async (email: string, select: string = "") => {
     return await users.findOne({email: email}).select(select).exec()
 }

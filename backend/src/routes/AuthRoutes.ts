@@ -1,5 +1,5 @@
 import validateRequest from "../middlewares/validateRequest";
-import {registerSchema, requestVerificationCodeSchema} from "../validation/UserValidation";
+import {registerSchema, requestVerificationCodeSchema, resetPasswordSchema} from "../validation/UserValidation";
 import * as controller from "../controllers/AuthController";
 import passport from "passport";
 import requiresAuth from "../middlewares/AuthMiddleware";
@@ -13,6 +13,9 @@ router.post('/register', validateRequest(registerSchema), controller.registerUse
 router.post('/login', passport.authenticate('local'), controller.loginUser)
 router.post('/logout', requiresAuth, controller.logoutUser)
 router.post('/requestVerificationCode', validateRequest(requestVerificationCodeSchema), controller.requestVerificationCode)
+router.post('/request/resetPasswordCode', validateRequest(requestVerificationCodeSchema), controller.requestPasswordResetCode)
+router.post('/resetPassword', validateRequest(resetPasswordSchema), controller.resetPassword)
+
 
 router.get('/login/google', setSessionReturnTo, passport.authenticate('google'))
 router.get('/oauth2/redirect/google', passport.authenticate('google',{

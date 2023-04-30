@@ -15,7 +15,8 @@ import SocialAuthSection from "@/components/auth/SocialAuthSection";
 
 interface LoginModalProps {
     onDismiss: () => void
-    onMoveToRegister: () => void
+    onMoveToRegister: () => void,
+    onForgotPassword: () => void,
     className?: string
 }
 
@@ -26,7 +27,7 @@ const loginSchema = yup.object({
 
 type LoginFormValues = yup.InferType<typeof loginSchema>
 
-const LoginModal = ({onDismiss, onMoveToRegister, className}: LoginModalProps) => {
+const LoginModal = ({onDismiss, onMoveToRegister, onForgotPassword, className}: LoginModalProps) => {
     const { mutateUser } = useAuthenticatedUser()
 
     const {control, handleSubmit, formState: {isSubmitting}} = useForm<LoginFormValues>({
@@ -73,6 +74,15 @@ const LoginModal = ({onDismiss, onMoveToRegister, className}: LoginModalProps) =
                             label="Password"
                             placeholder="Enter your password"
                         />
+
+                        <Button
+                            variant="text"
+                            size="small"
+                            sx={{alignSelf:'end', color:"text.secondary"}}
+                            onClick={onForgotPassword}
+                        >
+                            Forgot password?
+                        </Button>
 
                         <PrimaryButton
                             type="submit"

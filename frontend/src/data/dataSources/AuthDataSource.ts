@@ -27,6 +27,22 @@ export const loginUser = async (data: LoginData) => {
     return response.data as User
 }
 
+export const sendPasswordResetCode = async(email:string) => {
+    const response = await api.post(`/auth/request/resetPasswordCode`, {email})
+    return response.data
+}
+
+interface ResetPasswordData {
+    email: string
+    newPassword: string
+    verificationCode: number
+}
+
+export const resetPassword = async (data:ResetPasswordData) => {
+    const response = await api.post(`/auth/resetPassword`, data)
+    return response.data
+}
+
 export const logoutUser = async () => {
     const response = await api.post(`/auth/logout`)
     return response.data

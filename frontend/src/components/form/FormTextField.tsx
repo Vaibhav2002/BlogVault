@@ -1,6 +1,6 @@
 import React from 'react';
 import {Control, Controller} from "react-hook-form";
-import {FormControl, FormHelperText, TextField, TextFieldProps} from "@mui/material";
+import {FormControl, FormControlProps, FormHelperText, TextField, TextFieldProps} from "@mui/material";
 
 interface FormTextFieldProps {
     control: Control<any>
@@ -37,17 +37,17 @@ const FormTextField = (
             control={control}
             render={({field, fieldState: {error}}) =>
 
-                <FormControl error={!!error}>
+                <FormControl error={!!error} fullWidth>
 
                     <TextField
                         variant="outlined"
                         multiline
-                        {...field}
-                        {...props}
+                        fullWidth
                         error={!!error}
                         helperText={error?.message}
                         inputProps={inputProps}
-                        fullWidth
+                        {...field}
+                        {...props}
                     />
 
                     {showLength && getLength(field.value) &&

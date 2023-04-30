@@ -30,6 +30,7 @@ const PrimaryModal = ({open, children, onDismiss, lgSize="35%", className, ...pr
                 sx={{
                     width: {xs: '90%', sm: '60%', lg: lgSize},
                     backgroundColor: 'background.paper',
+                    outline: 'none',
                 }}
                 component={motion.div}
                 transition={spring}

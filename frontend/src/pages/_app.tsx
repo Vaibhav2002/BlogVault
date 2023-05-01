@@ -7,6 +7,7 @@ import blogVaultTheme from "@/theme/BlogVaultTheme";
 import useAuthenticatedUser from "@/hooks/useAuthenticatedUser";
 import OnBoardingModal from "@/components/modals/OnBoardingModal";
 import {useEffect, useState} from "react";
+import AuthModalProvider from "@/components/modals/auth/AuthModal";
 
 const clientSideEmotionCache = createEmotionCache()
 
@@ -22,10 +23,12 @@ export default function App({Component, pageProps, emotionCache = clientSideEmot
         <CacheProvider value={emotionCache}>
             <ThemeProvider theme={blogVaultTheme}>
                 <CssBaseline/>
-                <main>
-                    <Component {...pageProps} />
-                    {showOnboardingModal && <OnBoardingModal/>}
-                </main>
+                <AuthModalProvider>
+                    <main>
+                        <Component {...pageProps} />
+                        {showOnboardingModal && <OnBoardingModal/>}
+                    </main>
+                </AuthModalProvider>
             </ThemeProvider>
         </CacheProvider>
     )

@@ -1,9 +1,9 @@
-import React, {useState} from 'react';
+import React, {useContext, useState} from 'react';
 import {Box, Stack, Theme, useMediaQuery} from "@mui/material";
 import SideNav from "@/components/navBars/SideNav";
 import styles from "./NavScreen.module.css";
 import TopNav from "@/components/navBars/TopNav";
-import AuthModal from "@/components/modals/auth/AuthModal";
+import AuthModal, {AuthModalsContext} from "@/components/modals/auth/AuthModal";
 import useAuthenticatedUser from "@/hooks/useAuthenticatedUser";
 import {logoutUser} from "@/data/dataSources/AuthDataSource";
 import {NavScreen as NavPage} from "@/components/navBars/NavOptions";
@@ -20,7 +20,7 @@ const NavScreen = ({selected, children, className}: SideNavScreenProps) => {
 
     const isBelowSm = useMediaQuery((theme: Theme) => theme.breakpoints.down('sm'));
 
-    const [auth, showAuth] = useState(false);
+    const {showLogin} = useContext(AuthModalsContext)
 
     const logout = async () => {
         try {
@@ -40,19 +40,11 @@ const NavScreen = ({selected, children, className}: SideNavScreenProps) => {
         >
 
             {isBelowSm
-                ? <TopNav user={user} onLoginClick={() => showAuth(true)} onLogoutClick={logout}/>
-                : <SideNav
-                    user={user}
-                    selected={selected}
-                    className={styles.sideNav}
-                    onLoginClick={() => showAuth(true)}
-                    onLogoutClick={logout}
-                />
+                ? <TopNav user={user} onLoginClick={() => showLogin} onLogoutClick={logout}/>
+                : <SideNav user={user} selected={selected} className={styles.sideNav} onLoginClick={showLogin} onLogoutClick={logout}/>
             }
 
             <Box className={styles.content}>{children}</Box>
-
-            {auth && <AuthModal onDismiss={() => showAuth(false)}/>}
 
         </Stack>
     )

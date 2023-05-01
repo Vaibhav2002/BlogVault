@@ -12,6 +12,7 @@ import * as yup from "yup";
 import {requiredStringSchema} from "@/utils/Validation";
 import {yupResolver} from "@hookform/resolvers/yup";
 import SocialAuthSection from "@/components/auth/SocialAuthSection";
+import {HttpError} from "@/data/HttpErrors";
 
 interface LoginModalProps {
     onDismiss: () => void
@@ -42,7 +43,9 @@ const LoginModal = ({onDismiss, onMoveToRegister, onForgotPassword, className}: 
             await mutateUser(response)
             onDismiss()
         } catch (e) {
-            if (e instanceof Error) setError(e.message)
+            if (e instanceof HttpError) setError(e.message)
+            else alert(e)
+            console.error(e)
         }
     }
 

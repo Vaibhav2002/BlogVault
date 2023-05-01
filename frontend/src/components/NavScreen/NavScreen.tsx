@@ -9,7 +9,7 @@ import {logoutUser} from "@/data/dataSources/AuthDataSource";
 import {NavScreen as NavPage} from "@/components/navBars/NavOptions";
 
 interface SideNavScreenProps {
-    selected: NavPage
+    selected?: NavPage
     children: React.ReactNode
     className?: string
 }

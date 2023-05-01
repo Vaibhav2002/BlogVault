@@ -36,7 +36,7 @@ interface SideNavItem {
 
 interface SideNavProps {
     user?: User | null
-    selected: NavScreen
+    selected?: NavScreen
     className: string
     onLoginClick: () => void
     onLogoutClick: () => void
@@ -110,7 +110,7 @@ const UserLoggedInView = ({user, onLogoutClick}: LoggedInViewProps) => {
     return (
         <>
             <Tooltip title="Profile" enterDelay={500}>
-                <Link href={getUserRoute(user.username)} passHref>
+                <Link href={getUserRoute(user.username ?? 'User')} passHref>
                     <UserAvatar
                         url={user.profilePicUrl}
                         sx={{cursor: "pointer"}}

@@ -12,6 +12,7 @@ import MultilineText from "@/components/styled/MultilineText";
 import ChipGroup from "@/components/chipGroup/ChipGroup";
 import BlogAuthorSection from "@/components/BlogAuthorSection";
 import useDevices from "@/hooks/useDevices";
+import NavScreen from "@/components/NavScreen/NavScreen";
 
 export const getStaticPaths: GetStaticPaths = async () => {
     const slugs = await getAllSlugs();
@@ -40,24 +41,27 @@ interface BlogPageProps {
 
 
 const BlogPage = ({blog}: BlogPageProps) => {
-    
+
     return (
-        <Stack
-            sx={{
-                paddingX: {xs: "8%", sm: "10%", md: "15%"},
-                paddingY: "6rem",
-                overflowX: "hidden"
-            }}
-            spacing={8}
-            alignItems="center"
-        >
-            <BlogHeader blog={blog}/>
+        <NavScreen>
+            <Stack
+                sx={{
+                    paddingX: {xs: "8%", sm: "10%", md: "15%"},
+                    paddingY: "6rem",
+                    overflowX: "hidden"
+                }}
+                spacing={8}
+                alignItems="center"
+            >
+                <BlogHeader blog={blog}/>
 
-            <BlogContent blog={blog}/>
+                <BlogContent blog={blog}/>
 
-            <BlogFooter blog={blog}/>
+                <BlogFooter blog={blog}/>
 
-        </Stack>
+            </Stack>
+        </NavScreen>
+
     )
 }
 
@@ -91,14 +95,16 @@ const BlogHeader = ({blog, className, ...props}: BlogHeaderProps & StackProps) =
             </Box>
 
             <CenteredBox sx={{flexDirection: "column", gap: 2}}>
-                <MultilineText variant={isMobile ? "h5" : "h3"} maxLines={2} textAlign="center">{blog.title}</MultilineText>
-                <MultilineText variant={isMobile ? "subtitle2" : "subtitle1"} color="text.secondary" maxLines={6} textAlign="center">
+                <MultilineText variant={isMobile ? "h5" : "h3"} maxLines={2}
+                               textAlign="center">{blog.title}</MultilineText>
+                <MultilineText variant={isMobile ? "subtitle2" : "subtitle1"} color="text.secondary" maxLines={6}
+                               textAlign="center">
                     {blog.description}
                 </MultilineText>
                 <Typography variant="body2" color="text.secondary">{time}</Typography>
             </CenteredBox>
 
-            <BlogAuthorSection slug={blog.slug} author={blog.author} />
+            <BlogAuthorSection slug={blog.slug} author={blog.author}/>
         </Stack>
     )
 }
@@ -119,14 +125,14 @@ const BlogContent = ({blog, className, ...props}: BlogContentProps & BoxProps) =
 }
 
 interface BlogFooterProps {
-    blog:Blog
+    blog: Blog
     className?: string
 }
 
 const BlogFooter = ({blog, className, ...props}: BlogFooterProps & BoxProps) => {
     return (
         <Box className={className} {...props}>
-            <ChipGroup items={blog.topics} getLabel={(topic:Topic) => topic.name} />
+            <ChipGroup items={blog.topics} getLabel={(topic: Topic) => topic.name}/>
         </Box>
     )
 }

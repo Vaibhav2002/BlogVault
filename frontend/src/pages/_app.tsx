@@ -8,6 +8,7 @@ import useAuthenticatedUser from "@/hooks/useAuthenticatedUser";
 import OnBoardingModal from "@/components/modals/OnBoardingModal";
 import {useEffect, useState} from "react";
 import AuthModalProvider from "@/components/modals/auth/AuthModal";
+import NextProgress from "next-progress";
 
 const clientSideEmotionCache = createEmotionCache()
 
@@ -25,6 +26,7 @@ export default function App({Component, pageProps, emotionCache = clientSideEmot
                 <CssBaseline/>
                 <AuthModalProvider>
                     <main>
+                        <NextProgress />
                         <Component {...pageProps} />
                         {showOnboardingModal && <OnBoardingModal/>}
                     </main>

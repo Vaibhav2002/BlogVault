@@ -17,7 +17,6 @@ router.post('/request/emailVerificationCode', verificationCodeRateLimit, validat
 router.post('/request/resetPasswordCode', verificationCodeRateLimit, validateRequest(requestVerificationCodeSchema), controller.requestPasswordResetCode)
 router.post('/resetPassword', validateRequest(resetPasswordSchema), controller.resetPassword)
 
-
 router.get('/login/google', setSessionReturnTo, passport.authenticate('google'))
 router.get('/oauth2/redirect/google', passport.authenticate('google',{
     successReturnToOrRedirect: env.WEBSITE_URL,

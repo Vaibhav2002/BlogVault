@@ -29,7 +29,7 @@ export const createBlog: RequestHandler<unknown, unknown, BlogBody, unknown> = a
     }
 }
 
-export const getAllSlugs:RequestHandler = async (req, res, next) => {
+export const getAllSlugs: RequestHandler = async (req, res, next) => {
     try {
         const slugs = await dataSource.getAllSlugs()
         res.status(200).json(slugs)
@@ -47,7 +47,7 @@ export const getBlogBySlug: RequestHandler = async (req, res, next) => {
     }
 }
 
-export const updateBlog:RequestHandler<BlogIdParam, unknown, BlogBody, unknown> = async (req, res, next) => {
+export const updateBlog: RequestHandler<BlogIdParam, unknown, BlogBody, unknown> = async (req, res, next) => {
     const userId = req.user?._id
     try {
         assertIsDefined(userId, "User Id")
@@ -61,7 +61,7 @@ export const updateBlog:RequestHandler<BlogIdParam, unknown, BlogBody, unknown> 
     }
 }
 
-export const deleteBlog:RequestHandler<BlogIdParam,unknown, unknown, unknown> = async (req, res, next) => {
+export const deleteBlog: RequestHandler<BlogIdParam, unknown, unknown, unknown> = async (req, res, next) => {
     const userId = req.user?._id
     try {
         assertIsDefined(userId, "User Id")

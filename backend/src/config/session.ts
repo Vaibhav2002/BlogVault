@@ -15,7 +15,7 @@ const sessionOptions: SessionOptions = {
     genid(req): string {
         const userId = req.user?._id
         const randomId = crypto.randomUUID()
-        if(userId) return `${userId}-${randomId}`
+        if (userId) return `${userId}-${randomId}`
         else return randomId
     }
 }

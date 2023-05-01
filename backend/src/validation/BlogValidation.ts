@@ -10,10 +10,10 @@ const blogBodySchema = yup.object({
         'valid-topics',
         'Topics must be a comma separated list of topic ids of at most 3 size',
         topics => {
-            try{
+            try {
                 const topicArray = JSON.parse(topics) as string[]
                 return topicArray.length > 0 && topicArray.length <= 3
-            } catch(e){
+            } catch (e) {
                 return false
             }
         }

@@ -8,8 +8,8 @@ export function assertIsDefined<T>(value: T, name: string): asserts value is Non
 
 export const appendLastUpdated = (url: string) => `${url}?lastUpdated=${Date.now()}`
 
-export function run<T, R>(value: T|undefined|null, block: (value: T) => R) {
-    if(value) return block(value);
+export function run<T, R>(value: T | undefined | null, block: (value: T) => R) {
+    if (value) return block(value);
     return undefined
 }
 

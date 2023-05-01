@@ -10,7 +10,7 @@ import {appendLastUpdated} from "../utils/Helpers";
 import * as verificationDataSource from "./VerificationDataSource";
 
 
-export const registerUser = async (username: string, email: string, passwordRaw: string, code:number) => {
+export const registerUser = async (username: string, email: string, passwordRaw: string, code: number) => {
 
     if (await isExistingUsername(username))
         throw createHttpError(409, "Username already taken")
@@ -30,9 +30,9 @@ export const registerUser = async (username: string, email: string, passwordRaw:
     return user
 }
 
-export const resetPassword = async (email: string, newPassword: string, code:number) => {
+export const resetPassword = async (email: string, newPassword: string, code: number) => {
     let user = await getUserByEmail(email, "+email")
-    if(!user) throw createHttpError(404, "User not found")
+    if (!user) throw createHttpError(404, "User not found")
 
     await verificationDataSource.verifyPasswordResetCode(email, code)
     const hashedPassword = await bcrypt.hash(newPassword, env.PWD_SALTING_ROUNDS)
@@ -58,13 +58,13 @@ export const updateProfile = async (
     if (username && await isExistingUsername(username))
         throw createHttpError(409, "Username already taken")
 
-    let profilePicUrl:string | undefined = undefined
-    if(profilePic)
+    let profilePicUrl: string | undefined = undefined
+    if (profilePic)
         profilePicUrl = await saveProfilePic(profilePic, userId.toString())
             .then(path => appendLastUpdated(path))
 
     const user = await users.findByIdAndUpdate(userId, {
-        $set:{
+        $set: {
             ...(username && {username}),
             ...(displayName && {displayName}),
             ...(about && {about}),
@@ -75,7 +75,7 @@ export const updateProfile = async (
     return user
 }
 
-export const registerGoogleUser = async (profile:GoogleProfile) => {
+export const registerGoogleUser = async (profile: GoogleProfile) => {
     return await users.create({
         googleId: profile.id,
         displayName: profile.displayName,
@@ -83,7 +83,7 @@ export const registerGoogleUser = async (profile:GoogleProfile) => {
     })
 }
 
-export const registerGithubUser = async (profile:GithubProfile) => {
+export const registerGithubUser = async (profile: GithubProfile) => {
     return await users.create({
         githubId: profile.id,
         displayName: profile.displayName,
@@ -97,8 +97,7 @@ const revokeAllSessions = async (userId: mongoose.Types.ObjectId) => {
 }
 
 
-
-const isExistingUsername = async (username: string) =>{
+const isExistingUsername = async (username: string) => {
     const existingUser = await users.findOne({username: username})
         .collation({locale: "en", strength: 2})
         .exec()
@@ -118,11 +117,11 @@ export const getUserByUsername = async (username: string, select: string = "") =
     return await users.findOne({username: username}).select(select).exec()
 }
 
-export const getUserByGoogleId = async (googleId:string, select: string = "") => {
+export const getUserByGoogleId = async (googleId: string, select: string = "") => {
     return await users.findOne({googleId: googleId}).select(select).exec()
 }
 
-export const getUserByGithubId = async (githubId:string, select: string = "") => {
+export const getUserByGithubId = async (githubId: string, select: string = "") => {
     return await users.findOne({githubId: githubId}).select(select).exec()
 }
 

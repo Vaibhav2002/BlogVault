@@ -18,13 +18,13 @@ router.post('/request/resetPasswordCode', verificationCodeRateLimit, validateReq
 router.post('/resetPassword', validateRequest(resetPasswordSchema), controller.resetPassword)
 
 router.get('/login/google', setSessionReturnTo, passport.authenticate('google'))
-router.get('/oauth2/redirect/google', passport.authenticate('google',{
+router.get('/oauth2/redirect/google', passport.authenticate('google', {
     successReturnToOrRedirect: env.WEBSITE_URL,
     keepSessionInfo: true
 }))
 
 router.get('/login/github', setSessionReturnTo, passport.authenticate('github'))
-router.get('/oauth2/redirect/github', passport.authenticate('github',{
+router.get('/oauth2/redirect/github', passport.authenticate('github', {
     successReturnToOrRedirect: env.WEBSITE_URL,
     keepSessionInfo: true
 }))

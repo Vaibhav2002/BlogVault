@@ -47,10 +47,10 @@ passport.use(new GoogleStrategy({
 }, async (accessToken, refreshToken, profile, cb) => {
     try {
         let user = await userDataSource.getUserByGoogleId(profile.id)
-        if(!user) user = await userDataSource.registerGoogleUser(profile)
+        if (!user) user = await userDataSource.registerGoogleUser(profile)
         cb(null, user)
-    } catch(e){
-        if(e instanceof Error)
+    } catch (e) {
+        if (e instanceof Error)
             cb(e)
         else throw e
     }
@@ -60,13 +60,13 @@ passport.use(new GithubStrategy({
     clientID: env.GITHUB_CLIENT_ID,
     clientSecret: env.GITHUB_CLIENT_SECRET,
     callbackURL: env.SERVER_URL + githubRedirectUrl,
-}, async (accessToken:string, refreshToken:string, profile:Profile, cb:VerifyCallback) => {
-    try{
+}, async (accessToken: string, refreshToken: string, profile: Profile, cb: VerifyCallback) => {
+    try {
         let user = await userDataSource.getUserByGithubId(profile.id)
-        if(!user) user = await userDataSource.registerGithubUser(profile)
+        if (!user) user = await userDataSource.registerGithubUser(profile)
         cb(null, user)
-    } catch(e){
-        if(e instanceof Error)
+    } catch (e) {
+        if (e instanceof Error)
             cb(e)
         else throw e
     }

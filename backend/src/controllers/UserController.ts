@@ -27,7 +27,7 @@ export const getUserProfile: RequestHandler = async (req, res, next) => {
     }
 }
 
-export const updateProfile:RequestHandler<unknown, unknown, UpdateProfileRequest, unknown> = async (req, res, next) => {
+export const updateProfile: RequestHandler<unknown, unknown, UpdateProfileRequest, unknown> = async (req, res, next) => {
     const userId = req.user?._id
     try {
         assertIsDefined(userId, "User Id")

@@ -8,7 +8,7 @@ const validate = (schema: Schema): RequestHandler =>
             await schema.validate(req)
             next()
         } catch (e) {
-            if(e instanceof ValidationError) next(createHttpError(400, e.message))
+            if (e instanceof ValidationError) next(createHttpError(400, e.message))
             else next(e)
         }
     }

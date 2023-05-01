@@ -19,10 +19,10 @@ export async function saveCoverImage(image: Express.Multer.File, filename: strin
         COVER_IMAGE_HEIGHT,
         `.${filePath}`
     )
-    return env.SERVER_URL+filePath
+    return env.SERVER_URL + filePath
 }
 
-export async function savePosterImage(image: Express.Multer.File, filename: string): Promise<string>{
+export async function savePosterImage(image: Express.Multer.File, filename: string): Promise<string> {
     const filePath = `/uploads/posterImages/${filename}.png`
     await saveImage(
         image,
@@ -30,11 +30,11 @@ export async function savePosterImage(image: Express.Multer.File, filename: stri
         POSTER_IMAGE_HEIGHT,
         `.${filePath}`
     )
-    return env.SERVER_URL+filePath
+    return env.SERVER_URL + filePath
 }
 
 
-export async function saveProfilePic(image: Express.Multer.File, filename: string): Promise<string>{
+export async function saveProfilePic(image: Express.Multer.File, filename: string): Promise<string> {
     const filePath = `/uploads/profilePics/${filename}.png`
     await saveImage(
         image,
@@ -42,7 +42,7 @@ export async function saveProfilePic(image: Express.Multer.File, filename: strin
         PROFILE_PIC_HEIGHT,
         `.${filePath}`
     )
-    return env.SERVER_URL+filePath
+    return env.SERVER_URL + filePath
 }
 
 export const removeImage = (url: string) => {

@@ -1,4 +1,4 @@
-import {Schema, InferSchemaType, model} from "mongoose";
+import {InferSchemaType, model, Schema} from "mongoose";
 
 const topicSchema = new Schema({
     name: {type: String, required: true, unique: true},

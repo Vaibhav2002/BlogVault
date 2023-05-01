@@ -11,7 +11,7 @@ export const createBlog = async (userId: mongoose.Types.ObjectId, coverImage: Ex
 
     if (await isSlugTaken(req.slug)) throw createHttpError('409', 'Slug already used')
 
-    if(await topicDataSource.areTopicsValid(JSON.parse(req.topics)))
+    if (await topicDataSource.areTopicsValid(JSON.parse(req.topics)))
         throw createHttpError('400', 'Invalid topics')
 
     const id = new mongoose.Types.ObjectId()
@@ -94,8 +94,8 @@ export const updateBlog = async (userId: MongoId, blogId: string, blogBody: Blog
     blog.content = blogBody.content
     blog.topics = JSON.parse(blogBody.topics)
 
-    if(coverImagePath) blog.coverImage = appendLastUpdated(coverImagePath)
-    if(posterImagePath) blog.posterImage = appendLastUpdated(posterImagePath)
+    if (coverImagePath) blog.coverImage = appendLastUpdated(coverImagePath)
+    if (posterImagePath) blog.posterImage = appendLastUpdated(posterImagePath)
 
     await blog.save()
 }
@@ -103,8 +103,8 @@ export const updateBlog = async (userId: MongoId, blogId: string, blogBody: Blog
 export const deleteBlog = async (userId: MongoId, blogId: string) => {
     const blog = await assertBlogExistsAndIsOfUser(userId, blogId)
 
-    if(blog.coverImage.startsWith(env.SERVER_URL)) removeImage(blog.coverImage)
-    if(blog.posterImage.startsWith(env.SERVER_URL)) removeImage(blog.posterImage)
+    if (blog.coverImage.startsWith(env.SERVER_URL)) removeImage(blog.coverImage)
+    if (blog.posterImage.startsWith(env.SERVER_URL)) removeImage(blog.posterImage)
 
     await blog.deleteOne()
 }
@@ -123,6 +123,6 @@ const assertBlogExistsAndIsOfUser = async (userId: MongoId, blogId: string) => {
 
 const isSlugTaken = async (slug: string, blogId?: string) => {
     const blog = await blogs.findOne({slug: slug}).populate("author").exec()
-    if(blogId) return blog && !blog._id.equals(blogId)
+    if (blogId) return blog && !blog._id.equals(blogId)
     return blog
 }

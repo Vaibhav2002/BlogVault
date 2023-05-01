@@ -6,14 +6,15 @@ import requiresAuth from "../middlewares/AuthMiddleware";
 import setSessionReturnTo from "../middlewares/SetSessionReturnTo";
 import env from "../utils/CleanEnv";
 import express from "express";
+import {loginRateLimit, verificationCodeRateLimit} from "../middlewares/RateLimit";
 
 const router = express.Router()
 
 router.post('/register', validateRequest(registerSchema), controller.registerUser)
-router.post('/login', passport.authenticate('local'), controller.loginUser)
+router.post('/login', loginRateLimit, passport.authenticate('local'), controller.loginUser)
 router.post('/logout', requiresAuth, controller.logoutUser)
-router.post('/request/emailVerificationCode', validateRequest(requestVerificationCodeSchema), controller.requestVerificationCode)
-router.post('/request/resetPasswordCode', validateRequest(requestVerificationCodeSchema), controller.requestPasswordResetCode)
+router.post('/request/emailVerificationCode', verificationCodeRateLimit, validateRequest(requestVerificationCodeSchema), controller.requestVerificationCode)
+router.post('/request/resetPasswordCode', verificationCodeRateLimit, validateRequest(requestVerificationCodeSchema), controller.requestPasswordResetCode)
 router.post('/resetPassword', validateRequest(resetPasswordSchema), controller.resetPassword)
 
 

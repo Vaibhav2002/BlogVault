@@ -29,7 +29,7 @@ const loginSchema = yup.object({
 type LoginFormValues = yup.InferType<typeof loginSchema>
 
 const LoginModal = ({onDismiss, onMoveToRegister, onForgotPassword, className}: LoginModalProps) => {
-    const { mutateUser } = useAuthenticatedUser()
+    const {mutateUser} = useAuthenticatedUser()
 
     const {control, handleSubmit, formState: {isSubmitting}} = useForm<LoginFormValues>({
         resolver: yupResolver(loginSchema)
@@ -54,7 +54,8 @@ const LoginModal = ({onDismiss, onMoveToRegister, onForgotPassword, className}: 
             <Box className={styles.container}>
                 <Box>
                     <Typography variant="h5" textAlign="center" marginBottom={0.5}>Welcome back</Typography>
-                    <Typography variant="subtitle2" textAlign="center" color="text.disabled">Log in to continue using BlogVault</Typography>
+                    <Typography variant="subtitle2" textAlign="center" color="text.disabled">Log in to continue using
+                        BlogVault</Typography>
                 </Box>
 
                 <Collapse in={!!error} className={styles.errorAlert}>
@@ -81,7 +82,7 @@ const LoginModal = ({onDismiss, onMoveToRegister, onForgotPassword, className}: 
                         <Button
                             variant="text"
                             size="small"
-                            sx={{alignSelf:'end', color:"text.secondary"}}
+                            sx={{alignSelf: 'end', color: "text.secondary"}}
                             onClick={onForgotPassword}
                         >
                             Forgot password?

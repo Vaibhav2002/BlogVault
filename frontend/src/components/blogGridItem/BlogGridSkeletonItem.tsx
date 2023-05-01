@@ -1,5 +1,5 @@
 import React from 'react';
-import {Box, Skeleton, Stack, Theme, useMediaQuery} from "@mui/material";
+import {Box, Skeleton, Stack} from "@mui/material";
 import styles from "@/components/blogGridItem/BlogGridItem.module.css";
 
 interface BlogGridSkeletonItemProps {

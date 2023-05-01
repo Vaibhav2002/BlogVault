@@ -1,5 +1,5 @@
-export class HttpError extends Error{
-    constructor(message:string) {
+export class HttpError extends Error {
+    constructor(message: string) {
         super(message);
         this.name = this.constructor.name
     }
@@ -9,24 +9,29 @@ export class HttpError extends Error{
 /**
  * 400 Bad Request
  */
-export class BadRequestError extends HttpError { }
+export class BadRequestError extends HttpError {
+}
 
 /**
  * 401 Unauthorized
  */
-export class UnauthorizedError extends HttpError { }
+export class UnauthorizedError extends HttpError {
+}
 
 /**
  * Status code: 404
  */
-export class NotFoundError extends HttpError { }
+export class NotFoundError extends HttpError {
+}
 
 /**
  * Status code: 409
  */
-export class ConflictError extends HttpError { }
+export class ConflictError extends HttpError {
+}
 
 /**
  * Status code: 429
  */
-export class TooManyRequestsError extends HttpError { }
+export class TooManyRequestsError extends HttpError {
+}

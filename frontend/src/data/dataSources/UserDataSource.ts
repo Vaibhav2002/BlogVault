@@ -6,7 +6,7 @@ export const getAuthenticatedUser = async () => {
     return response.data as User
 }
 
-export const getUserProfile = async(username:string) => {
+export const getUserProfile = async (username: string) => {
     const user = await api.get<User>(`users/profile/${username}`)
     return user.data as User
 }
@@ -14,15 +14,15 @@ export const getUserProfile = async(username:string) => {
 export interface UpdateUserRequest {
     username?: string
     displayName?: string
-    about?:string
-    profilePic?:File
+    about?: string
+    profilePic?: File
 }
 
 
-export const updateUserProfile = async (user:UpdateUserRequest) => {
+export const updateUserProfile = async (user: UpdateUserRequest) => {
     const formData = new FormData()
     Object.entries(user).forEach(([key, value]) => {
-        if(value !== undefined)
+        if (value !== undefined)
             formData.append(key, value)
     })
     const response = await api.patch<User>('users/me', formData)

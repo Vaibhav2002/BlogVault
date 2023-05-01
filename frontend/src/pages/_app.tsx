@@ -26,7 +26,7 @@ export default function App({Component, pageProps, emotionCache = clientSideEmot
                 <CssBaseline/>
                 <AuthModalProvider>
                     <main>
-                        <NextProgress />
+                        <NextProgress/>
                         <Component {...pageProps} />
                         {showOnboardingModal && <OnBoardingModal/>}
                     </main>

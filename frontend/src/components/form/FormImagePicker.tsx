@@ -4,7 +4,7 @@ import {MuiFileInput} from "mui-file-input";
 interface ImagePickerProps {
     control: Control<any>
     name: string
-    label:string
+    label: string
     className?: string
 }
 

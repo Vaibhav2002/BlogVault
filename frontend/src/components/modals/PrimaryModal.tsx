@@ -17,7 +17,7 @@ const spring = {
     stiffness: 100
 }
 
-const PrimaryModal = ({open, children, onDismiss, lgSize="35%", className, ...props}: ModalProps & BoxProps) => {
+const PrimaryModal = ({open, children, onDismiss, lgSize = "35%", className, ...props}: ModalProps & BoxProps) => {
     return (
         <Modal
             open={open}

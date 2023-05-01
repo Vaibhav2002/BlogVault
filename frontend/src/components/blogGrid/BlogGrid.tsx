@@ -5,7 +5,7 @@ import Grid2, {Grid2Props} from "@mui/material/Unstable_Grid2";
 import BlogGridItem from "@/components/blogGridItem/BlogGridItem";
 
 interface BlogGridProps {
-    blogs:Blog[]
+    blogs: Blog[]
     className?: string
 }
 

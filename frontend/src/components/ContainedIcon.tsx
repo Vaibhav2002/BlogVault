@@ -3,7 +3,7 @@ import CenteredBox from "@/components/styled/CenteredBox";
 import {BoxProps, Tooltip} from "@mui/material";
 
 interface ContainedIconProps {
-    title:string
+    title: string
     icon: ReactElement
     className?: string
 }

@@ -1,4 +1,4 @@
-.blogCard{
+.blogCard {
     display: flex;
     flex-direction: row;
     overflow: hidden;
@@ -7,13 +7,13 @@
 }
 
 
-.blogImage{
-    flex:0.2;
+.blogImage {
+    flex: 0.2;
     aspect-ratio: 1/1;
     position: relative;
 }
 
-.blogContent{
+.blogContent {
     flex: 0.8;
     padding: 0 1rem;
     display: flex;
@@ -23,7 +23,7 @@
     gap: 0.5rem;
 }
 
-.userInfoSection{
+.userInfoSection {
     display: flex;
     justify-content: space-between;
     flex-direction: row;
@@ -31,19 +31,19 @@
     cursor: pointer;
 }
 
-.userInfo{
+.userInfo {
     display: flex;
     flex-direction: row;
     gap: 0.5rem;
     align-items: center;
 }
 
-.userAvatar{
+.userAvatar {
     height: 24px;
     width: 24px;
 }
 
-.actionSection{
+.actionSection {
     justify-content: space-between;
     flex-direction: row;
 }

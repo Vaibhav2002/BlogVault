@@ -74,9 +74,9 @@ const CreateNewBlogPage = () => {
         <PrimaryButton type="submit" variant="contained" fullWidth disabled={isSubmitting}>Publish</PrimaryButton>
     ), [isSubmitting]);
 
-    if(!user && !userLoading) router.push(Routes.Home)
+    if (!user && !userLoading) router.push(Routes.Home)
 
-    if(userLoading) return <CenteredBox><CircularProgress/></CenteredBox>
+    if (userLoading) return <CenteredBox><CircularProgress/></CenteredBox>
 
     return (
         <NavScreen selected={NavPage.Post}>

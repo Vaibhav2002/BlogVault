@@ -1,7 +1,7 @@
 import useCountdown from "@/hooks/useCountdown";
 import {useState} from "react";
 
-export default function useVerificationCode(){
+export default function useVerificationCode() {
     const coolDownTime = 30
     const {secondsLeft, start} = useCountdown()
     const [verificationPending, setVerificationPending] = useState(false)

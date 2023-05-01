@@ -115,7 +115,7 @@ const HomeBlogSection = ({page, blogs, totalPages, className, ...props}: HomeBlo
                 </AnimatePresence>
             )}
 
-            { blogs.length > 0 &&
+            {blogs.length > 0 &&
                 <PaginationBar page={page} count={totalPages} onPageChange={onPageChange}/>
             }
         </Stack>

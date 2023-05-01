@@ -1,6 +1,3 @@
-import {ReactNode} from "react";
-import {CiHome} from "react-icons/ci";
-
 export enum NavScreen {
     Home = "Home",
     Discover = "Discover",

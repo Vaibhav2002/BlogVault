@@ -144,7 +144,7 @@ const ProfileBlogSection = ({user}: ProfileBlogSectionProps) => {
             {blogs && blogs.length > 0 &&
                 <Stack spacing={2}>
                     <BlogGrid blogs={blogs}/>
-                    <PaginationBar page={page} count={totalPages} onPageChange={setPage} sx={{alignSelf:"center"}}/>
+                    <PaginationBar page={page} count={totalPages} onPageChange={setPage} sx={{alignSelf: "center"}}/>
                 </Stack>
             }
         </Box>

@@ -10,19 +10,19 @@ import {CiBookmark} from "react-icons/ci";
 import {FaArrowRight} from "react-icons/fa";
 
 interface BlogGridItemProps {
-    blog:Blog
+    blog: Blog
     className?: string
 }
 
 const BlogGridItem = ({blog, className, ...props}: BlogGridItemProps & BoxProps) => {
 
     const isBelowSm = useMediaQuery((theme: Theme) => theme.breakpoints.down("sm"))
-    const titleSize = isBelowSm? "subtitle2" : "subtitle1"
+    const titleSize = isBelowSm ? "subtitle2" : "subtitle1"
 
     return (
         <Box className={`${styles.blogCard} ${className}`} {...props}>
             <Box className={styles.blogImage}>
-                <Image fill style={{objectFit:'cover'}} src={blog.coverImage} alt={blog.title}/>
+                <Image fill style={{objectFit: 'cover'}} src={blog.coverImage} alt={blog.title}/>
             </Box>
 
 

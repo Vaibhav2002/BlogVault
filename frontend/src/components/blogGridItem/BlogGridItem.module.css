@@ -1,17 +1,17 @@
-.blogCard{
+.blogCard {
     display: flex;
     flex-direction: row;
     overflow: hidden;
     align-items: start;
 }
 
-.blogImage{
-    flex:0.2;
+.blogImage {
+    flex: 0.2;
     aspect-ratio: 1/1;
     position: relative;
 }
 
-.blogContent{
+.blogContent {
     flex: 0.8;
     padding: 0 1rem;
     display: flex;
@@ -21,7 +21,7 @@
 }
 
 
-.actionSection{
+.actionSection {
     justify-content: space-between;
     flex-direction: row;
 }

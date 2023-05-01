@@ -1,10 +1,10 @@
-.coverImage{
+.coverImage {
     position: relative;
     width: 100%;
     aspect-ratio: 16/9;
 }
 
-.blogContent{
+.blogContent {
     width: 100%;
     overflow-x: hidden;
 }

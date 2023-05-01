@@ -1,5 +1,5 @@
-import React, {ReactElement, useMemo, useState} from 'react';
-import {Avatar, Stack, StackProps, Tooltip} from "@mui/material";
+import React, {ReactElement, useMemo} from 'react';
+import {Stack, StackProps, Tooltip} from "@mui/material";
 import ContainedIcon from "@/components/ContainedIcon";
 import {CiBookmark, CiGrid42, CiHome, CiLogin, CiLogout, CiSquarePlus} from "react-icons/ci";
 import {useRouter} from "next/router";
@@ -53,8 +53,8 @@ const SideNav = ({user, selected, className, onLoginClick, onLogoutClick, ...pro
 
     const router = useRouter()
 
-    const onIconSelected = async (item:SideNavItem) => {
-        if(item.navItem.screen != NavScreen.Post || user)
+    const onIconSelected = async (item: SideNavItem) => {
+        if (item.navItem.screen != NavScreen.Post || user)
             await router.push(item.navItem.href)
         else onLoginClick()
     }

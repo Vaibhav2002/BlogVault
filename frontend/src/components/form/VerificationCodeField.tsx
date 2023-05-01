@@ -4,18 +4,28 @@ import FormTextField from "@/components/form/FormTextField";
 import {Control} from "react-hook-form";
 
 interface VerificationCodeFieldProps {
-    control:Control<any>,
-    name:string,
-    label?:string,
-    placeholder?:string,
+    control: Control<any>,
+    name: string,
+    label?: string,
+    placeholder?: string,
     className?: string,
-    onSendCode:()=>void,
-    verificationCodeSending:boolean,
-    coolDownLeft:number
+    onSendCode: () => void,
+    verificationCodeSending: boolean,
+    coolDownLeft: number
 }
 
 const VerificationCodeField = (
-    {control, name, label, placeholder, onSendCode, verificationCodeSending, coolDownLeft, className, ...props}: VerificationCodeFieldProps & TextFieldProps
+    {
+        control,
+        name,
+        label,
+        placeholder,
+        onSendCode,
+        verificationCodeSending,
+        coolDownLeft,
+        className,
+        ...props
+    }: VerificationCodeFieldProps & TextFieldProps
 ) => {
     return (
         <Stack direction='row' spacing={1} alignItems='stretch'>

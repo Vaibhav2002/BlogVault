@@ -3,7 +3,7 @@ import User from "@/data/models/User";
 export default interface Blog {
     _id: string
     title: string
-    slug:string
+    slug: string
     description: string
     content: string
     topics: Topic[]

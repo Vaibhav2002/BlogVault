@@ -1,6 +1,5 @@
 import dynamic from "next/dynamic";
 import React from 'react';
-import ReactMarkdown from "react-markdown";
 import {FieldError, UseFormRegisterReturn, UseFormSetValue} from "react-hook-form";
 import Markdown from "@/components/Markdown";
 

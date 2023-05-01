@@ -1,6 +1,6 @@
 import React from 'react';
 import Blog from "@/data/models/Blog";
-import {Avatar, Box, BoxProps, Theme, Typography, useMediaQuery} from "@mui/material";
+import {Box, BoxProps, Theme, Typography, useMediaQuery} from "@mui/material";
 import styles from "./BlogItem.module.css";
 import MultilineText from "@/components/styled/MultilineText";
 import {FaArrowRight} from "react-icons/fa";
@@ -30,7 +30,7 @@ const BlogItem = ({blog: {title, description, createdAt, ...blog}, className, ..
             className={`${styles.blogCard} ${className}`}
             {...props}
         >
-            <Box className={styles.blogImage} flex={isBelowSm? 0.15: 0.2}>
+            <Box className={styles.blogImage} flex={isBelowSm ? 0.15 : 0.2}>
                 <Image
                     layout="fill"
                     objectFit="cover"
@@ -50,7 +50,7 @@ const BlogItem = ({blog: {title, description, createdAt, ...blog}, className, ..
                     <Typography variant="caption" color="text.secondary">{formatDate(createdAt)}</Typography>
                 </Box>
 
-                <Box marginBottom={isBelowSm?0:3}>
+                <Box marginBottom={isBelowSm ? 0 : 3}>
                     <MultilineText
                         variant={titleSize}
                         maxLines={2}

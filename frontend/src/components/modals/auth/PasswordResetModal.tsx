@@ -18,7 +18,7 @@ import useAuthenticatedUser from "@/hooks/useAuthenticatedUser";
 
 interface PasswordResetModalProps {
     onDismiss: () => void,
-    moveToRegister:()=>void,
+    moveToRegister: () => void,
     className?: string
 }
 
@@ -31,7 +31,7 @@ const passwordResetSchema = yup.object({
 type PasswordResetFormValues = yup.InferType<typeof passwordResetSchema>
 
 const PasswordResetModal = ({onDismiss, moveToRegister, className}: PasswordResetModalProps) => {
-    const { mutateUser } = useAuthenticatedUser()
+    const {mutateUser} = useAuthenticatedUser()
     const {control, handleSubmit, getValues, trigger, formState: {isSubmitting}} = useForm<PasswordResetFormValues>({
         resolver: yupResolver(passwordResetSchema)
     })
@@ -56,14 +56,14 @@ const PasswordResetModal = ({onDismiss, moveToRegister, className}: PasswordRese
         }
     }
 
-    const onSubmit = async(data:PasswordResetFormValues) => {
+    const onSubmit = async (data: PasswordResetFormValues) => {
         setError(null)
         verificationEvents.removePending()
         try {
             const user = dataSource.resetPassword(data)
             await mutateUser(user)
             onDismiss()
-        } catch(e) {
+        } catch (e) {
             if (e instanceof HttpError) setError(e.message)
             else alert(e)
             console.error(e)

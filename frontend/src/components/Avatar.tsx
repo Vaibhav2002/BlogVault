@@ -31,7 +31,7 @@ const UserAvatar = ({url, username, size = "medium", className, ...avatarProps}:
     const avatarSize = size === "small" ? 16 : size === "medium" ? 24 : size === "large" ? 48 : "100%";
     const props = {
         className: className,
-        sx:{
+        sx: {
             width: avatarSize,
             height: avatarSize,
             variant: "circular",
@@ -39,9 +39,9 @@ const UserAvatar = ({url, username, size = "medium", className, ...avatarProps}:
         }
     }
 
-    if(url)
+    if (url)
         return <Avatar {...props} src={url} {...avatarProps}/>;
-    else if(username)
+    else if (username)
         return <Avatar {...props} {...avatarProps}>{username[0]}</Avatar>;
     else
         return <Avatar {...props} {...avatarProps}/>

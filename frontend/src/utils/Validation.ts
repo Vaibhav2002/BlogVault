@@ -16,4 +16,4 @@ export const passwordSchema = yup.string()
 export const slugSchema = yup.string()
     .matches(/^[a-zA-Z0-9_-]*$/, 'No Special Characters or spaces allowed')
 
-export const requiredFileSchema  = yup.mixed<File>().required('Required')
+export const requiredFileSchema = yup.mixed<File>().required('Required')

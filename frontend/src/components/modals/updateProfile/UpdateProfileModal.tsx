@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, {useState} from 'react';
 import User from "@/data/models/User";
 import PrimaryModal from "@/components/modals/PrimaryModal";
 import {Alert, Box, Collapse, Stack} from "@mui/material";
@@ -37,7 +37,7 @@ const UpdateProfileModal = ({user, onDismiss, onUpdated, className}: UpdateProfi
 
     const {mutateUser} = useAuthenticatedUser()
 
-    const {control, handleSubmit, watch, formState:{isSubmitting}} = useForm<UpdateProfileValues>({
+    const {control, handleSubmit, watch, formState: {isSubmitting}} = useForm<UpdateProfileValues>({
         defaultValues: {
             username: user.username,
             displayName: user.displayName,
@@ -63,7 +63,7 @@ const UpdateProfileModal = ({user, onDismiss, onUpdated, className}: UpdateProfi
             onDismiss()
         } catch (e) {
             console.error(e)
-            if(e instanceof Error)
+            if (e instanceof Error)
                 setError(e.message)
         }
     }
@@ -115,7 +115,8 @@ const UpdateProfileModal = ({user, onDismiss, onUpdated, className}: UpdateProfi
 
                         <FormImagePicker control={control} name="profilePic" label="Profile Picture"/>
 
-                        <PrimaryButton type="submit" variant="contained" disabled={isSubmitting} fullWidth>Update Profile</PrimaryButton>
+                        <PrimaryButton type="submit" variant="contained" disabled={isSubmitting} fullWidth>Update
+                            Profile</PrimaryButton>
 
                     </Stack>
 

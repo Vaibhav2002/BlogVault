@@ -15,7 +15,7 @@ const GoogleButton = ({className}: GoogleButtonProps) => {
         <PrimaryButton
             fullWidth
             variant="outlined"
-            startIcon={ <FcGoogle/> }
+            startIcon={<FcGoogle/>}
             className={className}
             href={googleLoginUrl(router.asPath)}
         >
@@ -35,7 +35,7 @@ const GithubButton = ({className}: GithubButtonProps) => {
         <PrimaryButton
             fullWidth
             variant="outlined"
-            startIcon={ <BsGithub/> }
+            startIcon={<BsGithub/>}
             className={className}
             href={githubLoginUrl(router.asPath)}
         >

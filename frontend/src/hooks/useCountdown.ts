@@ -13,7 +13,7 @@ export default function useCountdown() {
         return () => clearTimeout(timer)
     }, [secondsLeft])
 
-    const start = (seconds:number) => setSecondsLeft(seconds)
+    const start = (seconds: number) => setSecondsLeft(seconds)
 
     return {secondsLeft, start}
 }

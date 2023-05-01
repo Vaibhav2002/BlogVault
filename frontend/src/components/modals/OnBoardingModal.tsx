@@ -26,54 +26,55 @@ const OnBoardingModal = ({className}: OnBoardingModalProps) => {
 
     const {mutateUser} = useAuthenticatedUser()
 
-    const {handleSubmit,control, formState:{isSubmitting}} = useForm<OnboardingValues>({
+    const {handleSubmit, control, formState: {isSubmitting}} = useForm<OnboardingValues>({
         resolver: yupResolver(onboardingSchema)
     })
 
     const [error, setError] = useState<string | null>(null);
 
     const onSubmit = async (data: OnboardingValues) => {
-        try{
+        try {
             setError(null)
             const response = await userDataSource.updateUserProfile(data)
             await mutateUser(response)
-        }catch(e){
-            if(e instanceof HttpError)
+        } catch (e) {
+            if (e instanceof HttpError)
                 setError(e.message)
             console.log(e)
         }
     }
 
     return (
-        <PrimaryModal open={true} onDismiss={() => {}}>
+        <PrimaryModal open={true} onDismiss={() => {
+        }}>
 
-                <form onSubmit={handleSubmit(onSubmit)}>
+            <form onSubmit={handleSubmit(onSubmit)}>
 
-                    <Stack direction="column" spacing={2}>
+                <Stack direction="column" spacing={2}>
 
-                        <Box>
-                            <Typography variant="h5">Add Username</Typography>
-                            <MultilineText maxLines={3} variant="body2" color="text.secondary">
-                                Choose a username for your account. This can be changed later.
-                            </MultilineText>
-                        </Box>
+                    <Box>
+                        <Typography variant="h5">Add Username</Typography>
+                        <MultilineText maxLines={3} variant="body2" color="text.secondary">
+                            Choose a username for your account. This can be changed later.
+                        </MultilineText>
+                    </Box>
 
-                        <Collapse in={!!error}>
-                            <Alert severity="error">{error}</Alert>
-                        </Collapse>
+                    <Collapse in={!!error}>
+                        <Alert severity="error">{error}</Alert>
+                    </Collapse>
 
-                        <FormTextField
-                            control={control}
-                            name="username"
-                            label="Username"
-                            multiline={false}
-                            placeholder="Enter your username"
-                        />
+                    <FormTextField
+                        control={control}
+                        name="username"
+                        label="Username"
+                        multiline={false}
+                        placeholder="Enter your username"
+                    />
 
-                        <PrimaryButton type="submit" variant="contained">Submit</PrimaryButton>
+                    <PrimaryButton type="submit" variant="contained">Submit</PrimaryButton>
 
-                    </Stack>
-                </form>
+                </Stack>
+            </form>
 
         </PrimaryModal>
     )

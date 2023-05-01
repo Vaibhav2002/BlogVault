@@ -1,6 +1,6 @@
 import React from 'react';
 import {Control, Controller} from "react-hook-form";
-import {FormControl, FormControlProps, FormHelperText, TextField, TextFieldProps} from "@mui/material";
+import {FormControl, FormHelperText, TextField, TextFieldProps} from "@mui/material";
 
 interface FormTextFieldProps {
     control: Control<any>

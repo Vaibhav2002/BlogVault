@@ -15,7 +15,7 @@ export const createBlog = async (blog: BlogData) => {
     const formData = new FormData()
 
     Object.entries(blog).forEach(([key, value]) => {
-        if(key === "topics")
+        if (key === "topics")
             formData.append(key, JSON.stringify(value))
         else formData.append(key, value)
     })
@@ -39,8 +39,8 @@ export const updateBlog = async (blogId: string, blog: UpdateBlogData) => {
 
     console.log(JSON.stringify(blog.topics))
     Object.entries(blog).forEach(([key, value]) => {
-        if(key === "topics" && value !== undefined) formData.append(key, JSON.stringify(value))
-        else if(value !== undefined) formData.append(key, value)
+        if (key === "topics" && value !== undefined) formData.append(key, JSON.stringify(value))
+        else if (value !== undefined) formData.append(key, value)
     })
 
     console.log(formData.get("topics"))
@@ -48,12 +48,12 @@ export const updateBlog = async (blogId: string, blog: UpdateBlogData) => {
     await api.patch<Blog>(`/blogs/${blogId}`, formData)
 }
 
-export const getAllBlogs = async (page:number = 1) => {
+export const getAllBlogs = async (page: number = 1) => {
     const response = await api.get<BlogPage>(`/blogs?page=${page}`)
     return response.data as BlogPage
 }
 
-export const getBlogsOfUser = async(userId:string, page:number = 1) => {
+export const getBlogsOfUser = async (userId: string, page: number = 1) => {
     const response = await api.get<BlogPage>(`/blogs?authorId=${userId}&page=${page}`)
     return response.data as BlogPage
 }
@@ -68,6 +68,6 @@ export const getBlogBySlug = async (slug: string) => {
     return response.data as Blog
 }
 
-export const deleteBlog = async(blogId:string) => {
+export const deleteBlog = async (blogId: string) => {
     await api.delete(`/blogs/${blogId}`)
 }

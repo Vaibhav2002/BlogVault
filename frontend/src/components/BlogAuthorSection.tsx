@@ -10,7 +10,7 @@ import {getEditBlogRoute, getUserRoute} from "@/utils/Routes";
 import Link from "next/link";
 
 interface BlogAuthorSectionProps {
-    slug:string
+    slug: string
     author: User
     className?: string
 }
@@ -51,7 +51,8 @@ const BlogAuthorSection = ({slug, author, className}: BlogAuthorSectionProps) =>
                 </Stack>
 
                 {isAuthenticatedUserAuthor &&
-                    <PrimaryButton variant="outlined" color="secondary" fullWidth={isBelowSm} sx={{paddingX: 4}} onClick={onUpdatePress}>
+                    <PrimaryButton variant="outlined" color="secondary" fullWidth={isBelowSm} sx={{paddingX: 4}}
+                                   onClick={onUpdatePress}>
                         Edit Blog
                     </PrimaryButton>
                 }

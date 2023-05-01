@@ -1,13 +1,13 @@
-import {FieldValues, UseFormReturn, UseFormWatch} from "react-hook-form";
+import {FieldValues, UseFormWatch} from "react-hook-form";
 import {useEffect, useState} from "react";
 
-const useFormImage = <T extends FieldValues> (name:any, watch: UseFormWatch<T>, defaultValue?:string,) => {
+const useFormImage = <T extends FieldValues>(name: any, watch: UseFormWatch<T>, defaultValue?: string,) => {
     const [fileUrl, setFileUrl] = useState(defaultValue);
 
     useEffect(() => {
         const file = watch(name) as File
 
-        if(!file){
+        if (!file) {
             setFileUrl(defaultValue)
             return
         }
@@ -17,7 +17,7 @@ const useFormImage = <T extends FieldValues> (name:any, watch: UseFormWatch<T>, 
         setFileUrl(url)
     }, [watch(name)])
 
-    return { fileUrl }
+    return {fileUrl}
 }
 
 export default useFormImage

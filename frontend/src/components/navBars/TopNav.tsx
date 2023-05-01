@@ -4,6 +4,8 @@ import {NavOptions, navOptions} from "@/components/navBars/NavOptions";
 import {MdMenu} from "react-icons/md";
 import {useRouter} from "next/router";
 import User from "@/data/models/User";
+import Link from "next/link";
+import {getUserRoute} from "@/utils/Routes";
 
 interface AppBarProps {
     user?: User | null
@@ -86,7 +88,7 @@ const TopNav = ({user, onLoginClick, onLogoutClick, className}: AppBarProps) => 
 }
 
 const LoggedInView = (user: User) => {
-    return <Avatar src={user.profilePicUrl} sx={{cursor:"pointer"}}/>
+    return <Avatar src={user.profilePicUrl} sx={{cursor:"pointer"}} component={Link} href={getUserRoute(user.username ?? '/')}/>
 }
 
 const LoggedOutView = (onLoginClick:()=>void) => {

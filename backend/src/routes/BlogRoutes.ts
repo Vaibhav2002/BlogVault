@@ -5,6 +5,8 @@ import validateRequest from "../middlewares/validateRequest";
 import {createBlogSchema, deleteBlogSchema, getBlogsSchema, updateBlogSchema} from "../validation/BlogValidation";
 import requiresAuth from "../middlewares/AuthMiddleware";
 import {postBlogRateLimit, updateBlogRateLimit} from "../middlewares/RateLimit";
+import * as commentsController from "../controllers/CommentController";
+import {createCommentSchema, getCommentsSchema} from "../validation/CommentValidation";
 
 const router = express.Router()
 
@@ -31,5 +33,8 @@ router.patch(
 )
 
 router.delete('/:blogId', requiresAuth, validateRequest(deleteBlogSchema), controller.deleteBlog)
+
+router.get('/:blogId/comments', validateRequest(getCommentsSchema), commentsController.getComments)
+router.post('/:blogId/comment', requiresAuth, validateRequest(createCommentSchema), commentsController.createComment)
 
 export default router

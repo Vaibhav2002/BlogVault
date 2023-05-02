@@ -35,8 +35,7 @@ export const createBlog = async (userId: mongoose.Types.ObjectId, coverImage: Ex
 
 export const getAllSlugs = async () => {
     const allBlogs = await blogs.find().select('slug').exec()
-    const slugs = allBlogs.map(blog => blog.slug)
-    return slugs
+    return allBlogs.map(blog => blog.slug)
 }
 
 export const getBlogBySlug = async (slug: string) => {
@@ -44,6 +43,12 @@ export const getBlogBySlug = async (slug: string) => {
         .populate("topics author")
         .exec()
     if (!blog) throw createHttpError('404', 'Blog not found')
+    return blog
+}
+
+export const getBlogById = async (id: string) => {
+    const blog = await blogs.findById(id).exec()
+    if (!blog) throw createHttpError('404', 'Blog with this id not found')
     return blog
 }
 

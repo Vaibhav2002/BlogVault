@@ -23,26 +23,6 @@
     gap: 0.5rem;
 }
 
-.userInfoSection {
-    display: flex;
-    justify-content: space-between;
-    flex-direction: row;
-    align-items: center;
-    cursor: pointer;
-}
-
-.userInfo {
-    display: flex;
-    flex-direction: row;
-    gap: 0.5rem;
-    align-items: center;
-}
-
-.userAvatar {
-    height: 24px;
-    width: 24px;
-}
-
 .actionSection {
     justify-content: space-between;
     flex-direction: row;

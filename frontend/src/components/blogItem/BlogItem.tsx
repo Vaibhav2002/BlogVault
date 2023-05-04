@@ -10,6 +10,7 @@ import {CiBookmark} from "react-icons/ci";
 import Image from "next/image";
 import UserAvatar from "@/components/Avatar";
 import ChipGroup from "@/components/chipGroup/ChipGroup";
+import AuthorSection from "@/components/AuthorSection";
 
 interface BlogItemProps {
     blog: Blog
@@ -22,33 +23,12 @@ const BlogItem = ({blog: {title, description, createdAt, ...blog}, className, ..
     const titleSize = isBelowSm ? "subtitle2" : "h5"
     const descriptionSize = isBelowSm ? "caption" : "body2"
     const descriptionMaxLines = isBelowSm ? 2 : 3
-    const avatarSize = isBelowSm ? "small" : "medium"
-
 
     return (
-        <Box
-            className={`${styles.blogCard} ${className}`}
-            {...props}
-        >
-            <Box className={styles.blogImage} flex={isBelowSm ? 0.15 : 0.2}>
-                <Image
-                    layout="fill"
-                    objectFit="cover"
-                    src={blog.coverImage}
-                    alt={title}
-                />
-            </Box>
-
-
+        <Box className={`${styles.blogCard} ${className}`}{...props}>
             <Box className={styles.blogContent}>
 
-                <Box className={styles.userInfoSection}>
-                    <Box className={styles.userInfo}>
-                        <UserAvatar size={avatarSize} url={blog.author.profilePicUrl}/>
-                        <Typography variant="caption" color="text.secondary">{blog.author.username}</Typography>
-                    </Box>
-                    <Typography variant="caption" color="text.secondary">{formatDate(createdAt)}</Typography>
-                </Box>
+                <AuthorSection author={blog.author} date={formatDate(createdAt)}/>
 
                 <Box marginBottom={isBelowSm ? 0 : 3}>
                     <MultilineText
@@ -101,6 +81,16 @@ const BlogItem = ({blog: {title, description, createdAt, ...blog}, className, ..
                     </PrimaryButton>
                 </Box>
             </Box>
+
+            <Box className={styles.blogImage} flex={isBelowSm ? 0.15 : 0.2}>
+                <Image
+                    fill
+                    style={{objectFit:'cover'}}
+                    src={blog.coverImage}
+                    alt={title}
+                />
+            </Box>
+
 
         </Box>
     )

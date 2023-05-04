@@ -1,4 +1,5 @@
 import format from "date-fns/format"
+import {formatDistanceToNowStrict, formatRelative} from "date-fns";
 
 export const generateSlug = (title: string) => {
     return title
@@ -10,3 +11,5 @@ export const generateSlug = (title: string) => {
 }
 
 export const formatDate = (date: string) => format(new Date(date), "MMM dd, yyyy")
+
+export const formatRelativeDate = (date:string) => formatDistanceToNowStrict(new Date(date), {addSuffix: true})

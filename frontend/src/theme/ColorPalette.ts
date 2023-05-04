@@ -26,6 +26,7 @@ const colorPalette = {
     background: {
         default: '#FFFFFF',
         paper: '#F5F5F5',
+        light: '#fafafa'
     },
     text: {
         primary: '#051923',

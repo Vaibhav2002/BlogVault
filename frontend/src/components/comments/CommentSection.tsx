@@ -1,6 +1,6 @@
 import React, {useCallback, useEffect, useMemo, useState} from 'react';
 import Comment from "@/data/models/Comment";
-import {Alert, Box, Button, Collapse, Stack, Typography} from "@mui/material";
+import {Alert, Button, Collapse, Stack, Typography} from "@mui/material";
 import * as dataSource from '@/data/dataSources/CommentDataSource'
 import {HttpError} from "@/data/HttpErrors";
 import CommentItem, {CommentSkeleton} from "@/components/comments/CommentItem";

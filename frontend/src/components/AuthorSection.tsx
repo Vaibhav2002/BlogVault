@@ -1,6 +1,6 @@
 import React from 'react';
 import User from "@/data/models/User";
-import {Box, Stack, Theme, Typography, useMediaQuery} from "@mui/material";
+import {Stack, Typography} from "@mui/material";
 import UserAvatar from "@/components/Avatar";
 import Dot from "@/components/Dot";
 

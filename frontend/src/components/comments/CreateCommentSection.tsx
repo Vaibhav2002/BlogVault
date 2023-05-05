@@ -4,11 +4,10 @@ import {useForm} from "react-hook-form";
 import {yupResolver} from "@hookform/resolvers/yup";
 import FormTextField from "@/components/form/FormTextField";
 import {IconButton, Stack} from "@mui/material";
-import {RiSendPlaneFill} from "react-icons/ri";
 import {HttpError} from "@/data/HttpErrors";
 import {createComment} from "@/data/dataSources/CommentDataSource";
 import Comment from "@/data/models/Comment";
-import {Send, SendRounded} from "@mui/icons-material";
+import {SendRounded} from "@mui/icons-material";
 import {AuthModalsContext} from "@/components/modals/auth/AuthModal";
 import useAuthenticatedUser from "@/hooks/useAuthenticatedUser";
 

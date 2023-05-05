@@ -3,7 +3,8 @@ import Comment from "@/data/models/Comment";
 import {Alert, Button, Collapse, Stack, Typography} from "@mui/material";
 import * as dataSource from '@/data/dataSources/CommentDataSource'
 import {HttpError} from "@/data/HttpErrors";
-import CommentItem, {CommentSkeleton} from "@/components/comments/CommentItem";
+import CommentItem from "@/components/comments/CommentItem";
+import CommentSkeleton from "@/components/comments/CommentSkeleton";
 import CreateCommentSection from "@/components/comments/CreateCommentSection";
 
 interface CommentSectionProps {
@@ -62,6 +63,9 @@ const CommentSection = ({blogId, className}: CommentSectionProps) => {
         }))
     }, [])
 
+    const onReplyCreated = () => {
+    }
+
     return (
         <Stack spacing={1}>
             <Typography variant='h5'>Comments</Typography>
@@ -74,7 +78,7 @@ const CommentSection = ({blogId, className}: CommentSectionProps) => {
 
             <Stack spacing={loading ? 4 : 2} marginTop={2}>
                 {commentsAvailable && comments.map(comment => (
-                    <CommentItem comment={comment} onCommentUpdated={onCommentUpdated}/>
+                    <CommentItem comment={comment} onCommentUpdated={onCommentUpdated} onReplyCreated={onReplyCreated}/>
                 ))}
                 {loading && skeletons}
                 {commentsAvailable && endOfPaginationReached === false &&

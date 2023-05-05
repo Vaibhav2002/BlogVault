@@ -1,6 +1,6 @@
-import React, {useMemo, useState} from 'react';
+import React, {useContext, useMemo, useState} from 'react';
 import Comment from "@/data/models/Comment";
-import {Box, Skeleton, Stack, Typography} from "@mui/material";
+import {Box, Button, Stack, Typography} from "@mui/material";
 import AuthorSection from "@/components/AuthorSection";
 import {formatRelativeDate} from "@/utils/Helpers";
 import Dot from "@/components/Dot";
@@ -8,15 +8,21 @@ import MultilineText from "@/components/styled/MultilineText";
 import useAuthenticatedUser from "@/hooks/useAuthenticatedUser";
 import EditCommentSection from "@/components/comments/EditCommentSection";
 import Link from "@mui/material/Link";
+import CreateCommentSection from "@/components/comments/CreateCommentSection";
+import {AuthModalsContext} from "@/components/modals/auth/AuthModal";
 
 interface CommentProps {
     comment: Comment,
     onCommentUpdated: (comment: Comment) => void,
+    onReplyCreated: (comment: Comment) => void,
     className?: string
 }
 
-const CommentItem = ({comment, onCommentUpdated, className}: CommentProps) => {
+const CommentItem = ({comment, onCommentUpdated, onReplyCreated, className}: CommentProps) => {
+    const {user} = useAuthenticatedUser()
+    const {showLogin} = useContext(AuthModalsContext)
     const [showEdit, setShowEdit] = useState<boolean>(false)
+    const [showReplyBox, setShowReplyBox] = useState(false);
 
     const handleCommentUpdated = (updatedComment: Comment) => {
         onCommentUpdated(updatedComment)
@@ -24,26 +30,49 @@ const CommentItem = ({comment, onCommentUpdated, className}: CommentProps) => {
     }
 
     const handleReplyClicked = () => {
-
+        if (!user) showLogin()
+        else setShowReplyBox(true)
     }
 
     const handleEditClicked = () => {
         setShowEdit(true)
+        setShowReplyBox(false)
     }
 
     const handleDeleteClicked = () => {
     }
 
-    const onCancel = () => {
-        setShowEdit(false)
+    const handleReplyCreated = (comment: Comment) => {
+        setShowReplyBox(false)
+        onReplyCreated(comment)
     }
 
     return (
         <Box>
             {showEdit
-                ? <EditCommentSection comment={comment} onCommentUpdated={handleCommentUpdated} onCancel={onCancel}/>
-                : <CommentLayout comment={comment} onEditClicked={handleEditClicked} onReplyClicked={handleReplyClicked}
-                                 onDeleteClicked={handleDeleteClicked}/>
+                ? <EditCommentSection
+                    comment={comment}
+                    onCommentUpdated={handleCommentUpdated}
+                    onCancel={() => setShowEdit(false)}/>
+                : (
+                    <Stack sx={{backgroundColor: 'background.light', borderRadius: '8px'}} padding={2} spacing={1}>
+                        <CommentLayout
+                            comment={comment}
+                            onEditClicked={handleEditClicked}
+                            onReplyClicked={handleReplyClicked}
+                            onDeleteClicked={handleDeleteClicked}
+                        />
+                        {showReplyBox && <CreateCommentSection
+                            blogId={comment.blogId}
+                            onCommentCreated={handleReplyCreated}
+                            parentCommentId={comment._id}
+                            placeholder='Write a reply...'
+                            canClose
+                            onClose={() => setShowReplyBox(false)}
+                        />}
+                    </Stack>
+                )
+
             }
         </Box>
     )
@@ -68,7 +97,7 @@ const CommentLayout = ({comment, onEditClicked, onReplyClicked, onDeleteClicked,
     ), [])
 
     return (
-        <Box sx={{backgroundColor: 'background.light', borderRadius: '8px'}} width={1} padding={2}>
+        <Box>
             <Stack direction='row' overflow="hidden" spacing={1} alignItems='center'>
                 <AuthorSection author={comment.author} date={formatRelativeDate(comment.createdAt)}/>
                 {isUpdated && editedText}
@@ -121,16 +150,19 @@ const CommentActions = ({authorId, onReplyClicked, onEditClicked, onDeleteClicke
     )
 }
 
-export const CommentSkeleton = () => {
+interface CommentDeleteProps {
+    onDelete: () => void
+    onCancel: () => void
+}
+
+const CommentDelete = ({onDelete, onCancel}: CommentDeleteProps) => {
     return (
-        <Stack direction='row' alignItems='start' width={1} spacing={1}>
-            <Skeleton variant='circular' width={40} height={40} animation='wave'/>
-            <Stack flex={1} alignItems='stretch' spacing={1}>
-                <Skeleton variant='rectangular' height={40} animation='wave'/>
-                <Skeleton variant='rectangular' height={100} animation='wave'/>
-            </Stack>
+        <Stack direction='row' spacing={1} padding={1}>
+            <Button variant='outlined' color='error' onClick={onDelete}>Delete</Button>
+            <Button variant='outlined' onClick={onCancel}>Cancel</Button>
         </Stack>
     )
 }
+
 
 export default CommentItem;

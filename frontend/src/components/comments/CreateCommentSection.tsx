@@ -7,14 +7,20 @@ import {IconButton, Stack} from "@mui/material";
 import {HttpError} from "@/data/HttpErrors";
 import {createComment} from "@/data/dataSources/CommentDataSource";
 import Comment from "@/data/models/Comment";
-import {SendRounded} from "@mui/icons-material";
+import {Close, SendRounded} from "@mui/icons-material";
 import {AuthModalsContext} from "@/components/modals/auth/AuthModal";
 import useAuthenticatedUser from "@/hooks/useAuthenticatedUser";
 
 interface CreateCommentSectionProps {
-    blogId:string
+    blogId: string
+    title?: string
+    parentCommentId?: string
+    defaultValue?: string
+    placeholder?: string
+    canClose?: boolean,
+    onClose?: () => void,
     className?: string,
-    onCommentCreated:(comment:Comment) => void
+    onCommentCreated: (comment: Comment) => void
 }
 
 const createCommentSchema = yup.object({
@@ -23,24 +29,27 @@ const createCommentSchema = yup.object({
 
 type CreateCommentValues = yup.InferType<typeof createCommentSchema>
 
-const CreateCommentSection = ({blogId, onCommentCreated, className}: CreateCommentSectionProps) => {
+const CreateCommentSection = (
+    {blogId, title, parentCommentId, defaultValue, onCommentCreated, className, ...props}: CreateCommentSectionProps
+) => {
     const {showLogin} = useContext(AuthModalsContext)
     const {user} = useAuthenticatedUser()
 
     const {control, handleSubmit, reset} = useForm<CreateCommentValues>({
-        resolver: yupResolver(createCommentSchema)
+        resolver: yupResolver(createCommentSchema),
+        defaultValues: {comment: defaultValue}
     })
 
-    const onSubmit = async({comment}:CreateCommentValues) => {
-        if(!comment) return
-        if(!user) return showLogin()
-        try{
-            const response = await createComment(blogId, {comment})
+    const onSubmit = async ({comment}: CreateCommentValues) => {
+        if (!comment) return
+        if (!user) return showLogin()
+        try {
+            const response = await createComment(blogId, {comment, parentCommentId})
             onCommentCreated(response)
             reset()
-        } catch(e){
+        } catch (e) {
             console.error(e)
-            if(e instanceof HttpError) alert(e.message)
+            if (e instanceof HttpError) alert(e.message)
         }
     }
 
@@ -53,11 +62,16 @@ const CreateCommentSection = ({blogId, onCommentCreated, className}: CreateComme
                     name='comment'
                     maxLength={300}
                     showLength
+                    label={title}
                     maxRows={4}
-                    placeholder='Enter your comment here'
+                    placeholder={props.placeholder || 'Enter your comment here'}
                     InputProps={{
                         endAdornment: (
-                            <IconButton size='small' type='submit'><SendRounded/></IconButton>
+                            <>
+                                <IconButton size='small' type='submit'><SendRounded/></IconButton>
+                                {props.canClose &&
+                                    <IconButton size='small' onClick={props.onClose}><Close/></IconButton>}
+                            </>
                         )
                     }}
                 />

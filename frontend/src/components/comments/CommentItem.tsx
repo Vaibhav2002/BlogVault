@@ -10,19 +10,23 @@ import EditCommentSection from "@/components/comments/EditCommentSection";
 import Link from "@mui/material/Link";
 import CreateCommentSection from "@/components/comments/CreateCommentSection";
 import {AuthModalsContext} from "@/components/modals/auth/AuthModal";
+import {NotFoundError} from "@/data/HttpErrors";
+import * as dataSource from "@/data/dataSources/CommentDataSource";
 
 interface CommentProps {
     comment: Comment,
     onCommentUpdated: (comment: Comment) => void,
     onReplyCreated: (comment: Comment) => void,
+    onCommentDeleted: (comment: Comment) => void
     className?: string
 }
 
-const CommentItem = ({comment, onCommentUpdated, onReplyCreated, className}: CommentProps) => {
+const CommentItem = ({comment, onCommentUpdated, onCommentDeleted, onReplyCreated, className}: CommentProps) => {
     const {user} = useAuthenticatedUser()
     const {showLogin} = useContext(AuthModalsContext)
     const [showEdit, setShowEdit] = useState<boolean>(false)
     const [showReplyBox, setShowReplyBox] = useState(false);
+    const [showDeleteConfirmation, setShowDeleteConfirmation] = useState(false);
 
     const handleCommentUpdated = (updatedComment: Comment) => {
         onCommentUpdated(updatedComment)
@@ -40,6 +44,13 @@ const CommentItem = ({comment, onCommentUpdated, onReplyCreated, className}: Com
     }
 
     const handleDeleteClicked = () => {
+        setShowReplyBox(false)
+        setShowDeleteConfirmation(true)
+    }
+
+    const handleCommentDeleted = () => {
+        setShowDeleteConfirmation(false)
+        onCommentDeleted(comment)
     }
 
     const handleReplyCreated = (comment: Comment) => {
@@ -70,6 +81,12 @@ const CommentItem = ({comment, onCommentUpdated, onReplyCreated, className}: Com
                             canClose
                             onClose={() => setShowReplyBox(false)}
                         />}
+                        {showDeleteConfirmation && <CommentDelete
+                            comment={comment}
+                            onDeleted={handleCommentDeleted}
+                            onCancel={() => setShowDeleteConfirmation(false)}/>
+                        }
+
                     </Stack>
                 )
 
@@ -151,14 +168,27 @@ const CommentActions = ({authorId, onReplyClicked, onEditClicked, onDeleteClicke
 }
 
 interface CommentDeleteProps {
-    onDelete: () => void
+    comment: Comment,
+    onDeleted: () => void
     onCancel: () => void
 }
 
-const CommentDelete = ({onDelete, onCancel}: CommentDeleteProps) => {
+const CommentDelete = ({comment, onDeleted, onCancel}: CommentDeleteProps) => {
+
+    const deleteComment = async () => {
+        try {
+            await dataSource.deleteComment(comment._id)
+            onDeleted()
+        } catch (e) {
+            if (e instanceof NotFoundError) onDeleted()
+            else if (e instanceof Error) alert(e.message)
+            console.error(e)
+        }
+    }
+
     return (
-        <Stack direction='row' spacing={1} padding={1}>
-            <Button variant='outlined' color='error' onClick={onDelete}>Delete</Button>
+        <Stack direction='row' spacing={1} padding={1} justifyContent='end'>
+            <Button variant='outlined' color='error' onClick={deleteComment}>Delete</Button>
             <Button variant='outlined' onClick={onCancel}>Cancel</Button>
         </Stack>
     )

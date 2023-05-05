@@ -66,6 +66,10 @@ const CommentSection = ({blogId, className}: CommentSectionProps) => {
     const onReplyCreated = () => {
     }
 
+    const onCommentDeleted = useCallback((comment: Comment) => {
+        setComments(prevComments => prevComments.filter(prevComment => prevComment._id !== comment._id))
+    }, [])
+
     return (
         <Stack spacing={1}>
             <Typography variant='h5'>Comments</Typography>
@@ -78,7 +82,12 @@ const CommentSection = ({blogId, className}: CommentSectionProps) => {
 
             <Stack spacing={loading ? 4 : 2} marginTop={2}>
                 {commentsAvailable && comments.map(comment => (
-                    <CommentItem comment={comment} onCommentUpdated={onCommentUpdated} onReplyCreated={onReplyCreated}/>
+                    <CommentItem
+                        comment={comment}
+                        onCommentUpdated={onCommentUpdated}
+                        onReplyCreated={onReplyCreated}
+                        onCommentDeleted={onCommentDeleted}
+                    />
                 ))}
                 {loading && skeletons}
                 {commentsAvailable && endOfPaginationReached === false &&

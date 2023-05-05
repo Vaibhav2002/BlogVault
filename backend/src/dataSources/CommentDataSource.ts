@@ -10,7 +10,7 @@ export const getComments = async (blogId: string, continueAfterId?: string) => {
         .find({blogId: blogId, parentCommentId:undefined})
         .sort({_id: -1})
 
-    if(continueAfterId)
+    if (continueAfterId)
         query.lt('_id', continueAfterId)
 
     const allComments = await query
@@ -21,8 +21,13 @@ export const getComments = async (blogId: string, continueAfterId?: string) => {
     const blogComments = allComments.slice(0, pageSize)
     const endOfPaginationReached = allComments.length <= pageSize
 
+    const commentWithReplies = await Promise.all(blogComments.map(async comment => {
+        const replies = await comments.countDocuments({parentCommentId: comment._id}).exec()
+        return {...comment.toObject(), repliesCount: replies}
+    }))
+
     return {
-        comments: blogComments,
+        comments: commentWithReplies,
         endOfPaginationReached
     }
 }

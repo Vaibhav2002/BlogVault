@@ -9,6 +9,7 @@ import * as commentsController from "../controllers/CommentController";
 import {
     createCommentSchema,
     deleteCommentSchema,
+    getCommentRepliesSchema,
     getCommentsSchema,
     updateCommentSchema
 } from "../validation/CommentValidation";
@@ -46,5 +47,6 @@ router.get('/:blogId/comments', validateRequest(getCommentsSchema), commentsCont
 router.post('/:blogId/comment', requiresAuth, validateRequest(createCommentSchema), commentsController.createComment)
 router.patch('/comments/:commentId', requiresAuth, validateRequest(updateCommentSchema), commentsController.updateComment)
 router.delete('/comments/:commentId', requiresAuth, validateRequest(deleteCommentSchema), commentsController.deleteComment)
+router.get('/comments/:commentId/replies', validateRequest(getCommentRepliesSchema), commentsController.getCommentReplies)
 
 export default router

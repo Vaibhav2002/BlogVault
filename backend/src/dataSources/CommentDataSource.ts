@@ -60,6 +60,30 @@ export const deleteComment = async (userId: string, commentId: string) => {
     await comments.find({parentCommentId: commentId}).deleteMany()
 }
 
+export const getCommentReplies = async (commentId: string, continueAfterId?: string) => {
+    await getCommentById(commentId) //assert comment exists
+
+    const pageSize = 3
+    const query = comments.find({parentCommentId: commentId})
+
+    if (continueAfterId)
+        query.gt('_id', continueAfterId)
+
+    const replies = await query
+        .populate('author')
+        .limit(pageSize + 1)
+        .exec()
+
+    const commentReplies = replies.slice(0, pageSize)
+    const endOfPaginationReached = commentReplies.length <= pageSize
+
+    return {
+        comments: commentReplies,
+        endOfPaginationReached
+    }
+}
+
+
 const getCommentById = async (commentId: string) => {
     const comment = await comments.findById(commentId).populate('author').exec()
     if (!comment) throw createHttpError(404, 'Comment not found')

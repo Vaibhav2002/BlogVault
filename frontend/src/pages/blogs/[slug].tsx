@@ -13,7 +13,7 @@ import ChipGroup from "@/components/chipGroup/ChipGroup";
 import BlogAuthorSection from "@/components/BlogAuthorSection";
 import useDevices from "@/hooks/useDevices";
 import NavScreen from "@/components/NavScreen/NavScreen";
-import CommentSection from "@/components/comments/CommentSection";
+import BlogCommentSection from "@/components/comments/CommentSection";
 
 export const getStaticPaths: GetStaticPaths = async () => {
     const slugs = await getAllSlugs();
@@ -132,10 +132,10 @@ interface BlogFooterProps {
 
 const BlogFooter = ({blog, className, ...props}: BlogFooterProps & StackProps) => {
     return (
-        <Stack width={1} spacing={2} className={className} {...props}>
+        <Stack width={1} spacing={3} className={className} {...props}>
             <ChipGroup items={blog.topics} getLabel={(topic: Topic) => topic.name} alignSelf='center'/>
             <Box>
-                <CommentSection blogId={blog._id}/>
+                <BlogCommentSection blogId={blog._id}/>
             </Box>
         </Stack>
     )

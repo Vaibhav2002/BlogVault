@@ -4,10 +4,15 @@ import {Alert, Box, Button, Collapse, Stack, Typography} from "@mui/material";
 import * as dataSource from '@/data/dataSources/CommentDataSource'
 import {HttpError} from "@/data/HttpErrors";
 import CommentItem, {CommentSkeleton} from "@/components/comments/CommentItem";
+import CreateCommentSection from "@/components/comments/CreateCommentSection";
 
 interface CommentSectionProps {
     blogId: string
     className?: string
+}
+
+const BlogCommentSection = (props: CommentSectionProps) => {
+    return <CommentSection {...props} key={props.blogId}/>
 }
 
 const CommentSection = ({blogId, className}: CommentSectionProps) => {
@@ -21,11 +26,9 @@ const CommentSection = ({blogId, className}: CommentSectionProps) => {
         Array(3).fill(0).map((_, i) => <CommentSkeleton key={i}/>)
     ), []);
 
-    const commentsAvailable = !loading && comments.length > 0
+    const commentsAvailable= comments.length > 0
 
-    const paginate = () => useCallback(() =>
-        loadComments(comments[comments.length - 1]?._id), [comments]
-    )
+    const paginate = () => loadComments(comments[comments.length - 1]?._id)
 
     const loadComments = useCallback(async function (lastCommentId?: string)  {
         setError(null)
@@ -48,21 +51,32 @@ const CommentSection = ({blogId, className}: CommentSectionProps) => {
         loadComments()
     }, [loadComments])
 
+    const onCommentCreated = (comment:Comment) => (
+        setComments(prevComments => [comment, ...prevComments])
+    )
+
     return (
-        <Stack spacing={2}>
+        <Stack spacing={1}>
             <Typography variant='h5'>Comments</Typography>
+
             <Collapse in={!!error}>
                 <Alert severity='error'>{error}</Alert>
             </Collapse>
-            <Stack spacing={loading ? 4 : 2}>
-                {loading && skeletons}
+
+            <CreateCommentSection blogId={blogId} onCommentCreated={onCommentCreated}/>
+
+            <Stack spacing={loading ? 4 : 2} marginTop={2}>
                 {commentsAvailable && comments.map(comment => <CommentItem comment={comment}/>)}
+                {loading && skeletons}
                 {commentsAvailable && endOfPaginationReached === false &&
                     <Button variant='text' onClick={paginate}>Load More</Button>
+                }
+                {!commentsAvailable && endOfPaginationReached &&
+                    <Typography variant='body2'>No comments yet</Typography>
                 }
             </Stack>
         </Stack>
     )
 }
 
-export default CommentSection;
+export default BlogCommentSection;

@@ -1,6 +1,5 @@
 import * as yup from 'yup';
 
-
 export const requiredStringSchema = yup.string().required('Required');
 
 export const usernameSchema = yup.string()
@@ -17,3 +16,5 @@ export const slugSchema = yup.string()
     .matches(/^[a-zA-Z0-9_-]*$/, 'No Special Characters or spaces allowed')
 
 export const requiredFileSchema = yup.mixed<File>().required('Required')
+
+export const commentSchema = yup.string().max(300, "Comment cannot be longer than 300 characters")

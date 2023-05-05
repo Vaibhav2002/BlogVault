@@ -51,9 +51,16 @@ const CommentSection = ({blogId, className}: CommentSectionProps) => {
         loadComments()
     }, [loadComments])
 
-    const onCommentCreated = (comment:Comment) => (
+    const onCommentCreated = (comment: Comment) => (
         setComments(prevComments => [comment, ...prevComments])
     )
+
+    const onCommentUpdated = useCallback((comment: Comment) => {
+        setComments(prevComments => prevComments.map(prevComment => {
+            if (prevComment._id === comment._id) return comment
+            return prevComment
+        }))
+    }, [])
 
     return (
         <Stack spacing={1}>
@@ -66,7 +73,9 @@ const CommentSection = ({blogId, className}: CommentSectionProps) => {
             <CreateCommentSection blogId={blogId} onCommentCreated={onCommentCreated}/>
 
             <Stack spacing={loading ? 4 : 2} marginTop={2}>
-                {commentsAvailable && comments.map(comment => <CommentItem comment={comment}/>)}
+                {commentsAvailable && comments.map(comment => (
+                    <CommentItem comment={comment} onCommentUpdated={onCommentUpdated}/>
+                ))}
                 {loading && skeletons}
                 {commentsAvailable && endOfPaginationReached === false &&
                     <Button variant='text' onClick={paginate}>Load More</Button>

@@ -27,3 +27,15 @@ export const getCommentsSchema = yup.object({
 
 export type GetCommentsParams = yup.InferType<typeof getCommentsSchema>['params']
 export type GetCommentsQuery = yup.InferType<typeof getCommentsSchema>['query']
+
+export const updateCommentSchema = yup.object({
+    params: yup.object({
+        commentId: mongoIdSchema.required(),
+    }),
+    body: yup.object({
+        comment: commentBodySchema
+    })
+})
+
+export type UpdateCommentBody = yup.InferType<typeof updateCommentSchema>['body']
+export type UpdateCommentParams = yup.InferType<typeof updateCommentSchema>['params']

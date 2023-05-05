@@ -3,7 +3,9 @@ import {
     CreateCommentBody,
     CreateCommentParams,
     GetCommentsParams,
-    GetCommentsQuery
+    GetCommentsQuery,
+    UpdateCommentBody,
+    UpdateCommentParams
 } from "../validation/CommentValidation";
 import * as dataSource from "../dataSources/CommentDataSource";
 import {assertIsDefined} from "../utils/Helpers";
@@ -30,6 +32,20 @@ export const createComment:RequestHandler<CreateCommentParams, unknown, CreateCo
 
         const newComment = await dataSource.createComment(blogId, author.toString(), comment, parentCommentId)
         res.status(201).json(newComment)
+    } catch (e) {
+        next(e)
+    }
+}
+
+export const updateComment: RequestHandler<UpdateCommentParams, unknown, UpdateCommentBody, unknown> = async (req, res, next) => {
+    const author = req.user?._id
+    try {
+        assertIsDefined(author, 'Author')
+        const {commentId} = req.params
+        const {comment} = req.body
+
+        const updatedComment = await dataSource.updateComment(author.toString(), commentId, comment)
+        res.status(200).json(updatedComment)
     } catch (e) {
         next(e)
     }

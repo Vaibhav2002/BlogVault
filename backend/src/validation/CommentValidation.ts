@@ -39,3 +39,11 @@ export const updateCommentSchema = yup.object({
 
 export type UpdateCommentBody = yup.InferType<typeof updateCommentSchema>['body']
 export type UpdateCommentParams = yup.InferType<typeof updateCommentSchema>['params']
+
+export const deleteCommentSchema = yup.object({
+    params: yup.object({
+        commentId: mongoIdSchema.required()
+    })
+})
+
+export type DeleteCommentParams = yup.InferType<typeof deleteCommentSchema>['params']

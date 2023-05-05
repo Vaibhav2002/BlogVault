@@ -2,6 +2,7 @@ import {RequestHandler} from "express";
 import {
     CreateCommentBody,
     CreateCommentParams,
+    DeleteCommentParams,
     GetCommentsParams,
     GetCommentsQuery,
     UpdateCommentBody,
@@ -9,6 +10,7 @@ import {
 } from "../validation/CommentValidation";
 import * as dataSource from "../dataSources/CommentDataSource";
 import {assertIsDefined} from "../utils/Helpers";
+import {apiResponse} from "../models/ApiResponse";
 
 export const getComments:RequestHandler<GetCommentsParams, unknown, unknown, GetCommentsQuery> = async(req, res, next) => {
     try{
@@ -46,6 +48,19 @@ export const updateComment: RequestHandler<UpdateCommentParams, unknown, UpdateC
 
         const updatedComment = await dataSource.updateComment(author.toString(), commentId, comment)
         res.status(200).json(updatedComment)
+    } catch (e) {
+        next(e)
+    }
+}
+
+export const deleteComment: RequestHandler<DeleteCommentParams, unknown, unknown, unknown> = async (req, res, next) => {
+    const author = req.user?._id
+    try {
+        assertIsDefined(author, 'Author')
+        const {commentId} = req.params
+
+        await dataSource.deleteComment(author.toString(), commentId)
+        res.status(200).json(apiResponse('Comment deleted successfully'))
     } catch (e) {
         next(e)
     }

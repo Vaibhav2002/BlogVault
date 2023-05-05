@@ -52,6 +52,14 @@ export const updateComment = async (userId: string, commentId: string, comment: 
     return commentToUpdate
 }
 
+export const deleteComment = async (userId: string, commentId: string) => {
+    const commentToDelete = await getCommentById(commentId)
+    assertCommentOwnership(commentToDelete, userId)
+
+    await commentToDelete.deleteOne()
+    await comments.find({parentCommentId: commentId}).deleteMany()
+}
+
 const getCommentById = async (commentId: string) => {
     const comment = await comments.findById(commentId).populate('author').exec()
     if (!comment) throw createHttpError(404, 'Comment not found')

@@ -1,10 +1,10 @@
 import express from "express";
 import * as controller from "../controllers/BlogController";
-import {coverImageMiddleware} from "../middlewares/FileMiddleware";
+import {coverImageMiddleware, inBlogImage} from "../middlewares/FileMiddleware";
 import validateRequest from "../middlewares/validateRequest";
 import {createBlogSchema, deleteBlogSchema, getBlogsSchema, updateBlogSchema} from "../validation/BlogValidation";
 import requiresAuth from "../middlewares/AuthMiddleware";
-import {postBlogRateLimit, updateBlogRateLimit} from "../middlewares/RateLimit";
+import {postBlogRateLimit, updateBlogRateLimit, uploadInBlogImageRateLimit} from "../middlewares/RateLimit";
 import * as commentsController from "../controllers/CommentController";
 import {
     createCommentSchema,
@@ -27,6 +27,14 @@ router.post(
     coverImageMiddleware.single("coverImage"),
     validateRequest(createBlogSchema),
     controller.createBlog
+)
+
+router.post(
+    '/upload-image',
+    requiresAuth,
+    uploadInBlogImageRateLimit,
+    inBlogImage.single("inBlogImage"),
+    controller.uploadInBlogImage
 )
 
 router.patch(

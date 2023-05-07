@@ -1,11 +1,12 @@
 import blogs from '../models/entities/Blog';
 import * as topicDataSource from "./TopicDataSource";
 import createHttpError from "http-errors";
-import {removeImage, saveCoverImage, savePosterImage} from "./ImageDataSource";
+import * as imageDataSource from "./ImageDataSource";
 import * as mongoose from "mongoose";
 import {BlogBody} from "../validation/BlogValidation";
 import {appendLastUpdated, MongoId} from "../utils/Helpers";
 import env from "../utils/CleanEnv";
+import * as crypto from "crypto";
 
 export const createBlog = async (userId: mongoose.Types.ObjectId, coverImage: Express.Multer.File, req: BlogBody) => {
 
@@ -17,7 +18,8 @@ export const createBlog = async (userId: mongoose.Types.ObjectId, coverImage: Ex
     const id = new mongoose.Types.ObjectId()
 
     const [coverImagePath, posterPath] = await Promise.all([
-        saveCoverImage(coverImage, id.toString()), savePosterImage(coverImage, id.toString())
+        imageDataSource.saveCoverImage(coverImage, id.toString()),
+        imageDataSource.savePosterImage(coverImage, id.toString())
     ])
 
     return await blogs.create({
@@ -31,6 +33,14 @@ export const createBlog = async (userId: mongoose.Types.ObjectId, coverImage: Ex
         posterImage: posterPath,
         author: userId
     })
+}
+
+export const uploadInBlogImage = async (image: Express.Multer.File) => {
+    const fileName = crypto.randomBytes(20).toString('hex')
+    const url = await imageDataSource.saveInBlogImage(image, fileName)
+    return {
+        url: url
+    }
 }
 
 export const getAllSlugs = async () => {
@@ -89,8 +99,8 @@ export const updateBlog = async (userId: MongoId, blogId: string, blogBody: Blog
         throw createHttpError(400, 'Invalid topics present')
 
     const [coverImagePath, posterImagePath] = coverImage ? await Promise.all([
-        saveCoverImage(coverImage, blogId.toString()),
-        savePosterImage(coverImage, blogId.toString())
+        imageDataSource.saveCoverImage(coverImage, blogId.toString()),
+        imageDataSource.savePosterImage(coverImage, blogId.toString())
     ]) : [undefined, undefined]
 
     blog.title = blogBody.title
@@ -108,8 +118,8 @@ export const updateBlog = async (userId: MongoId, blogId: string, blogBody: Blog
 export const deleteBlog = async (userId: MongoId, blogId: string) => {
     const blog = await assertBlogExistsAndIsOfUser(userId, blogId)
 
-    if (blog.coverImage.startsWith(env.SERVER_URL)) removeImage(blog.coverImage)
-    if (blog.posterImage.startsWith(env.SERVER_URL)) removeImage(blog.posterImage)
+    if (blog.coverImage.startsWith(env.SERVER_URL)) imageDataSource.removeImage(blog.coverImage)
+    if (blog.posterImage.startsWith(env.SERVER_URL)) imageDataSource.removeImage(blog.posterImage)
 
     await blog.deleteOne()
 }

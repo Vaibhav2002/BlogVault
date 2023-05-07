@@ -29,6 +29,17 @@ export const createBlog: RequestHandler<unknown, unknown, BlogBody, unknown> = a
     }
 }
 
+export const uploadInBlogImage: RequestHandler = async (req, res, next) => {
+    const image = req.file
+    try {
+        assertIsDefined(image, "Image")
+        const url = await dataSource.uploadInBlogImage(image)
+        res.status(200).json(url)
+    } catch (e) {
+        next(e)
+    }
+}
+
 export const getAllSlugs: RequestHandler = async (req, res, next) => {
     try {
         const slugs = await dataSource.getAllSlugs()

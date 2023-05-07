@@ -36,3 +36,12 @@ export const updateBlogRateLimit = rateLimit({
     standardHeaders: true,
     legacyHeaders: false
 })
+
+export const uploadInBlogImageRateLimit = rateLimit({
+    windowMs: 60 * 60 * 1000, // 1 hour
+    max: 50, // limit each IP to 5 requests per windowMs
+    message: apiResponse("You're uploading too many images, please try again after 1 hour"),
+    skipFailedRequests: true,
+    standardHeaders: true,
+    legacyHeaders: false
+})

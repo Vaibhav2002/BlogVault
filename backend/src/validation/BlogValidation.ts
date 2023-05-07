@@ -53,3 +53,7 @@ export const updateBlogSchema = yup.object({
 export const deleteBlogSchema = yup.object({
     params: blogIdParamSchema
 })
+
+export const inBlogImageSchema = yup.object({
+    file: imageSchema.required('image is required')
+})

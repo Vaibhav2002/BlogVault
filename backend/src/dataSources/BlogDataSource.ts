@@ -11,7 +11,7 @@ export const createBlog = async (userId: mongoose.Types.ObjectId, coverImage: Ex
 
     if (await isSlugTaken(req.slug)) throw createHttpError('409', 'Slug already used')
 
-    if (await topicDataSource.areTopicsValid(JSON.parse(req.topics)))
+    if (!(await topicDataSource.areTopicsValid(JSON.parse(req.topics))))
         throw createHttpError('400', 'Invalid topics')
 
     const id = new mongoose.Types.ObjectId()

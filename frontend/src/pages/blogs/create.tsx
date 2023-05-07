@@ -114,6 +114,7 @@ const CreateNewBlogPage = () => {
                         setValue={setValue}
                         placeholder="Write your blog here..."
                         className={styles.editor}
+                        onError={setError}
                     />
 
                     {/*Mobile View*/}

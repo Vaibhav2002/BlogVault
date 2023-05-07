@@ -4,6 +4,9 @@ import {Typography} from "@mui/material";
 import rehypeRaw from "rehype-raw";
 import {Prism as SyntaxHighlighter} from 'react-syntax-highlighter';
 import {oneDark} from "react-syntax-highlighter/dist/cjs/styles/prism";
+import remarkGfm from "remark-gfm";
+import remarkToc from "remark-toc";
+import rehypeSlug from "rehype-slug";
 
 interface MarkdownProps {
     children: string
@@ -11,10 +14,12 @@ interface MarkdownProps {
 }
 
 const Markdown = ({children, className}: MarkdownProps) => {
+
     return (
         <ReactMarkdown
             className={className}
-            rehypePlugins={[rehypeRaw]}
+            remarkPlugins={[remarkGfm, [remarkToc, {compact: true, maxDepth: 3}]]}
+            rehypePlugins={[rehypeRaw, rehypeSlug]}
             components={{
                 h1: ({node, ...props}) => <Typography {...props} variant="h4" fontStyle="bold"/>,
                 h2: ({node, ...props}) => <Typography {...props} variant="h5" fontStyle="bold"/>,
@@ -40,7 +45,10 @@ const Markdown = ({children, className}: MarkdownProps) => {
                 },
 
                 img: ({node, ...props}) =>
-                    <img width="100%" style={{aspectRatio: `${props.width}/${props.height}`}} {...props}/>
+                    <span style={{display: 'inline-flex', justifyContent: 'center', flexDirection: 'row'}}>
+                        <img style={{maxWidth: '100%'}} {...props}/>
+                    </span>
+
             }}
         >
             {children}

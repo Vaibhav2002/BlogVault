@@ -1,5 +1,4 @@
-import {Box} from "@mui/material";
-import {styled} from "@mui/system";
+import {Box, styled} from "@mui/material";
 
 const CenteredBox = styled(Box)({
     display: 'flex',

@@ -24,6 +24,12 @@ export const createBlog = async (blog: BlogData) => {
     return response.data as Blog
 }
 
+export const uploadInBlogImage = async (image: File) => {
+    const formData = new FormData()
+    formData.append('inBlogImage', image)
+    const response = await api.post<{ url: string }>(`/blogs/upload-image`, formData)
+    return response.data
+}
 
 interface UpdateBlogData {
     title: string

@@ -166,6 +166,7 @@ const EditBlogPage = ({blog}: EditBlogPageProps) => {
                     setValue={setValue}
                     placeholder="Write your blog here..."
                     className={styles.editor}
+                    onError={setError}
                 />
 
                 {isMobile && submitButton}

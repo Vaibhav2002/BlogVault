@@ -2,6 +2,8 @@ import dynamic from "next/dynamic";
 import React from 'react';
 import {FieldError, UseFormRegisterReturn, UseFormSetValue} from "react-hook-form";
 import Markdown from "@/components/Markdown";
+import {uploadInBlogImage} from "@/data/dataSources/BlogDataSource";
+import {HttpError} from "@/data/HttpErrors";
 
 
 const MdEditor = dynamic(() => import('react-markdown-editor-lite'), {
@@ -15,10 +17,24 @@ interface MdEditorProps {
     setValue: UseFormSetValue<any>
     placeholder?: string,
     error?: FieldError
-    className?: string
+    className?: string,
+    onError?: (error: string) => void
 }
 
-const MarkdownEditor = ({register, value, setValue, placeholder, error, className}: MdEditorProps) => {
+const MarkdownEditor = ({register, value, setValue, placeholder, error, onError, className}: MdEditorProps) => {
+
+    const uploadImage = async (image: File) => {
+        try {
+            const response = await uploadInBlogImage(image)
+            return response.url
+        } catch (e) {
+            console.error(e)
+            if (e instanceof HttpError)
+                onError ? onError(e.message) : alert(e)
+            else alert(e)
+        }
+    }
+
     return (
         <MdEditor
             {...register}
@@ -30,6 +46,8 @@ const MarkdownEditor = ({register, value, setValue, placeholder, error, classNam
             renderHTML={text => <Markdown>{text}</Markdown>}
             placeholder={placeholder}
             view={{html: false, menu: true, md: true}}
+            onImageUpload={uploadImage}
+            imageAccept='.png,.jpeg,.jpg'
         />
     )
 }

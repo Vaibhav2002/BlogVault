@@ -4,10 +4,11 @@ export default interface Comment {
     _id: string
     blogId: string
     parentCommentId?: string
-    author:User,
+    author: User,
     comment: string
     createdAt: string
-    updatedAt: string
+    updatedAt: string,
+    repliesCount?: number,
 }
 
 export interface CommentPage {

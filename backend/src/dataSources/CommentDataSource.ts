@@ -14,8 +14,8 @@ export const getComments = async (blogId: string, continueAfterId?: string) => {
         query.lt('_id', continueAfterId)
 
     const allComments = await query
-        .populate('author')
         .limit(pageSize + 1)
+        .populate('author')
         .exec()
 
     const blogComments = allComments.slice(0, pageSize)
@@ -75,12 +75,12 @@ export const getCommentReplies = async (commentId: string, continueAfterId?: str
         query.gt('_id', continueAfterId)
 
     const replies = await query
-        .populate('author')
         .limit(pageSize + 1)
+        .populate('author')
         .exec()
 
     const commentReplies = replies.slice(0, pageSize)
-    const endOfPaginationReached = commentReplies.length <= pageSize
+    const endOfPaginationReached = replies.length <= pageSize
 
     return {
         comments: commentReplies,

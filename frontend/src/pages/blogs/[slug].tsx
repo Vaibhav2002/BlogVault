@@ -52,7 +52,7 @@ const BlogPage = ({blog}: BlogPageProps) => {
                     overflowX: "hidden"
                 }}
                 spacing={8}
-                alignItems="center"
+                alignItems="stretch"
             >
                 <BlogHeader blog={blog}/>
 
@@ -117,7 +117,7 @@ interface BlogContentProps {
 
 const BlogContent = ({blog, className, ...props}: BlogContentProps & BoxProps) => {
     return (
-        <Box sx={{overflowX: "hidden", width: "100%"}} paddingTop={4} {...props}>
+        <Box sx={{overflowX: "hidden"}} paddingTop={4} {...props}>
             <Markdown className={styles.blogContent}>
                 {blog.content}
             </Markdown>

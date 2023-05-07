@@ -18,6 +18,7 @@ import NavScreen from "@/components/NavScreen/NavScreen";
 import {NavScreen as NavPage} from "@/components/navBars/NavOptions";
 import useAuthenticatedUser from "@/hooks/useAuthenticatedUser";
 import CenteredBox from "@/components/styled/CenteredBox";
+import {HttpError} from "@/data/HttpErrors";
 
 
 const blogSchema = yup.object({
@@ -65,8 +66,9 @@ const CreateNewBlogPage = () => {
             await router.push(getBlogRoute(data.slug))
         } catch (e) {
             console.error(e)
-            if (e instanceof Error)
+            if (e instanceof HttpError)
                 setError(e.message)
+            else alert(e)
         }
     }
 

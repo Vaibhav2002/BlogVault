@@ -79,6 +79,7 @@ const CommentItem = ({comment, onCommentUpdated, onCommentDeleted, onReplyCreate
                             parentCommentId={comment._id}
                             placeholder='Write a reply...'
                             canClose
+                            defaultValue={comment.parentCommentId ? `@${comment.author.username} ` : ''}
                             onClose={() => setShowReplyBox(false)}
                         />}
                         {showDeleteConfirmation && <CommentDelete

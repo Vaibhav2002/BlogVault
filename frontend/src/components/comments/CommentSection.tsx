@@ -2,10 +2,11 @@ import React, {useCallback, useEffect, useMemo, useState} from 'react';
 import Comment from "@/data/models/Comment";
 import {Alert, Button, Collapse, Stack, Typography} from "@mui/material";
 import * as dataSource from '@/data/dataSources/CommentDataSource'
-import {HttpError} from "@/data/HttpErrors";
-import CommentItem from "@/components/comments/CommentItem";
 import CommentSkeleton from "@/components/comments/CommentSkeleton";
 import CreateCommentSection from "@/components/comments/CreateCommentSection";
+import useApiCall from "@/hooks/useApiCall";
+import CommentThread from "@/components/comments/CommentThread";
+import CenteredBox from "@/components/styled/CenteredBox";
 
 interface CommentSectionProps {
     blogId: string
@@ -18,9 +19,7 @@ const BlogCommentSection = (props: CommentSectionProps) => {
 
 const CommentSection = ({blogId, className}: CommentSectionProps) => {
 
-    const [comments, setComments] = useState<Comment[]>([]);
-    const [loading, setLoading] = useState<boolean>(false);
-    const [error, setError] = useState<string | null>(null);
+    const {data: comments, setData: setComments, loading, error, ...api} = useApiCall<Comment[]>([])
     const [endOfPaginationReached, setEndOfPaginationReached] = useState<boolean>();
 
     const skeletons = useMemo(() => (
@@ -32,19 +31,17 @@ const CommentSection = ({blogId, className}: CommentSectionProps) => {
     const paginate = () => loadComments(comments[comments.length - 1]?._id)
 
     const loadComments = useCallback(async function (lastCommentId?: string)  {
-        setError(null)
-        setLoading(true)
         try {
+            api.onStart()
             const response = await dataSource.getAllComments(blogId, lastCommentId);
             if(lastCommentId)
                 setComments(prevComments => [...prevComments, ...response.comments])
             else setComments(response.comments)
             setEndOfPaginationReached(response.endOfPaginationReached)
         } catch (e) {
-            console.error(e)
-            if (e instanceof HttpError) setError(e.message)
+            api.onFail(e)
         } finally {
-            setLoading(false)
+            api.onComplete()
         }
     }, [blogId])
 
@@ -63,9 +60,6 @@ const CommentSection = ({blogId, className}: CommentSectionProps) => {
         }))
     }, [])
 
-    const onReplyCreated = () => {
-    }
-
     const onCommentDeleted = useCallback((comment: Comment) => {
         setComments(prevComments => prevComments.filter(prevComment => prevComment._id !== comment._id))
     }, [])
@@ -82,10 +76,9 @@ const CommentSection = ({blogId, className}: CommentSectionProps) => {
 
             <Stack spacing={loading ? 4 : 2} marginTop={2}>
                 {commentsAvailable && comments.map(comment => (
-                    <CommentItem
+                    <CommentThread
                         comment={comment}
                         onCommentUpdated={onCommentUpdated}
-                        onReplyCreated={onReplyCreated}
                         onCommentDeleted={onCommentDeleted}
                     />
                 ))}
@@ -94,7 +87,10 @@ const CommentSection = ({blogId, className}: CommentSectionProps) => {
                     <Button variant='text' onClick={paginate}>Load More</Button>
                 }
                 {!commentsAvailable && endOfPaginationReached &&
-                    <Typography variant='body2'>No comments yet</Typography>
+                    <CenteredBox marginTop={2}>
+                        <Typography variant='subtitle1'>No comments yet</Typography>
+                    </CenteredBox>
+
                 }
             </Stack>
         </Stack>

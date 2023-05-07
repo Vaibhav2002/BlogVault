@@ -1,4 +1,4 @@
-import React, {useContext} from 'react';
+import React, {useContext, useEffect} from 'react';
 import * as yup from 'yup'
 import {useForm} from "react-hook-form";
 import {yupResolver} from "@hookform/resolvers/yup";
@@ -35,9 +35,9 @@ const CreateCommentSection = (
     const {showLogin} = useContext(AuthModalsContext)
     const {user} = useAuthenticatedUser()
 
-    const {control, handleSubmit, reset} = useForm<CreateCommentValues>({
+    const {control, handleSubmit, reset, setFocus} = useForm<CreateCommentValues>({
         resolver: yupResolver(createCommentSchema),
-        defaultValues: {comment: defaultValue}
+        defaultValues: {comment: defaultValue || ''}
     })
 
     const onSubmit = async ({comment}: CreateCommentValues) => {
@@ -52,6 +52,10 @@ const CreateCommentSection = (
             if (e instanceof HttpError) alert(e.message)
         }
     }
+
+    useEffect(() => {
+        if (parentCommentId) setFocus('comment')
+    }, [setFocus])
 
     return (
         <form onSubmit={handleSubmit(onSubmit)}>

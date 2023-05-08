@@ -46,6 +46,12 @@ export const getTrendingBlogsSchema = yup.object({
 
 export type LimitQuery = yup.InferType<typeof getTrendingBlogsSchema>['query']
 
+export const getTrendingAuthorsSchema = yup.object({
+    query: yup.object({
+        limit: yup.number().integer().min(1)
+    })
+})
+
 const blogIdParamSchema = yup.object({
     blogId: mongoIdSchema.required()
 })

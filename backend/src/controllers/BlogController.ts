@@ -93,3 +93,13 @@ export const deleteBlog: RequestHandler<BlogIdParam, unknown, unknown, unknown> 
         next(e)
     }
 }
+
+export const getTrendingAuthors: RequestHandler<unknown, unknown, unknown, LimitQuery> = async (req, res, next) => {
+    try {
+        const limit = req.query.limit || 5
+        const authors = await dataSource.getTrendingAuthors(limit)
+        res.status(200).json(authors)
+    } catch (e) {
+        next(e)
+    }
+}

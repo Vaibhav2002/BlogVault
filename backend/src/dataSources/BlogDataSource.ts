@@ -7,10 +7,11 @@ import {BlogBody} from "../validation/BlogValidation";
 import {appendLastUpdated, getStartOfTrendingWindow, MongoId} from "../utils/Helpers";
 import env from "../utils/CleanEnv";
 import * as crypto from "crypto";
+import _ from "lodash";
 
 export const createBlog = async (userId: mongoose.Types.ObjectId, coverImage: Express.Multer.File, req: BlogBody) => {
 
-    if (await isSlugTaken(req.slug)) throw createHttpError('409', 'Slug already used')
+    if (await isSlugTaken(req.slug)) throw createHttpError(409, 'Slug already used')
 
     if (!(await topicDataSource.areTopicsValid(JSON.parse(req.topics))))
         throw createHttpError('400', 'Invalid topics')
@@ -61,7 +62,7 @@ export const getBlogBySlug = async (slug: string) => {
 
 export const getBlogById = async (id: string) => {
     const blog = await blogs.findById(id).exec()
-    if (!blog) throw createHttpError('404', 'Blog with this id not found')
+    if (!blog) throw createHttpError(404, 'Blog with this id not found')
     return blog
 }
 
@@ -97,6 +98,18 @@ export const getTrendingBlogs = async (limit: number) => {
         .limit(limit)
         .populate('author topics')
         .exec()
+}
+
+export const getTrendingAuthors = async (limit: number) => {
+    const authors = (await getBlogsFrom(getStartOfTrendingWindow()))
+        .map(blog => blog.author)
+    const map = new Map()
+    authors.forEach(author => {
+        map.set(author, (map.get(author._id) ?? 0) + 1)
+    })
+    const sorted = _.sortBy(Array.from(map.entries()), entry => entry[1], 'desc')
+    return sorted.slice(0, limit).map(entry => entry[0])
+
 }
 
 export const getBlogsFrom = async (date: Date) => {

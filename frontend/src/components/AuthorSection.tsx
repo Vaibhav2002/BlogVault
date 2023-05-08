@@ -6,15 +6,21 @@ import Dot from "@/components/Dot";
 
 interface AuthorSectionProps {
     author: User,
+    avatarSize?: 'small' | 'medium' | 'large',
     date: string,
     className?: string
 }
 
-const AuthorSection = ({author: {profilePicUrl, username}, date, className}: AuthorSectionProps) => {
+const AuthorSection = ({
+                           author: {profilePicUrl, username},
+                           avatarSize = 'medium',
+                           date,
+                           className
+                       }: AuthorSectionProps) => {
 
     return (
         <Stack alignItems="center" direction="row" spacing={1}>
-            <UserAvatar url={profilePicUrl}/>
+            <UserAvatar url={profilePicUrl} size={avatarSize}/>
             <Typography variant="caption" color="text.secondary">{username}</Typography>
             <Dot/>
             <Typography variant="caption" color="text.secondary">{date}</Typography>

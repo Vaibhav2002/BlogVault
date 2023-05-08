@@ -6,6 +6,8 @@ import {
     createBlogSchema,
     deleteBlogSchema,
     getBlogsSchema,
+    getTrendingAuthorsSchema,
+    getTrendingBlogsSchema,
     inBlogImageSchema,
     updateBlogSchema
 } from "../validation/BlogValidation";
@@ -24,7 +26,8 @@ const router = express.Router()
 
 router.get('/', validateRequest(getBlogsSchema), controller.getAllBlogs)
 router.get('/slugs', controller.getAllSlugs)
-router.get('/trending', controller.getTrendingBlogs)
+router.get('/trending', validateRequest(getTrendingBlogsSchema), controller.getTrendingBlogs)
+router.get('/trending/authors', validateRequest(getTrendingAuthorsSchema), controller.getTrendingAuthors)
 
 router.get('/:slug', controller.getBlogBySlug)
 

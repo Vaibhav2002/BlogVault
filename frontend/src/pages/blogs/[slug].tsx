@@ -1,5 +1,5 @@
-import {GetStaticPaths, GetStaticProps} from "next";
-import {getAllSlugs, getBlogBySlug} from "@/data/dataSources/BlogDataSource";
+import {GetServerSideProps} from "next";
+import {getBlogBySlug} from "@/data/dataSources/BlogDataSource";
 import Blog from "@/data/models/Blog";
 import {Box, BoxProps, Stack, StackProps, Typography} from "@mui/material";
 import Markdown from "@/components/Markdown";
@@ -15,16 +15,7 @@ import useDevices from "@/hooks/useDevices";
 import NavScreen from "@/components/NavScreen/NavScreen";
 import BlogCommentSection from "@/components/comments/CommentSection";
 
-export const getStaticPaths: GetStaticPaths = async () => {
-    const slugs = await getAllSlugs();
-    const paths = slugs.map(slug => ({params: {slug}}));
-    return {
-        paths: paths,
-        fallback: "blocking"
-    }
-}
-
-export const getStaticProps: GetStaticProps<BlogPageProps> = async ({params}) => {
+export const getServerSideProps: GetServerSideProps<BlogPageProps> = async ({params}) => {
     const slug = params?.slug?.toString();
     if (!slug) throw new Error("Slug is missing");
     const blog = await getBlogBySlug(slug)

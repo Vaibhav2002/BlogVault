@@ -33,9 +33,10 @@ const FormAutoComplete = ({control, name, label, max, ...props}: FormAutoComplet
                         multiple
                         id="tags-outlined"
                         filterSelectedOptions
-                        filterOptions={(options) => filterOptions(options, field.value)}
+                        filterOptions={(options) => filterOptions(props.options, field.value)}
                         {...field}
                         {...props}
+                        getOptionLabel={props.getOptionLabel}
                         onChange={(_, newValue) => field.onChange(newValue)}
                         renderInput={(params) => (
                             <TextField{...params} placeholder={props.placeholder}/>
@@ -45,8 +46,7 @@ const FormAutoComplete = ({control, name, label, max, ...props}: FormAutoComplet
                     {error && <FormHelperText style={{margin: 0}}>{error.message}</FormHelperText>}
                 </FormControl>
             )}
-        >
-        </Controller>
+        />
     )
 }
 

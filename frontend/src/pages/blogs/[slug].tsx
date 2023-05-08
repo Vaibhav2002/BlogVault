@@ -117,7 +117,7 @@ interface BlogContentProps {
 
 const BlogContent = ({blog, className, ...props}: BlogContentProps & BoxProps) => {
     return (
-        <Box sx={{overflowX: "hidden"}} paddingTop={4} {...props}>
+        <Box sx={{overflowX: "hidden"}} {...props}>
             <Markdown className={styles.blogContent}>
                 {blog.content}
             </Markdown>

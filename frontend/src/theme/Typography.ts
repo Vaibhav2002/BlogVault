@@ -5,8 +5,7 @@ const typography: TypographyOptions = {
         'Poppins',
         'Open Sans',
         'Helvetica',
-        'Arial',
-        'sans-serif',
+        'Arial'
     ].join(", "),
     h1: {
         fontFamily: 'Poppins',

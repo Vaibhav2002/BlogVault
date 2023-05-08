@@ -89,7 +89,7 @@ const ProfileHeaderSection = ({user, onUpdateProfileClick, className}: ProfileHe
 
             <Box className={styles.avatarContainer} sx={{alignSelf: {xs: "center", md: "start"}}}>
                 {user?.profilePicUrl
-                    ? <Image className={styles.avatar} src={user.profilePicUrl} alt={user.username} fill/>
+                    ? <Image className={styles.avatar} src={user.profilePicUrl} alt={user.username ?? ''} fill/>
                     : <UserAvatar username={user.username} size="100"/>
                 }
             </Box>

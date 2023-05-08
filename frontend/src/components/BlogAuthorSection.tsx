@@ -39,7 +39,7 @@ const BlogAuthorSection = ({slug, author, className}: BlogAuthorSectionProps) =>
                 gap={2}
             >
 
-                <Stack alignItems="center" direction="row" component={Link} href={getUserRoute(author.username)}>
+                <Stack alignItems="center" direction="row" component={Link} href={getUserRoute(author?.username ?? '')}>
                     <UserAvatar src={author.profilePicUrl} size="large"/>
 
                     <Stack flex="1" paddingX={2} gap={0}>

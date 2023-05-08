@@ -4,7 +4,6 @@ import {Avatar, AvatarProps} from "@mui/material";
 interface UserAvatarProps {
     url?: string
     username?: string
-
     size?: "small" | "medium" | "large" | "100"
     className?: string
 }
@@ -36,15 +35,16 @@ const UserAvatar = ({url, username, size = "medium", className, ...avatarProps}:
             height: avatarSize,
             variant: "circular",
             ...((!url && username) && {backgroundColor: stringToColor(username)})
-        }
+        },
+        ...avatarProps
     }
 
     if (url)
-        return <Avatar {...props} src={url} {...avatarProps}/>;
+        return <Avatar {...props} src={url}/>;
     else if (username)
-        return <Avatar {...props} {...avatarProps}>{username[0]}</Avatar>;
+        return <Avatar {...props}>{username[0]}</Avatar>;
     else
-        return <Avatar {...props} {...avatarProps}/>
+        return <Avatar {...props}/>
 
 }
 

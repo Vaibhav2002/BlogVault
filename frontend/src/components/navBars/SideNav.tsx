@@ -89,14 +89,14 @@ interface SideNavIconsProps {
 
 const SideNavIcon = ({text, icon, bgColor, onClick}: SideNavIconsProps) => {
     return (
-        <ContainedIcon
-            title={text}
-            icon={icon}
-            onClick={onClick}
-            sx={{backgroundColor: bgColor, cursor: "pointer"}}
-            component={motion.div}
-            whileHover={{scale: 1.3}}
-        />
+        <motion.div whileHover={{scale: '1.3'}}>
+            <ContainedIcon
+                title={text}
+                icon={icon}
+                onClick={onClick}
+                sx={{backgroundColor: bgColor, cursor: "pointer"}}
+            />
+        </motion.div>
     )
 }
 
@@ -111,12 +111,9 @@ const UserLoggedInView = ({user, onLogoutClick}: LoggedInViewProps) => {
         <>
             <Tooltip title="Profile" enterDelay={500}>
                 <Link href={getUserRoute(user.username ?? 'User')} passHref>
-                    <UserAvatar
-                        url={user.profilePicUrl}
-                        sx={{cursor: "pointer"}}
-                        component={motion.div}
-                        whileHover={{scale: 1.3}}
-                    />
+                    <motion.div whileHover={{scale: 1.3}}>
+                        <UserAvatar url={user.profilePicUrl} sx={{cursor: "pointer"}}/>
+                    </motion.div>
                 </Link>
             </Tooltip>
 

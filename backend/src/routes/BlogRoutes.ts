@@ -2,7 +2,13 @@ import express from "express";
 import * as controller from "../controllers/BlogController";
 import {coverImageMiddleware, inBlogImage} from "../middlewares/FileMiddleware";
 import validateRequest from "../middlewares/validateRequest";
-import {createBlogSchema, deleteBlogSchema, getBlogsSchema, updateBlogSchema} from "../validation/BlogValidation";
+import {
+    createBlogSchema,
+    deleteBlogSchema,
+    getBlogsSchema,
+    inBlogImageSchema,
+    updateBlogSchema
+} from "../validation/BlogValidation";
 import requiresAuth from "../middlewares/AuthMiddleware";
 import {postBlogRateLimit, updateBlogRateLimit, uploadInBlogImageRateLimit} from "../middlewares/RateLimit";
 import * as commentsController from "../controllers/CommentController";
@@ -34,6 +40,7 @@ router.post(
     requiresAuth,
     uploadInBlogImageRateLimit,
     inBlogImage.single("inBlogImage"),
+    validateRequest(inBlogImageSchema),
     controller.uploadInBlogImage
 )
 

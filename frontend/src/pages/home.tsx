@@ -12,6 +12,7 @@ import BlogItem from "@/components/blogItem/BlogItem";
 import PaginationBar from "@/components/PaginationBar";
 import {stringify} from "querystring";
 import {NavScreen as NavPage} from "@/components/navBars/NavOptions";
+import HomeDiscoverSection from "@/components/HomeDiscoverSection";
 
 
 export const getServerSideProps: GetServerSideProps<HomeScreenProps> = async ({query}) => {
@@ -32,9 +33,8 @@ export const getServerSideProps: GetServerSideProps<HomeScreenProps> = async ({q
 
     if (page > blogPage.totalPages) redirect(blogPage.totalPages)
 
-
     return {
-        props: {blogPage: blogPage},
+        props: {blogPage: blogPage}
     }
 }
 
@@ -64,12 +64,8 @@ const HomeScreen = ({blogPage: {page, blogs, totalPages}}: HomeScreenProps) => {
                     blogs={blogs}
                 />
 
-                <Box
-                    sx={{display: {xs: "none", md: "block"}}}
-                    className={styles.discoverSection}
-                >
-
-
+                <Box sx={{display: {xs: "none", lg: "block"}}} className={styles.discoverSection}>
+                    <HomeDiscoverSection/>
                 </Box>
 
 
@@ -122,5 +118,6 @@ const HomeBlogSection = ({page, blogs, totalPages, className, ...props}: HomeBlo
 
     )
 }
+
 
 export default HomeScreen;

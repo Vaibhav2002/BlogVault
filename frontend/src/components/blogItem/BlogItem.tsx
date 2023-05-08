@@ -1,6 +1,6 @@
 import React from 'react';
 import Blog from "@/data/models/Blog";
-import {Box, BoxProps, Theme, Typography, useMediaQuery} from "@mui/material";
+import {Box, BoxProps, Theme, useMediaQuery} from "@mui/material";
 import styles from "./BlogItem.module.css";
 import MultilineText from "@/components/styled/MultilineText";
 import {FaArrowRight} from "react-icons/fa";
@@ -8,7 +8,6 @@ import PrimaryButton from "@/components/styled/PrimaryButton";
 import {formatDate} from "@/utils/Helpers";
 import {CiBookmark} from "react-icons/ci";
 import Image from "next/image";
-import UserAvatar from "@/components/Avatar";
 import ChipGroup from "@/components/chipGroup/ChipGroup";
 import AuthorSection from "@/components/AuthorSection";
 
@@ -25,8 +24,8 @@ const BlogItem = ({blog: {title, description, createdAt, ...blog}, className, ..
     const descriptionMaxLines = isBelowSm ? 2 : 3
 
     return (
-        <Box className={`${styles.blogCard} ${className}`}{...props}>
-            <Box className={styles.blogContent}>
+        <Box className={`${styles.blogCard} ${className}`}{...props} padding='1rem 0'>
+            <Box className={styles.blogContent} padding='0 1rem'>
 
                 <AuthorSection author={blog.author} date={formatDate(createdAt)}/>
 

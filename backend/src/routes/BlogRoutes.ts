@@ -24,6 +24,8 @@ const router = express.Router()
 
 router.get('/', validateRequest(getBlogsSchema), controller.getAllBlogs)
 router.get('/slugs', controller.getAllSlugs)
+router.get('/trending', controller.getTrendingBlogs)
+
 router.get('/:slug', controller.getBlogBySlug)
 
 router.post(

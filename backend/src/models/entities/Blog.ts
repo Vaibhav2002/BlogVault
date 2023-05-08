@@ -9,6 +9,7 @@ const blogSchema = new Schema({
     coverImage: {type: String, required: true},
     posterImage: {type: String, required: true},
     author: {type: Schema.Types.ObjectId, ref: 'User', required: true},
+    views: {type: Number, default: 0}
 }, {timestamps: true});
 
 export type Blog = InferSchemaType<typeof blogSchema>;

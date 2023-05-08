@@ -4,7 +4,7 @@ import createHttpError from "http-errors";
 import * as imageDataSource from "./ImageDataSource";
 import * as mongoose from "mongoose";
 import {BlogBody} from "../validation/BlogValidation";
-import {appendLastUpdated, MongoId} from "../utils/Helpers";
+import {appendLastUpdated, getStartOfTrendingWindow, MongoId} from "../utils/Helpers";
 import env from "../utils/CleanEnv";
 import * as crypto from "crypto";
 
@@ -88,6 +88,15 @@ export const getAllBlogs = async (page: number, authorId?: string) => {
         page: page,
         totalPages: totalPages
     }
+}
+
+export const getTrendingBlogs = async (limit: number) => {
+    return await blogs.find()
+        .gte('createdAt', getStartOfTrendingWindow())
+        .sort({views: -1})
+        .limit(limit)
+        .populate('author topics')
+        .exec()
 }
 
 export const getBlogsFrom = async (date: Date) => {

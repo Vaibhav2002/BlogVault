@@ -1,7 +1,7 @@
 import * as dataSource from '../dataSources/BlogDataSource'
 import {RequestHandler} from "express";
 import {assertIsDefined} from "../utils/Helpers";
-import {BlogBody, BlogIdParam, GetBlogsQuery} from "../validation/BlogValidation";
+import {BlogBody, BlogIdParam, GetBlogsQuery, LimitQuery} from "../validation/BlogValidation";
 import ApiResponse from "../models/ApiResponse";
 
 export const getAllBlogs: RequestHandler<unknown, unknown, unknown, GetBlogsQuery> = async (req, res, next) => {
@@ -9,6 +9,16 @@ export const getAllBlogs: RequestHandler<unknown, unknown, unknown, GetBlogsQuer
     const page = req.query.page || 1
     try {
         const blogs = await dataSource.getAllBlogs(page, authorId)
+        res.status(200).json(blogs)
+    } catch (e) {
+        next(e)
+    }
+}
+
+export const getTrendingBlogs: RequestHandler<unknown, unknown, unknown, LimitQuery> = async (req, res, next) => {
+    try {
+        const limit = req.query.limit || 20
+        const blogs = await dataSource.getTrendingBlogs(limit)
         res.status(200).json(blogs)
     } catch (e) {
         next(e)

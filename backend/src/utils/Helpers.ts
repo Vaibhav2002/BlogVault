@@ -14,3 +14,8 @@ export function run<T, R>(value: T | undefined | null, block: (value: T) => R) {
 }
 
 export type MongoId = mongoose.Types.ObjectId
+
+export const getStartOfTrendingWindow = () => {
+    const window = 7 * 24 * 60 * 60 * 1000 // 7 days
+    return new Date(Date.now() - window)
+}

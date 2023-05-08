@@ -38,9 +38,7 @@ export const createBlog = async (userId: mongoose.Types.ObjectId, coverImage: Ex
 export const uploadInBlogImage = async (image: Express.Multer.File) => {
     const fileName = crypto.randomBytes(20).toString('hex')
     const url = await imageDataSource.saveInBlogImage(image, fileName)
-    return {
-        url: url
-    }
+    return {url: url}
 }
 
 export const getAllSlugs = async () => {
@@ -52,7 +50,12 @@ export const getBlogBySlug = async (slug: string) => {
     const blog = await blogs.findOne({slug: slug})
         .populate("topics author")
         .exec()
+
     if (!blog) throw createHttpError('404', 'Blog not found')
+
+    blog.views++
+    await blog.save()
+
     return blog
 }
 
@@ -87,6 +90,9 @@ export const getAllBlogs = async (page: number, authorId?: string) => {
     }
 }
 
+export const getBlogsFrom = async (date: Date) => {
+    return await blogs.find().gte('createdAt', date).populate('author topics').exec()
+}
 
 export const updateBlog = async (userId: MongoId, blogId: string, blogBody: BlogBody, coverImage?: Express.Multer.File) => {
 

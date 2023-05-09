@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useCallback, useState} from 'react';
 import User from "@/data/models/User";
 import {getUserProfile} from '@/data/dataSources/UserDataSource';
 import {GetServerSideProps} from "next";
@@ -15,6 +15,8 @@ import BlogSkeletonGrid from "@/components/blogGrid/BlogSkeletonGrid";
 import BlogGrid from "@/components/blogGrid/BlogGrid";
 import UpdateProfileModal from "@/components/modals/updateProfile/UpdateProfileModal";
 import PaginationBar from "@/components/PaginationBar";
+import EmptyState from "@/components/EmptyState";
+import _ from "lodash";
 
 export const getServerSideProps: GetServerSideProps<ProfilePageProps> = async ({params}) => {
     const username = params?.username as string
@@ -135,12 +137,21 @@ const ProfileBlogSection = ({user}: ProfileBlogSectionProps) => {
     const blogs = blogPage?.blogs || []
     const totalPages = blogPage?.totalPages || 0
 
+    const emptyState = useCallback(() => (
+        <EmptyState
+            flexDirection='row'
+            showImage={false}
+            title='You dont have any blogs yet.'
+            message='When you create a blog, it will appear here.'
+        />
+    ), [])
+
     return (
         <Box>
             <Typography variant="h6" marginBottom={4}>Blogs</Typography>
             {isLoading && <BlogSkeletonGrid count={4}/>}
             {error && <Typography variant="body1">Error loading blogs</Typography>}
-            {!isLoading && blogs?.length === 0 && <Typography variant="body1">No blogs found</Typography>}
+            {!isLoading && _.isEmpty(blogs) && emptyState()}
             {blogs && blogs.length > 0 &&
                 <Stack spacing={2}>
                     <BlogGrid blogs={blogs}/>

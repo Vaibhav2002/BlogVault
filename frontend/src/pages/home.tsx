@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useCallback} from 'react';
 import {Box, Divider, Stack, StackProps} from "@mui/material";
 import NavScreen from "@/components/NavScreen/NavScreen";
 import Blog, {BlogPage} from "@/data/models/Blog";
@@ -13,6 +13,8 @@ import PaginationBar from "@/components/PaginationBar";
 import {stringify} from "querystring";
 import {NavScreen as NavPage} from "@/components/navBars/NavOptions";
 import HomeDiscoverSection from "@/components/HomeDiscoverSection";
+import _ from "lodash";
+import EmptyState from "@/components/EmptyState";
 
 
 export const getServerSideProps: GetServerSideProps<HomeScreenProps> = async ({query}) => {
@@ -43,6 +45,14 @@ interface HomeScreenProps {
 }
 
 const HomeScreen = ({blogPage: {page, blogs, totalPages}}: HomeScreenProps) => {
+    const areBlogsEmpty = _.isEmpty(blogs)
+    const emptyState = useCallback(() => (
+        <EmptyState
+            height={1}
+            title='There are no blogs yet'
+            message='Be the first to create a blog'
+        />
+    ), [])
 
     return (
         <NavScreen selected={NavPage.Home}>
@@ -53,16 +63,15 @@ const HomeScreen = ({blogPage: {page, blogs, totalPages}}: HomeScreenProps) => {
                 height="100%"
             >
 
-                <HomeBlogSection
-                    sx={{
-                        flex: {xs: 1, lg: 0.7},
-                        padding: {sx: 2, md: 8}
-                    }}
-                    page={page}
-                    totalPages={totalPages}
-                    className={styles.blogSection}
-                    blogs={blogs}
-                />
+                <Box flex={{xs: 1, lg: 0.7}} padding={{sx: 2, md: 8}}>
+                    {areBlogsEmpty
+                        ? emptyState()
+                        : <HomeBlogSection page={page} totalPages={totalPages} className={styles.blogSection}
+                                           blogs={blogs}/>
+                    }
+
+                </Box>
+
 
                 <Box sx={{display: {xs: "none", lg: "block"}}} className={styles.discoverSection}>
                     <HomeDiscoverSection/>

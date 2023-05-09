@@ -38,7 +38,7 @@ const TrendingTopicsSection = () => {
 }
 
 const TrendingBlogsSection = () => {
-    const {data: blogs, isLoading, error} = useSWR('trending_blogs', getDiscoverTrendingBlogs)
+    const {data: blogs, isLoading, error} = useSWR('discover_trending_blogs', getDiscoverTrendingBlogs)
     if (error || (blogs && _.isEmpty(blogs))) return <></>
 
     const skeleton = useCallback(() => (

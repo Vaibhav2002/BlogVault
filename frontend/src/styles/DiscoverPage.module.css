@@ -1,0 +1,6 @@
+.discoverSection {
+    max-height: 100%;
+    flex: 0.3;
+    border-left: 1px solid lightgrey;
+    overflow-y: auto;
+}

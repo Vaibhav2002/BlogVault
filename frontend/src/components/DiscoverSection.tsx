@@ -7,7 +7,7 @@ import React, {useCallback} from "react";
 import _ from "lodash";
 import {getDiscoverTrendingAuthors, getDiscoverTrendingBlogs} from "@/data/dataSources/BlogDataSource";
 import BlogMiniItem, {BlogMiniItemSkeleton} from "@/components/blogItem/BlogMiniItem";
-import AuthorItem, {AuthorItemSkeleton} from "@/components/AuthorItem";
+import AuthorItem, {AuthorItemSkeleton} from "@/components/author/AuthorItem";
 
 interface DiscoverSectionProps {
     showTrendingTopics?: boolean

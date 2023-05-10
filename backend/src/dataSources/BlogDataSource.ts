@@ -116,15 +116,14 @@ export const getTrendingBlogs = async (limit: number, page: number) => {
 }
 
 export const getTrendingAuthors = async (limit: number) => {
-    const authors = (await getBlogsFrom(getStartOfTrendingWindow()))
-        .map(blog => blog.author)
+    const blogs = (await getBlogsFrom(getStartOfTrendingWindow()))
+        .map(blog => [blog.author, blog.views])
     const map = new Map()
-    authors.forEach(author => {
-        map.set(author, (map.get(author._id) ?? 0) + 1)
+    blogs.forEach(([author, views]) => {
+        map.set(author, (map.get(author) ?? 0) + views)
     })
     const sorted = _.sortBy(Array.from(map.entries()), entry => entry[1], 'desc')
     return sorted.slice(0, limit).map(entry => entry[0])
-
 }
 
 export const getBlogsFrom = async (date: Date) => {

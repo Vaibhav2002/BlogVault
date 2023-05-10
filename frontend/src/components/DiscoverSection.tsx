@@ -9,13 +9,21 @@ import {getDiscoverTrendingAuthors, getDiscoverTrendingBlogs} from "@/data/dataS
 import BlogMiniItem, {BlogMiniItemSkeleton} from "@/components/blogItem/BlogMiniItem";
 import AuthorItem, {AuthorItemSkeleton} from "@/components/AuthorItem";
 
-const HomeDiscoverSection = () => {
+interface DiscoverSectionProps {
+    showTrendingTopics?: boolean
+    showTrendingBlogs?: boolean
+    showTrendingAuthors?: boolean
+}
+
+const DiscoverSection = (
+    {showTrendingTopics = true, showTrendingAuthors = true, showTrendingBlogs = true}: DiscoverSectionProps
+) => {
 
     return (
         <Stack gap={4} padding={4}>
-            <TrendingTopicsSection/>
-            <TrendingBlogsSection/>
-            <TrendingAuthorsSection/>
+            {showTrendingTopics && <TrendingTopicsSection/>}
+            {showTrendingBlogs && <TrendingBlogsSection/>}
+            {showTrendingAuthors && <TrendingAuthorsSection/>}
         </Stack>
     )
 }
@@ -88,4 +96,4 @@ const TrendingAuthorsSection = () => {
     )
 }
 
-export default HomeDiscoverSection
+export default DiscoverSection

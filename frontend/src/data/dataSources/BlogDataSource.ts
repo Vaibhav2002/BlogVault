@@ -60,14 +60,15 @@ export const getAllBlogs = async (page: number = 1) => {
     return response.data as BlogPage
 }
 
-export const getTrendingBlogs = async (limit?: number) => {
-    const response = await api.get<Blog[]>(`/blogs/trending`, {
-        params: {limit: limit}
+export const getTrendingBlogs = async (page: number = 1, limit?: number) => {
+    const response = await api.get<BlogPage>(`/blogs/trending`, {
+        params: {limit: limit, page: page}
     })
-    return response.data as Blog[]
+    return response.data as BlogPage
 }
 
-export const getDiscoverTrendingBlogs = async () => getTrendingBlogs(5)
+export const getDiscoverTrendingBlogs = async () => getTrendingBlogs(1, 5)
+    .then(page => page.blogs)
 
 export const getTrendingAuthors = async (limit?: number) => {
     const response = await api.get<User[]>(`/blogs/trending/authors`, {

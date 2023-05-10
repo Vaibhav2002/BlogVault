@@ -12,7 +12,7 @@ import BlogItem from "@/components/blogItem/BlogItem";
 import PaginationBar from "@/components/PaginationBar";
 import {stringify} from "querystring";
 import {NavScreen as NavPage} from "@/components/navBars/NavOptions";
-import HomeDiscoverSection from "@/components/HomeDiscoverSection";
+import DiscoverSection from "@/components/DiscoverSection";
 import _ from "lodash";
 import EmptyState from "@/components/EmptyState";
 
@@ -74,7 +74,7 @@ const HomeScreen = ({blogPage: {page, blogs, totalPages}}: HomeScreenProps) => {
 
 
                 <Box sx={{display: {xs: "none", lg: "block"}}} className={styles.discoverSection}>
-                    <HomeDiscoverSection/>
+                    <DiscoverSection/>
                 </Box>
 
 

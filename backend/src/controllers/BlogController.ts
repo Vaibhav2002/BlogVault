@@ -17,8 +17,9 @@ export const getAllBlogs: RequestHandler<unknown, unknown, unknown, GetBlogsQuer
 
 export const getTrendingBlogs: RequestHandler<unknown, unknown, unknown, LimitQuery> = async (req, res, next) => {
     try {
-        const limit = req.query.limit || 20
-        const blogs = await dataSource.getTrendingBlogs(limit)
+        const limit = req.query.limit || 10
+        const page = req.query.page || 1
+        const blogs = await dataSource.getTrendingBlogs(limit, page)
         res.status(200).json(blogs)
     } catch (e) {
         next(e)

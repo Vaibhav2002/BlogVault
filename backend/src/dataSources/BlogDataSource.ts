@@ -91,13 +91,28 @@ export const getAllBlogs = async (page: number, authorId?: string) => {
     }
 }
 
-export const getTrendingBlogs = async (limit: number) => {
-    return await blogs.find()
-        .gte('createdAt', getStartOfTrendingWindow())
-        .sort({views: -1})
-        .limit(limit)
+export const getTrendingBlogs = async (limit: number, page: number) => {
+    const pageSize = limit
+    const skip = (page - 1) * pageSize
+    const filter = {createdAt: {$gte: getStartOfTrendingWindow()}}
+
+    const blogQuery = blogs.find(filter)
+        .skip(skip)
+        .limit(pageSize)
         .populate('author topics')
         .exec()
+
+    const totalPagesQuery = blogs.countDocuments(filter).exec()
+
+    const [allBlogs, totalCount] = await Promise.all([blogQuery, totalPagesQuery])
+
+    const totalPages = Math.ceil(totalCount / pageSize)
+
+    return {
+        blogs: allBlogs,
+        page: page,
+        totalPages: totalPages
+    }
 }
 
 export const getTrendingAuthors = async (limit: number) => {

@@ -40,7 +40,8 @@ export type GetBlogsQuery = yup.InferType<typeof getBlogsSchema>['query']
 
 export const getTrendingBlogsSchema = yup.object({
     query: yup.object({
-        limit: yup.number().integer().min(1)
+        limit: yup.number().integer().min(1),
+        page: yup.number().integer().min(1)
     })
 })
 

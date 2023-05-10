@@ -2,7 +2,8 @@ enum Route {
     Home = '/home',
     Blog = "/blogs",
     Users = "/users",
-    Edit = "/blogs/edit"
+    Edit = "/blogs/edit",
+    Discover = '/discover'
 }
 
 export const getBlogRoute = (slug: string) => `${Route.Blog}/${slug}`

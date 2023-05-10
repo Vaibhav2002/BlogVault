@@ -2,7 +2,7 @@ import React from 'react';
 import Blog from "@/data/models/Blog";
 import styles from "@/components/blogItem/BlogItem.module.css";
 import {Box, Skeleton, Stack} from "@mui/material";
-import AuthorSection from "@/components/AuthorSection";
+import AuthorSection from "@/components/author/AuthorSection";
 import {formatDate} from "@/utils/Helpers";
 import MultilineText from "@/components/styled/MultilineText";
 import Image from "next/image";

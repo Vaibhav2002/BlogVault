@@ -9,7 +9,7 @@ import {formatDate} from "@/utils/Helpers";
 import {CiBookmark} from "react-icons/ci";
 import Image from "next/image";
 import ChipGroup from "@/components/chipGroup/ChipGroup";
-import AuthorSection from "@/components/AuthorSection";
+import AuthorSection from "@/components/author/AuthorSection";
 
 interface BlogItemProps {
     blog: Blog

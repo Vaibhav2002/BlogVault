@@ -1,7 +1,7 @@
 import React, {useContext, useMemo, useState} from 'react';
 import Comment from "@/data/models/Comment";
 import {Box, Button, Stack, Typography} from "@mui/material";
-import AuthorSection from "@/components/AuthorSection";
+import AuthorSection from "@/components/author/AuthorSection";
 import {formatRelativeDate} from "@/utils/Helpers";
 import Dot from "@/components/Dot";
 import MultilineText from "@/components/styled/MultilineText";

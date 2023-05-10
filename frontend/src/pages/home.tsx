@@ -1,5 +1,5 @@
 import React, {useCallback} from 'react';
-import {Box, Divider, Stack, StackProps} from "@mui/material";
+import {Box, Stack, StackProps} from "@mui/material";
 import NavScreen from "@/components/NavScreen/NavScreen";
 import Blog, {BlogPage} from "@/data/models/Blog";
 import {getAllBlogs} from "@/data/dataSources/BlogDataSource";
@@ -7,14 +7,13 @@ import {GetServerSideProps} from "next";
 import styles from "@/styles/Home.module.css";
 import {useRouter} from "next/router";
 import {getBlogRoute} from "@/utils/Routes";
-import {AnimatePresence, motion} from "framer-motion";
-import BlogItem from "@/components/blogItem/BlogItem";
 import PaginationBar from "@/components/PaginationBar";
 import {stringify} from "querystring";
 import {NavScreen as NavPage} from "@/components/navBars/NavOptions";
 import DiscoverSection from "@/components/DiscoverSection";
 import _ from "lodash";
 import EmptyState from "@/components/EmptyState";
+import BlogList from "@/components/blogItem/BlogList";
 
 
 export const getServerSideProps: GetServerSideProps<HomeScreenProps> = async ({query}) => {
@@ -63,7 +62,7 @@ const HomeScreen = ({blogPage: {page, blogs, totalPages}}: HomeScreenProps) => {
                 height="100%"
             >
 
-                <Box flex={{xs: 1, lg: 0.7}} padding={{sx: 2, md: 8}}>
+                <Box flex={{xs: 1, lg: 0.7}} padding={{sx: 2, md: 8}} overflow='auto'>
                     {areBlogsEmpty
                         ? emptyState()
                         : <HomeBlogSection page={page} totalPages={totalPages} className={styles.blogSection}
@@ -103,25 +102,11 @@ const HomeBlogSection = ({page, blogs, totalPages, className, ...props}: HomeBlo
     }
 
     return (
-        <Stack gap={4} className={className} {...props} alignItems="center" justifyContent="stretch">
-            {blogs.map((blog, index) =>
-                <AnimatePresence key={blog._id}>
-                    <Box
-                        width={1}
-                        component={motion.div}
-                        initial={{scale: 0.5}}
-                        animate={{scale: 1}}
-                        transition={{delay: index * 0.05, ease: "easeOut"}}
-                    >
-                        <BlogItem blog={blog} onClick={() => onBlogClick(blog)}/>
-                        <Divider/>
-
-                    </Box>
-                </AnimatePresence>
-            )}
+        <Stack gap={4} className={className} {...props} >
+            <BlogList blogs={blogs} onBlogClick={onBlogClick} spacing={4}/>
 
             {blogs.length > 0 &&
-                <PaginationBar page={page} count={totalPages} onPageChange={onPageChange}/>
+                <PaginationBar page={page} count={totalPages} onPageChange={onPageChange} sx={{alignSelf: 'center'}}/>
             }
         </Stack>
 

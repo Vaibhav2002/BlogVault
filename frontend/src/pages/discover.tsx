@@ -94,7 +94,6 @@ interface TrendingAuthorSectionProps {
 }
 
 const TrendingAuthorSection = ({authors}: TrendingAuthorSectionProps) => {
-    authors = [...authors, ...authors, ...authors, ...authors, ...authors]
     return (
         <Stack spacing={2}>
             <Typography variant='h5' fontWeight='400'>Top Authors</Typography>

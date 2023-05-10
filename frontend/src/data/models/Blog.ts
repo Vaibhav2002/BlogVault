@@ -10,7 +10,7 @@ export default interface Blog {
     createdAt: string
     updatedAt: string
     coverImage: string
-
+    views: number,
     author: User
 }
 

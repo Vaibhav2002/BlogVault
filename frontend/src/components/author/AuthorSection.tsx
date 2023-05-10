@@ -10,11 +10,12 @@ interface AuthorSectionProps {
     author: User,
     avatarSize?: 'small' | 'medium' | 'large',
     date: string,
+    views?: number,
     className?: string
 }
 
 const AuthorSection = (
-    {author: {profilePicUrl, username}, avatarSize = 'medium', date, className}: AuthorSectionProps
+    {author: {profilePicUrl, username}, avatarSize = 'medium', views, date, className}: AuthorSectionProps
 ) => {
     const router = useRouter()
     const onClick = (e: any) => {
@@ -28,6 +29,12 @@ const AuthorSection = (
             <Typography variant="caption" color="text.secondary" onClick={onClick}>{username}</Typography>
             <Dot/>
             <Typography variant="caption" color="text.secondary">{date}</Typography>
+            {views && (views > 0) &&
+                <>
+                    <Dot/>
+                    <Typography variant="caption" color="text.secondary">{`${views} views`}</Typography>
+                </>
+            }
         </Stack>
     )
 }

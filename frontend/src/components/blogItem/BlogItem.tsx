@@ -27,7 +27,7 @@ const BlogItem = ({blog: {title, description, createdAt, ...blog}, className, ..
         <Box className={`${styles.blogCard} ${className}`}{...props} padding='1rem 0'>
             <Box className={styles.blogContent} padding='0 1rem'>
 
-                <AuthorSection author={blog.author} date={formatDate(createdAt)}/>
+                <AuthorSection author={blog.author} date={formatDate(createdAt)} views={blog.views}/>
 
                 <Box marginBottom={isBelowSm ? 0 : 3}>
                     <MultilineText

@@ -97,8 +97,10 @@ export const getTrendingBlogs = async (limit: number, page: number) => {
     const filter = {createdAt: {$gte: getStartOfTrendingWindow()}}
 
     const blogQuery = blogs.find(filter)
+        .sort({views: -1})
+        .limit(50) //Only top 50 blogs are shown in trending
         .skip(skip)
-        .limit(pageSize)
+        .limit(pageSize) //pagination
         .populate('author topics')
         .exec()
 

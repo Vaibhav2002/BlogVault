@@ -7,8 +7,9 @@ import ApiResponse from "../models/ApiResponse";
 export const getAllBlogs: RequestHandler<unknown, unknown, unknown, GetBlogsQuery> = async (req, res, next) => {
     const authorId = req.query.authorId
     const page = req.query.page || 1
+    const userId = req.user?._id
     try {
-        const blogs = await dataSource.getAllBlogs(page, authorId)
+        const blogs = await dataSource.getAllBlogs(page, authorId, userId)
         res.status(200).json(blogs)
     } catch (e) {
         next(e)
@@ -19,7 +20,8 @@ export const getTrendingBlogs: RequestHandler<unknown, unknown, unknown, LimitQu
     try {
         const limit = req.query.limit || 10
         const page = req.query.page || 1
-        const blogs = await dataSource.getTrendingBlogs(limit, page)
+        const userId = req.user?._id
+        const blogs = await dataSource.getTrendingBlogs(limit, page, userId)
         res.status(200).json(blogs)
     } catch (e) {
         next(e)
@@ -62,7 +64,8 @@ export const getAllSlugs: RequestHandler = async (req, res, next) => {
 
 export const getBlogBySlug: RequestHandler = async (req, res, next) => {
     try {
-        const blog = await dataSource.getBlogBySlug(req.params.slug)
+        const userId = req.user?._id
+        const blog = await dataSource.getBlogBySlug(req.params.slug, userId)
         res.status(200).json(blog)
     } catch (e) {
         next(e)

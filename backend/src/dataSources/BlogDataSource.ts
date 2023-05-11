@@ -8,6 +8,7 @@ import {appendLastUpdated, getStartOfTrendingWindow, MongoId} from "../utils/Hel
 import env from "../utils/CleanEnv";
 import * as crypto from "crypto";
 import _ from "lodash";
+import {getSavedBlogIds, isSaved} from "./SavedBlogDataSource";
 
 export const createBlog = async (userId: mongoose.Types.ObjectId, coverImage: Express.Multer.File, req: BlogBody) => {
 
@@ -47,7 +48,7 @@ export const getAllSlugs = async () => {
     return allBlogs.map(blog => blog.slug)
 }
 
-export const getBlogBySlug = async (slug: string) => {
+export const getBlogBySlug = async (slug: string, userId?: MongoId) => {
     const blog = await blogs.findOne({slug: slug})
         .populate("topics author")
         .exec()
@@ -57,7 +58,13 @@ export const getBlogBySlug = async (slug: string) => {
     blog.views++
     await blog.save()
 
-    return blog
+    if (!userId) return blog
+
+    const blogSaved = await isSaved(blog._id, userId)
+    return {
+        ...(blog.toObject()),
+        isSaved: blogSaved
+    }
 }
 
 export const getBlogById = async (id: string) => {
@@ -66,7 +73,7 @@ export const getBlogById = async (id: string) => {
     return blog
 }
 
-export const getAllBlogs = async (page: number, authorId?: string) => {
+export const getAllBlogs = async (page: number, authorId?: string, userId?: MongoId) => {
     const filter = authorId ? {author: authorId} : {}
     const pageSize = 10
     const skip = (page - 1) * pageSize
@@ -76,6 +83,7 @@ export const getAllBlogs = async (page: number, authorId?: string) => {
         .skip(skip)
         .limit(pageSize)
         .populate('author topics')
+        .lean()
         .exec()
 
     const totalPagesQuery = blogs.countDocuments(filter).exec()
@@ -85,13 +93,13 @@ export const getAllBlogs = async (page: number, authorId?: string) => {
     const totalPages = Math.ceil(totalCount / pageSize)
 
     return {
-        blogs: allBlogs,
+        blogs: userId ? await attachIsSaved(allBlogs, userId) : allBlogs,
         page: page,
         totalPages: totalPages
     }
 }
 
-export const getTrendingBlogs = async (limit: number, page: number) => {
+export const getTrendingBlogs = async (limit: number, page: number, userId?: MongoId) => {
     const pageSize = limit
     const skip = (page - 1) * pageSize
     const filter = {createdAt: {$gte: getStartOfTrendingWindow()}}
@@ -102,6 +110,7 @@ export const getTrendingBlogs = async (limit: number, page: number) => {
         .skip(skip)
         .limit(pageSize) //pagination
         .populate('author topics')
+        .lean()
         .exec()
 
     const totalPagesQuery = blogs.countDocuments(filter).exec()
@@ -111,7 +120,7 @@ export const getTrendingBlogs = async (limit: number, page: number) => {
     const totalPages = Math.ceil(totalCount / pageSize)
 
     return {
-        blogs: allBlogs,
+        blogs: userId ? await attachIsSaved(allBlogs, userId) : allBlogs,
         page: page,
         totalPages: totalPages
     }
@@ -184,4 +193,9 @@ const isSlugTaken = async (slug: string, blogId?: string) => {
     const blog = await blogs.findOne({slug: slug}).populate("author").exec()
     if (blogId) return blog && !blog._id.equals(blogId)
     return blog
+}
+
+const attachIsSaved = async (blogs: any[], userId: MongoId) => {
+    const savedBlogIds = (await getSavedBlogIds(userId.toString())).map(id => id?.toString())
+    return blogs.map(blog => ({...blog, isSaved: savedBlogIds.includes(blog._id.toString())}))
 }

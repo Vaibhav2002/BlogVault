@@ -1,5 +1,6 @@
 import savedBlogs from '../models/entities/SavedBlog'
 import createHttpError from "http-errors";
+import {MongoId} from "../utils/Helpers";
 
 export const saveBlog = async (blogId: string, userId: string) => {
     const savedBlog = await savedBlogs.findOne({blog: blogId, user: userId})
@@ -44,4 +45,13 @@ export const getAllSavedBlogs = async (userId: string, page: number) => {
         page: page,
         totalPages: totalPages
     }
+}
+
+export const getSavedBlogIds = async (userId: string) => {
+    const savedBlogIds = await savedBlogs.find({user: userId}).select('blog -_id').lean().exec()
+    return savedBlogIds.map(savedBlog => savedBlog.blog)
+}
+
+export const isSaved = async (blogId: MongoId, userId: MongoId) => {
+    return !!(await savedBlogs.findOne({blog: blogId, user: userId}).exec())
 }

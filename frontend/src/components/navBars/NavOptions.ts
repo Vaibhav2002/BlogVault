@@ -22,7 +22,7 @@ export const navOptions: NavOptions[] = [
     },
     {
         screen: NavScreen.Bookmarks,
-        href: "/bookmarks"
+        href: "/saved-for-later"
     },
     {
         screen: NavScreen.Post,

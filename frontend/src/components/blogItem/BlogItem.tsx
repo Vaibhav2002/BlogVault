@@ -1,6 +1,6 @@
 import React from 'react';
 import Blog from "@/data/models/Blog";
-import {Box, BoxProps, Theme, useMediaQuery} from "@mui/material";
+import {Box, BoxProps, Theme, ToggleButton, useMediaQuery} from "@mui/material";
 import styles from "./BlogItem.module.css";
 import MultilineText from "@/components/styled/MultilineText";
 import {FaArrowRight} from "react-icons/fa";
@@ -17,6 +17,10 @@ interface BlogItemProps {
 }
 
 const BlogItem = ({blog: {title, description, createdAt, ...blog}, className, ...props}: BlogItemProps & BoxProps) => {
+
+    const onBlogSave = (e: any) => {
+        e.stopPropagation()
+    }
 
     const isBelowSm = useMediaQuery((theme: Theme) => theme.breakpoints.down("sm"))
     const titleSize = isBelowSm ? "subtitle2" : "h5"
@@ -61,15 +65,17 @@ const BlogItem = ({blog: {title, description, createdAt, ...blog}, className, ..
                     className={styles.actionSection}
                     display={isBelowSm ? "none" : "flex"}
                 >
-                    <PrimaryButton
-                        size="small"
-                        startIcon={<CiBookmark/>}
-                        variant="text"
-                        onClick={e => e.stopPropagation()}
-                        sx={{paddingLeft: 0, color: "text.secondary"}}
+                    <ToggleButton
+                        sx={{borderRadius: '8px', padding: '0.6rem 1rem', border: '0px', paddingLeft: '0'}}
+                        color='secondary'
+                        value='Save For Later'
+                        size='small'
+                        onClick={onBlogSave}
+                        selected={!!blog.isSaved}
                     >
-                        Save for later
-                    </PrimaryButton>
+                        <CiBookmark style={{marginRight: '0.5rem'}}/>
+                        {!!blog.isSaved ? 'Saved for later' : 'Save for later'}
+                    </ToggleButton>
                     <PrimaryButton
                         size="small"
                         endIcon={<FaArrowRight size="16px"/>}

@@ -11,7 +11,8 @@ export default interface Blog {
     updatedAt: string
     coverImage: string
     views: number,
-    author: User
+    author: User,
+    isSaved?: boolean
 }
 
 export interface BlogPage {

@@ -1,5 +1,6 @@
 import express from "express";
 import * as controller from "../controllers/BlogController";
+import * as savedController from "../controllers/SavedBlogController";
 import {coverImageMiddleware, inBlogImage} from "../middlewares/FileMiddleware";
 import validateRequest from "../middlewares/validateRequest";
 import {
@@ -21,6 +22,7 @@ import {
     getCommentsSchema,
     updateCommentSchema
 } from "../validation/CommentValidation";
+import {getSavedBlogsSchema} from "../validation/SavedBlogValidation";
 
 const router = express.Router()
 
@@ -29,7 +31,14 @@ router.get('/slugs', controller.getAllSlugs)
 router.get('/trending', validateRequest(getTrendingBlogsSchema), controller.getTrendingBlogs)
 router.get('/trending/authors', validateRequest(getTrendingAuthorsSchema), controller.getTrendingAuthors)
 
+router.get('/saved', requiresAuth, validateRequest(getSavedBlogsSchema), savedController.getAllSavedBlogs)
+
 router.get('/:slug', controller.getBlogBySlug)
+
+router.post('/:slug/save', requiresAuth, savedController.saveBlog)
+
+router.delete('/:slug/un-save', requiresAuth, savedController.unSaveBlog)
+
 
 router.post(
     '/',

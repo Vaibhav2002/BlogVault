@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState} from 'react';
 import Blog from "@/data/models/Blog";
 import {Box, BoxProps, Theme, ToggleButton, useMediaQuery} from "@mui/material";
 import styles from "./BlogItem.module.css";
@@ -10,6 +10,7 @@ import {CiBookmark} from "react-icons/ci";
 import Image from "next/image";
 import ChipGroup from "@/components/chipGroup/ChipGroup";
 import AuthorSection from "@/components/author/AuthorSection";
+import * as saveDataSource from "@/data/dataSources/SavedBlogDataSource";
 
 interface BlogItemProps {
     blog: Blog
@@ -18,14 +19,23 @@ interface BlogItemProps {
 
 const BlogItem = ({blog: {title, description, createdAt, ...blog}, className, ...props}: BlogItemProps & BoxProps) => {
 
-    const onBlogSave = (e: any) => {
-        e.stopPropagation()
-    }
+    const [isSaved, setIsSaved] = useState(blog.isSaved)
 
     const isBelowSm = useMediaQuery((theme: Theme) => theme.breakpoints.down("sm"))
     const titleSize = isBelowSm ? "subtitle2" : "h5"
     const descriptionSize = isBelowSm ? "caption" : "body2"
     const descriptionMaxLines = isBelowSm ? 2 : 3
+
+    const onSaveToggleButtonClick = async (e: any) => {
+        e.stopPropagation()
+        try {
+            if (blog.isSaved) await saveDataSource.unSaveBlog(blog.slug)
+            else await saveDataSource.saveBlog(blog.slug)
+            setIsSaved(!isSaved)
+        } catch (e) {
+            alert(e)
+        }
+    }
 
     return (
         <Box className={`${styles.blogCard} ${className}`}{...props} padding='1rem 0'>
@@ -70,11 +80,11 @@ const BlogItem = ({blog: {title, description, createdAt, ...blog}, className, ..
                         color='secondary'
                         value='Save For Later'
                         size='small'
-                        onClick={onBlogSave}
-                        selected={!!blog.isSaved}
+                        onClick={onSaveToggleButtonClick}
+                        selected={isSaved}
                     >
                         <CiBookmark style={{marginRight: '0.5rem'}}/>
-                        {!!blog.isSaved ? 'Saved for later' : 'Save for later'}
+                        {isSaved ? 'Remove from Saved' : 'Save for later'}
                     </ToggleButton>
                     <PrimaryButton
                         size="small"

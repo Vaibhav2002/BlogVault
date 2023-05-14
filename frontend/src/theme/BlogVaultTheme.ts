@@ -10,6 +10,7 @@ const blogVaultTheme = createTheme({
             styleOverrides: {
                 root: {
                     color: '#5A5A5A',
+                    borderRadius: '8px',
                 }
             }
         }

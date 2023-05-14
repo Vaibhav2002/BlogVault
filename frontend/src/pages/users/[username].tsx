@@ -111,8 +111,12 @@ const ProfileHeaderSection = ({user, onUpdateProfileClick, className}: ProfileHe
                     <Typography variant={secondaryNameSize} color="text.secondary">{`@${user.username}`}</Typography>
                 }
 
-                <Typography variant="caption" marginTop={{xs: 2, md: 4}}>About</Typography>
-                <MultilineText maxLines={10} variant={aboutSize}>{user.about}</MultilineText>
+                {user.about &&
+                    <>
+                        <Typography variant="caption" marginTop={{xs: 2, md: 4}}>About</Typography>
+                        <MultilineText maxLines={10} variant={aboutSize}>{user.about}</MultilineText>
+                    </>
+                }
             </Stack>
 
         </Stack>

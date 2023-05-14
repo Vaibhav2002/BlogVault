@@ -1,6 +1,6 @@
-import React from 'react';
+import React, {useState} from 'react';
 import Blog from "@/data/models/Blog";
-import {Box, BoxProps, Theme, Typography, useMediaQuery} from "@mui/material";
+import {Box, BoxProps, Theme, ToggleButton, Typography, useMediaQuery} from "@mui/material";
 import styles from "@/components/blogGridItem/BlogGridItem.module.css";
 import Image from "next/image";
 import {formatDate} from "@/utils/Helpers";
@@ -8,6 +8,7 @@ import MultilineText from "@/components/styled/MultilineText";
 import PrimaryButton from "@/components/styled/PrimaryButton";
 import {CiBookmark} from "react-icons/ci";
 import {FaArrowRight} from "react-icons/fa";
+import * as saveDataSource from "@/data/dataSources/SavedBlogDataSource";
 
 interface BlogGridItemProps {
     blog: Blog
@@ -18,6 +19,19 @@ const BlogGridItem = ({blog, className, ...props}: BlogGridItemProps & BoxProps)
 
     const isBelowSm = useMediaQuery((theme: Theme) => theme.breakpoints.down("sm"))
     const titleSize = isBelowSm ? "subtitle2" : "subtitle1"
+
+    const [isSaved, setIsSaved] = useState(!!blog.isSaved)
+    const onSaveToggleButtonClick = async (e: any) => {
+        e.stopPropagation()
+        try {
+            if (isSaved) {
+                await saveDataSource.unSaveBlog(blog.slug)
+            } else await saveDataSource.saveBlog(blog.slug)
+            setIsSaved(!isSaved)
+        } catch (e) {
+            alert(e)
+        }
+    }
 
     return (
         <Box className={`${styles.blogCard} ${className}`} {...props}>
@@ -56,15 +70,17 @@ const BlogGridItem = ({blog, className, ...props}: BlogGridItemProps & BoxProps)
                     className={styles.actionSection}
                     display={isBelowSm ? "none" : "flex"}
                 >
-                    <PrimaryButton
-                        size="small"
-                        startIcon={<CiBookmark/>}
-                        variant="text"
-                        onClick={e => e.stopPropagation()}
-                        sx={{paddingLeft: 0, color: "text.secondary"}}
+                    <ToggleButton
+                        sx={{borderRadius: '8px', border: '0px'}}
+                        color='secondary'
+                        value='Save For Later'
+                        size='small'
+                        onClick={onSaveToggleButtonClick}
+                        selected={isSaved}
                     >
-                        Save for later
-                    </PrimaryButton>
+                        <CiBookmark style={{marginRight: '0.5rem'}}/>
+                        {isSaved ? 'Saved' : 'Save for later'}
+                    </ToggleButton>
                     <PrimaryButton
                         size="small"
                         endIcon={<FaArrowRight size="16px"/>}

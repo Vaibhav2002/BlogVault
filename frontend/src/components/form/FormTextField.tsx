@@ -41,7 +41,6 @@ const FormTextField = (
 
                     <TextField
                         variant="outlined"
-                        multiline
                         fullWidth
                         error={!!error}
                         helperText={error?.message}

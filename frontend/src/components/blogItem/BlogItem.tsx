@@ -80,7 +80,7 @@ const BlogItem = ({blog, className, onBlogUnSaved, ...props}: BlogItemProps & Bo
                     display={isBelowSm ? "none" : "flex"}
                 >
                     <ToggleButton
-                        sx={{borderRadius: '8px', padding: '0.6rem 1rem', border: '0px', paddingLeft: '0'}}
+                        sx={{borderRadius: '8px', border: '0px'}}
                         color='secondary'
                         value='Save For Later'
                         size='small'
@@ -88,7 +88,7 @@ const BlogItem = ({blog, className, onBlogUnSaved, ...props}: BlogItemProps & Bo
                         selected={isSaved}
                     >
                         <CiBookmark style={{marginRight: '0.5rem'}}/>
-                        {isSaved ? 'Remove from Saved' : 'Save for later'}
+                        {isSaved ? 'Saved' : 'Save for later'}
                     </ToggleButton>
                     <PrimaryButton
                         size="small"

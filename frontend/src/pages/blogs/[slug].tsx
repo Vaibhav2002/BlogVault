@@ -96,7 +96,7 @@ const BlogHeader = ({blog, className, ...props}: BlogHeaderProps & StackProps) =
                 <Typography variant="body2" color="text.secondary">{time}</Typography>
             </CenteredBox>
 
-            <BlogAuthorSection slug={blog.slug} author={blog.author}/>
+            <BlogAuthorSection blog={blog}/>
         </Stack>
     )
 }

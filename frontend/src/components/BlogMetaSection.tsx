@@ -53,6 +53,8 @@ const BlogMetaSection = ({topics, form, error, coverImage, className}: BlogMetaS
                     name="title"
                     label="Title"
                     showLength
+                    multiline
+                    maxRows={2}
                     maxLength={100}
                     onBlur={setSlug}
                     placeholder="Enter title"
@@ -63,6 +65,8 @@ const BlogMetaSection = ({topics, form, error, coverImage, className}: BlogMetaS
                     name="slug"
                     label="Slug"
                     showLength
+                    multiline
+                    maxRows={2}
                     maxLength={100}
                     placeholder="Enter slug"
                 />
@@ -72,9 +76,10 @@ const BlogMetaSection = ({topics, form, error, coverImage, className}: BlogMetaS
                     name="description"
                     label="Description"
                     showLength
+                    multiline
+                    rows={3}
                     maxLength={300}
                     placeholder="Enter description"
-                    maxRows={6}
                 />
 
                 <FormAutoComplete

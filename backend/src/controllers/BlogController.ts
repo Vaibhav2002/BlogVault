@@ -1,7 +1,8 @@
 import * as dataSource from '../dataSources/BlogDataSource'
+import search from '../dataSources/BlogSearchDataSource'
 import {RequestHandler} from "express";
 import {assertIsDefined} from "../utils/Helpers";
-import {BlogBody, BlogIdParam, GetBlogsQuery, LimitQuery} from "../validation/BlogValidation";
+import {BlogBody, BlogIdParam, GetBlogsQuery, LimitQuery, SearchBlogQuery} from "../validation/BlogValidation";
 import ApiResponse from "../models/ApiResponse";
 
 export const getAllBlogs: RequestHandler<unknown, unknown, unknown, GetBlogsQuery> = async (req, res, next) => {
@@ -10,6 +11,22 @@ export const getAllBlogs: RequestHandler<unknown, unknown, unknown, GetBlogsQuer
     const userId = req.user?._id
     try {
         const blogs = await dataSource.getAllBlogs(page, authorId, userId)
+        res.status(200).json(blogs)
+    } catch (e) {
+        next(e)
+    }
+}
+
+export const searchBlogs: RequestHandler<unknown, unknown, unknown, SearchBlogQuery> = async (req, res, next) => {
+    const userId = req.user?._id
+    const {q, topic, author, page = 1} = req.query
+    try {
+        const blogs = await search({
+            query: q,
+            topicQuery: topic,
+            authorNameQuery: author,
+            page: page,
+        }, userId)
         res.status(200).json(blogs)
     } catch (e) {
         next(e)

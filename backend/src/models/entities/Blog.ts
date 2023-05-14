@@ -12,6 +12,8 @@ const blogSchema = new Schema({
     views: {type: Number, default: 0}
 }, {timestamps: true});
 
+blogSchema.index({title: 'text', description: 'text', slug: 'text'});
+
 export type Blog = InferSchemaType<typeof blogSchema>;
 
 export default model<Blog>('Blog', blogSchema);

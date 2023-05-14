@@ -17,3 +17,7 @@ export const areTopicsValid = async (ids: string[]) => {
     const topics = (await getAllTopics()).map(topic => topic._id.toString())
     return ids.every(id => topics.includes(id))
 }
+
+export const getTopicByName = async (name: string) => {
+    return await topics.findOne({name: name}).exec()
+}

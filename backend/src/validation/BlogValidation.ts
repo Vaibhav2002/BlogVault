@@ -72,3 +72,14 @@ export const deleteBlogSchema = yup.object({
 export const inBlogImageSchema = yup.object({
     file: imageSchema.required('image is required')
 })
+
+export const searchBlogsSchema = yup.object({
+    query: yup.object({
+        q: yup.string(),
+        topic: yup.string(),
+        page: yup.number().integer().min(1),
+        author: yup.string()
+    })
+})
+
+export type SearchBlogQuery = yup.InferType<typeof searchBlogsSchema>['query']

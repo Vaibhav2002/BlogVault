@@ -197,7 +197,7 @@ const isSlugTaken = async (slug: string, blogId?: string) => {
     return blog
 }
 
-const attachIsSaved = async (blogs: any[], userId: MongoId) => {
+export const attachIsSaved = async (blogs: any[], userId: MongoId) => {
     const savedBlogIds = (await getSavedBlogIds(userId.toString())).map(id => id?.toString())
     return blogs.map(blog => ({...blog, isSaved: savedBlogIds.includes(blog._id.toString())}))
 }

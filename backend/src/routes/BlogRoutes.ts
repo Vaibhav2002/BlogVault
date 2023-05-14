@@ -10,6 +10,7 @@ import {
     getTrendingAuthorsSchema,
     getTrendingBlogsSchema,
     inBlogImageSchema,
+    searchBlogsSchema,
     updateBlogSchema
 } from "../validation/BlogValidation";
 import requiresAuth from "../middlewares/AuthMiddleware";
@@ -32,6 +33,7 @@ router.get('/trending', validateRequest(getTrendingBlogsSchema), controller.getT
 router.get('/trending/authors', validateRequest(getTrendingAuthorsSchema), controller.getTrendingAuthors)
 
 router.get('/saved', requiresAuth, validateRequest(getSavedBlogsSchema), savedController.getAllSavedBlogs)
+router.get('/search', validateRequest(searchBlogsSchema), controller.searchBlogs)
 
 router.get('/:slug', controller.getBlogBySlug)
 

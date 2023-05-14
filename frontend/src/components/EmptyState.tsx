@@ -1,8 +1,9 @@
 import React from 'react';
 import emptyState from '@/assets/images/empty_state.jpg';
 import CenteredBox from "@/components/styled/CenteredBox";
-import {Box, BoxProps, Button, Typography} from "@mui/material";
+import {Box, BoxProps, Typography} from "@mui/material";
 import Image from "next/image";
+import PrimaryButton from "@/components/styled/PrimaryButton";
 
 interface EmptyStateProps {
     title: string,
@@ -20,12 +21,13 @@ const EmptyState = ({title, message, showImage = true, className, ...props}: Emp
                 <Image src={emptyState} alt='Empty State' fill priority/>
             </Box>}
             <CenteredBox flexDirection='column'>
-                <Typography variant='h5' color='text.primary'>{title}</Typography>
-                {message && <Typography variant='body1' color='text.secondary'>{message}</Typography>}
+                <Typography variant='h5' color='text.primary' textAlign='center'>{title}</Typography>
+                {message && <Typography variant='body1' color='text.secondary' textAlign='center'
+                                        marginBottom={4}>{message}</Typography>}
                 {props.ctaText &&
-                    <Button variant='contained' fullWidth={false} onClick={props.onCtaClick}>
+                    <PrimaryButton variant='contained' onClick={props.onCtaClick} sx={{paddingX: '4rem'}}>
                         {props.ctaText}
-                    </Button>
+                    </PrimaryButton>
                 }
             </CenteredBox>
         </CenteredBox>

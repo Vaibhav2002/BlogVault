@@ -48,15 +48,17 @@ export const getAllSlugs = async () => {
     return allBlogs.map(blog => blog.slug)
 }
 
-export const getBlogBySlug = async (slug: string, userId?: MongoId) => {
+export const getBlogBySlug = async (slug: string, incCount: boolean = true, userId?: MongoId) => {
     const blog = await blogs.findOne({slug: slug})
         .populate("topics author")
         .exec()
 
     if (!blog) throw createHttpError('404', 'Blog not found')
 
-    blog.views++
-    await blog.save()
+    if (incCount) {
+        blog.views++
+        await blog.save()
+    }
 
     if (!userId) return blog
 

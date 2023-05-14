@@ -16,7 +16,7 @@ import EmptyState from "@/components/EmptyState";
 import BlogList from "@/components/blogItem/BlogList";
 
 
-export const getServerSideProps: GetServerSideProps<HomeScreenProps> = async ({query}) => {
+export const getServerSideProps: GetServerSideProps<HomeScreenProps> = async ({query, req}) => {
     const redirect = (page: number) => {
         query.page = page.toString();
         return {
@@ -30,9 +30,15 @@ export const getServerSideProps: GetServerSideProps<HomeScreenProps> = async ({q
     const page = query.page ? parseInt(query.page as string) : 1
     if (page < 1) redirect(1)
 
-    const blogPage = await getAllBlogs(page)
+    const blogPage = await getAllBlogs(page, req.headers.cookie)
 
     if (page > blogPage.totalPages) redirect(blogPage.totalPages)
+
+    console.log(
+        JSON.stringify(blogPage.blogs.map(blog => (
+            {id: blog._id, isSaved: blog.isSaved}
+        )))
+    )
 
     return {
         props: {blogPage: blogPage}
@@ -91,7 +97,6 @@ interface HomeBlogSectionProps {
 }
 
 const HomeBlogSection = ({page, blogs, totalPages, className, ...props}: HomeBlogSectionProps & StackProps) => {
-
     const router = useRouter()
     const onBlogClick = async (blog: Blog) => {
         await router.push(getBlogRoute(blog.slug))

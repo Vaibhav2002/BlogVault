@@ -55,8 +55,12 @@ export const updateBlog = async (blogId: string, blog: UpdateBlogData) => {
     await api.patch<Blog>(`/blogs/${blogId}`, formData)
 }
 
-export const getAllBlogs = async (page: number = 1) => {
-    const response = await api.get<BlogPage>(`/blogs?page=${page}`)
+export const getAllBlogs = async (page: number = 1, cookies?: any) => {
+    const response = await api.get<BlogPage>(`/blogs`, {
+        params: {page: page},
+        withCredentials: true,
+        headers: {Cookie: cookies}
+    })
     return response.data as BlogPage
 }
 

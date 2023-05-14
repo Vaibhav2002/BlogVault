@@ -45,7 +45,7 @@ export const unSaveBlog: RequestHandler = async (req, res, next) => {
 }
 
 const getBlogBySlug = async (slug: string) => {
-    const blog = await blogDataSource.getBlogBySlug(slug)
+    const blog = await blogDataSource.getBlogBySlug(slug, false)
     if (!blog) throw createHttpError(404, 'Blog with this slug does not exist')
     return blog
 }

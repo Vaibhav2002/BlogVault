@@ -3,7 +3,7 @@ import createHttpError from "http-errors";
 import {MongoId} from "../utils/Helpers";
 
 export const saveBlog = async (blogId: string, userId: string) => {
-    const savedBlog = await savedBlogs.findOne({blog: blogId, user: userId})
+    const savedBlog = await savedBlogs.findOne({blog: blogId, user: userId}).exec()
     if (savedBlog) throw createHttpError(400, 'Blog is already saved')
     await savedBlogs.create({
         blog: blogId,
@@ -12,7 +12,7 @@ export const saveBlog = async (blogId: string, userId: string) => {
 }
 
 export const unSaveBlog = async (blogId: string, userId: string) => {
-    const savedBlog = savedBlogs.findOne({blog: blogId, user: userId})
+    const savedBlog = await savedBlogs.findOne({blog: blogId, user: userId}).exec()
     if (!savedBlog) throw createHttpError(404, 'Blog is not saved')
     await savedBlog.deleteOne()
 }

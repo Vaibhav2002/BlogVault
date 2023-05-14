@@ -11,5 +11,5 @@ export const saveBlog = async (slug: string) => {
 }
 
 export const unSaveBlog = async (slug: string) => {
-    await api.delete(`/blogs/${slug}/un=save`)
+    await api.delete(`/blogs/${slug}/un-save`)
 }

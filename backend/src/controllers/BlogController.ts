@@ -65,7 +65,7 @@ export const getAllSlugs: RequestHandler = async (req, res, next) => {
 export const getBlogBySlug: RequestHandler = async (req, res, next) => {
     try {
         const userId = req.user?._id
-        const blog = await dataSource.getBlogBySlug(req.params.slug, userId)
+        const blog = await dataSource.getBlogBySlug(req.params.slug, true, userId)
         res.status(200).json(blog)
     } catch (e) {
         next(e)

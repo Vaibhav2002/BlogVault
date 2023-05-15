@@ -35,9 +35,9 @@ const TrendingTopicsSection = () => {
     const router = useRouter()
     const {data: topics, isLoading, error} = useSWR('trending_topics', getTrendingTopics)
 
-    if (error || (topics && _.isEmpty(topics))) return <></>
-
     const onTopicSelected = (topic: Topic) => router.push(getSearchRouteForTopic(topic.name))
+
+    if (error || (topics && _.isEmpty(topics))) return <></>
 
     return (
         <Stack spacing={2}>
@@ -59,7 +59,6 @@ const TrendingTopicsSection = () => {
 
 const TrendingBlogsSection = () => {
     const {data: blogs, isLoading, error} = useSWR('discover_trending_blogs', getDiscoverTrendingBlogs)
-    if (error || (blogs && _.isEmpty(blogs))) return <></>
 
     const skeleton = useCallback(() => (
         <Stack spacing={4}>
@@ -67,6 +66,7 @@ const TrendingBlogsSection = () => {
         </Stack>
     ), [])
 
+    if (error || (blogs && _.isEmpty(blogs))) return <></>
 
     return (
         <Stack spacing={2}>
@@ -86,13 +86,14 @@ const TrendingAuthorsSection = () => {
     const {data: authors, isLoading, error} = useSWR(
         'trending_authors', getDiscoverTrendingAuthors
     )
-    if (error || (authors && _.isEmpty(authors))) return <></>
 
     const skeleton = useCallback(() => (
         <Stack spacing={4}>
             {[...Array(4)].map(() => <AuthorItemSkeleton/>)}
         </Stack>
     ), [])
+
+    if (error || (authors && _.isEmpty(authors))) return <></>
 
     return (
         <Stack spacing={2}>

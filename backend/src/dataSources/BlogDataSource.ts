@@ -104,7 +104,7 @@ export const getAllBlogs = async (page: number, authorId?: string, userId?: Mong
 export const getTrendingBlogs = async (limit: number, page: number, userId?: MongoId) => {
     const pageSize = limit
     const skip = (page - 1) * pageSize
-    const filter = {createdAt: {$gte: getStartOfTrendingWindow()}}
+    const filter = {updatedAt: {$gte: getStartOfTrendingWindow()}}
 
     const blogQuery = blogs.find(filter)
         .sort({views: -1})
@@ -140,7 +140,7 @@ export const getTrendingAuthors = async (limit: number) => {
 }
 
 export const getBlogsFrom = async (date: Date) => {
-    return await blogs.find().gte('createdAt', date).populate('author topics').exec()
+    return await blogs.find().gte('updatedAt', date).populate('author topics').exec()
 }
 
 export const updateBlog = async (userId: MongoId, blogId: string, blogBody: BlogBody, coverImage?: Express.Multer.File) => {

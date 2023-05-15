@@ -1,9 +1,12 @@
-import {Typography} from "@mui/material";
+import {Stack} from "@mui/material";
+import HeroSection from "@/components/landingPage/HeroSection";
 
 export default function Home() {
     return (
-        <>
-            <Typography variant="h4">Hello NextJs App</Typography>
-        </>
+        <Stack height='100%'>
+            <HeroSection/>
+        </Stack>
     )
 }
+
+

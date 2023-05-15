@@ -33,6 +33,7 @@ const searchBlogs = async ({query, topicQuery, authorNameQuery, page = 1}: Searc
         })
         .skip(skip)
         .limit(pageSize)
+        .populate('author topics')
         .lean()
         .exec()
 

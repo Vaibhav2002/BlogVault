@@ -1,7 +1,7 @@
 import React, {ReactElement, useMemo} from 'react';
 import {Stack, StackProps, Tooltip} from "@mui/material";
 import ContainedIcon from "@/components/ContainedIcon";
-import {CiBookmark, CiGrid42, CiHome, CiLogin, CiLogout, CiSquarePlus} from "react-icons/ci";
+import {CiBookmark, CiGrid42, CiHome, CiLogin, CiLogout, CiSearch, CiSquarePlus} from "react-icons/ci";
 import {useRouter} from "next/router";
 import {motion} from "framer-motion";
 import {NavOptions, navOptions, NavScreen} from "@/components/navBars/NavOptions";
@@ -24,6 +24,8 @@ const getIconForNavItem = (option: NavOptions, selected: boolean) => {
             return <CiGrid42 size={iconSize} color={getIconColor(selected)}/>
         case NavScreen.Bookmarks:
             return <CiBookmark size={iconSize} color={getIconColor(selected)}/>
+        case NavScreen.Search:
+            return <CiSearch size={iconSize} color={getIconColor(selected)}/>
         case NavScreen.Post:
             return <CiSquarePlus size={iconSize} color={getIconColor(selected)}/>
     }

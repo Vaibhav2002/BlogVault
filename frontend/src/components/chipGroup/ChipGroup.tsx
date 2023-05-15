@@ -7,17 +7,26 @@ interface ChipGroupProps<T> {
     items: T[]
     getLabel: (chip: T) => string
     gap?: number
-    size?: "small" | "medium"
+    size?: "small" | "medium",
+    onOptionSelected?: (option: T) => void,
+    selectable?: boolean
+    selected?: T
     className?: string
 }
 
-const ChipGroup = <T extends unknown>(
-    {items, getLabel, gap = 2, size = "medium", className, ...props}: ChipGroupProps<T> & BoxProps
+const ChipGroup = <T extends any>(
+    {items, getLabel, gap = 2, size = "medium", onOptionSelected, className, ...props}: ChipGroupProps<T> & BoxProps
 ) => {
     return (
         <Box className={`${styles.container} ${className}`} gap={gap} {...props}>
             {items.map((chip, index) =>
-                <StyledChip key={index} label={getLabel(chip)} size={size}/>
+                <StyledChip
+                    key={index}
+                    label={getLabel(chip)}
+                    size={size}
+                    onClick={() => onOptionSelected?.(chip)}
+                    color={props.selectable && props.selected === chip ? "primary" : "default"}
+                />
             )}
         </Box>
     )
@@ -39,7 +48,7 @@ export const ChipGroupSkeleton = ({count, gap = 2, size = 'medium', className}: 
         <Box className={`${styles.container} ${className}`} gap={gap}>
             {[...Array(count)].map((chip, index) =>
                 <Skeleton
-                    variant='rectangular'
+                    variant='rounded'
                     width={randomizedWidth()}
                     height={height}
                     key={index}

@@ -101,3 +101,14 @@ export const getBlogBySlug = async (slug: string) => {
 export const deleteBlog = async (blogId: string) => {
     await api.delete(`/blogs/${blogId}`)
 }
+
+interface SearchBlogQuery {
+    q?: string,
+    topic?: string,
+    page: number
+}
+
+export const searchBlogs = async (query: SearchBlogQuery) => {
+    return api.get<BlogPage>(`/blogs/search`, {params: query})
+        .then(response => response.data as BlogPage)
+}

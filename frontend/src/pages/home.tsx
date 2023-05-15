@@ -34,12 +34,6 @@ export const getServerSideProps: GetServerSideProps<HomeScreenProps> = async ({q
 
     if (page > blogPage.totalPages) redirect(blogPage.totalPages)
 
-    console.log(
-        JSON.stringify(blogPage.blogs.map(blog => (
-            {id: blog._id, isSaved: blog.isSaved}
-        )))
-    )
-
     return {
         props: {blogPage: blogPage}
     }

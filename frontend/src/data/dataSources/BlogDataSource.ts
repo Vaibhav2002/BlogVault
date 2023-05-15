@@ -44,13 +44,10 @@ interface UpdateBlogData {
 export const updateBlog = async (blogId: string, blog: UpdateBlogData) => {
     const formData = new FormData()
 
-    console.log(JSON.stringify(blog.topics))
     Object.entries(blog).forEach(([key, value]) => {
         if (key === "topics" && value !== undefined) formData.append(key, JSON.stringify(value))
         else if (value !== undefined) formData.append(key, value)
     })
-
-    console.log(formData.get("topics"))
 
     await api.patch<Blog>(`/blogs/${blogId}`, formData)
 }

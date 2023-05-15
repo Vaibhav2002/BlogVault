@@ -83,7 +83,6 @@ const EditBlogPage = ({blog}: EditBlogPageProps) => {
 
     const onSubmit = async (data: BlogInput) => {
         try {
-            console.log(JSON.stringify(data.topics))
             setError(undefined)
             await updateBlog(blog._id, {
                 ...data,

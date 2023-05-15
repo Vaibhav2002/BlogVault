@@ -63,7 +63,7 @@ const CreateNewBlogPage = () => {
                 ...data,
                 topics: data.topics.map(topic => topic._id) ?? [],
             })
-            await router.push(getBlogRoute(data.slug))
+            await router.replace(getBlogRoute(data.slug))
         } catch (e) {
             console.error(e)
             if (e instanceof HttpError)

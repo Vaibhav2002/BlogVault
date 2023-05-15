@@ -14,6 +14,8 @@ import BlogAuthorSection from "@/components/BlogAuthorSection";
 import useDevices from "@/hooks/useDevices";
 import NavScreen from "@/components/NavScreen/NavScreen";
 import BlogCommentSection from "@/components/comments/CommentSection";
+import {getSearchRouteForTopic} from "@/utils/Routes";
+import {useRouter} from "next/router";
 
 export const getServerSideProps: GetServerSideProps<BlogPageProps> = async ({params}) => {
     const slug = params?.slug?.toString();
@@ -122,9 +124,18 @@ interface BlogFooterProps {
 }
 
 const BlogFooter = ({blog, className, ...props}: BlogFooterProps & StackProps) => {
+    const router = useRouter()
+    const onTopicClick = async (topic: Topic) => {
+        await router.push(getSearchRouteForTopic(topic.name))
+    }
     return (
         <Stack width={1} spacing={3} className={className} {...props}>
-            <ChipGroup items={blog.topics} getLabel={(topic: Topic) => topic.name} alignSelf='center'/>
+            <ChipGroup
+                items={blog.topics}
+                getLabel={(topic: Topic) => topic.name}
+                alignSelf='center'
+                onOptionSelected={onTopicClick}
+            />
             <Box>
                 <BlogCommentSection blogId={blog._id}/>
             </Box>

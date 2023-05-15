@@ -8,6 +8,8 @@ import _ from "lodash";
 import {getDiscoverTrendingAuthors, getDiscoverTrendingBlogs} from "@/data/dataSources/BlogDataSource";
 import BlogMiniItem, {BlogMiniItemSkeleton} from "@/components/blogItem/BlogMiniItem";
 import AuthorItem, {AuthorItemSkeleton} from "@/components/author/AuthorItem";
+import {getSearchRouteForTopic} from "@/utils/Routes";
+import {useRouter} from "next/router";
 
 interface DiscoverSectionProps {
     showTrendingTopics?: boolean
@@ -30,16 +32,26 @@ const DiscoverSection = (
 
 
 const TrendingTopicsSection = () => {
+    const router = useRouter()
     const {data: topics, isLoading, error} = useSWR('trending_topics', getTrendingTopics)
 
     if (error || (topics && _.isEmpty(topics))) return <></>
+
+    const onTopicSelected = (topic: Topic) => router.push(getSearchRouteForTopic(topic.name))
 
     return (
         <Stack spacing={2}>
             <MultilineText maxLines={2} variant='h6'>Trending Topics</MultilineText>
             {isLoading && <ChipGroupSkeleton count={8}/>}
             {!isLoading &&
-                <ChipGroup items={topics!} getLabel={topic => topic.name} sx={{overflowX: 'hidden'}} gap={1}/>}
+                <ChipGroup
+                    items={topics!}
+                    getLabel={topic => topic.name}
+                    sx={{overflowX: 'hidden'}}
+                    gap={1}
+                    onOptionSelected={onTopicSelected}
+                />
+            }
             <Divider sx={{paddingTop: 2}}/>
         </Stack>
     )

@@ -12,6 +12,8 @@ import ChipGroup, {ChipGroupSkeleton} from "@/components/chipGroup/ChipGroup";
 import AuthorSection from "@/components/author/AuthorSection";
 import * as saveDataSource from "@/data/dataSources/SavedBlogDataSource";
 import useDevices from "@/hooks/useDevices";
+import {useRouter} from "next/router";
+import {getSearchRouteForTopic} from "@/utils/Routes";
 
 interface BlogItemProps {
     blog: Blog
@@ -23,6 +25,7 @@ const BlogItem = ({blog, className, onBlogUnSaved, ...props}: BlogItemProps & Bo
     const {title, description, createdAt, isSaved: blogSaved, slug} = blog
     const [isSaved, setIsSaved] = useState(!!blogSaved)
 
+    const router = useRouter()
     const isBelowSm = useMediaQuery((theme: Theme) => theme.breakpoints.down("sm"))
     const titleSize = isBelowSm ? "subtitle2" : "h5"
     const descriptionSize = isBelowSm ? "caption" : "body2"
@@ -39,6 +42,10 @@ const BlogItem = ({blog, className, onBlogUnSaved, ...props}: BlogItemProps & Bo
         } catch (e) {
             alert(e)
         }
+    }
+
+    const onTopicClick = async (topic: Topic) => {
+        await router.push(getSearchRouteForTopic(topic.name))
     }
 
     return (
@@ -73,6 +80,7 @@ const BlogItem = ({blog, className, onBlogUnSaved, ...props}: BlogItemProps & Bo
                     getLabel={topic => topic.name}
                     gap={1}
                     size="small"
+                    onOptionSelected={onTopicClick}
                 />
 
                 <Box

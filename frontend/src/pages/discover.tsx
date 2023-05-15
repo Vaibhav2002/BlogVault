@@ -4,7 +4,7 @@ import {NavScreen as NavPage} from "@/components/navBars/NavOptions";
 import {GetServerSideProps} from "next";
 import {getTrendingAuthors, getTrendingBlogs} from "@/data/dataSources/BlogDataSource";
 import {stringify} from "querystring";
-import Routes, {getBlogRoute} from "@/utils/Routes";
+import Routes, {getBlogRoute, getSearchRouteForTopic} from "@/utils/Routes";
 import Blog, {BlogPage} from "@/data/models/Blog";
 import _ from "lodash";
 import EmptyState from "@/components/EmptyState";
@@ -149,9 +149,12 @@ interface TrendingTopicSectionProps {
 }
 
 const TrendingTopicSection = ({className, ...props}: TrendingTopicSectionProps & StackProps) => {
+    const router = useRouter()
     const {data: topics, isLoading, error} = useSWR('trending_topics', getTrendingTopics)
 
     if (error || (topics && _.isEmpty(topics))) return <></>
+
+    const onTopicSelected = (topic: Topic) => router.push(getSearchRouteForTopic(topic.name))
 
     return (
         <Stack spacing={2} className={className} {...props}>
@@ -160,7 +163,15 @@ const TrendingTopicSection = ({className, ...props}: TrendingTopicSectionProps &
             </MultilineText>
             {isLoading && <ChipGroupSkeleton count={8}/>}
             {!isLoading &&
-                <ChipGroup items={topics!} getLabel={topic => topic.name} sx={{overflowX: 'hidden'}} gap={1}/>}
+                <ChipGroup
+                    items={topics!}
+                    getLabel={topic => topic.name}
+                    sx={{overflowX: 'hidden'}}
+                    gap={1}
+                    onOptionSelected={onTopicSelected}
+                />
+
+            }
         </Stack>
     )
 }

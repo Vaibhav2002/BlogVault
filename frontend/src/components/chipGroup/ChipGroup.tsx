@@ -24,7 +24,10 @@ const ChipGroup = <T extends any>(
                     key={index}
                     label={getLabel(chip)}
                     size={size}
-                    onClick={() => onOptionSelected?.(chip)}
+                    onClick={e => {
+                        e.stopPropagation()
+                        onOptionSelected?.(chip)
+                    }}
                     color={props.selectable && props.selected === chip ? "primary" : "default"}
                 />
             )}

@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useContext, useState} from 'react';
 import Blog from "@/data/models/Blog";
 import {Box, BoxProps, Theme, ToggleButton, Typography, useMediaQuery} from "@mui/material";
 import styles from "@/components/blogGridItem/BlogGridItem.module.css";
@@ -9,6 +9,8 @@ import PrimaryButton from "@/components/styled/PrimaryButton";
 import {CiBookmark} from "react-icons/ci";
 import {FaArrowRight} from "react-icons/fa";
 import * as saveDataSource from "@/data/dataSources/SavedBlogDataSource";
+import {AuthModalsContext} from "@/components/modals/auth/AuthModal";
+import useAuthenticatedUser from "@/hooks/useAuthenticatedUser";
 
 interface BlogGridItemProps {
     blog: Blog
@@ -21,8 +23,16 @@ const BlogGridItem = ({blog, className, ...props}: BlogGridItemProps & BoxProps)
     const titleSize = isBelowSm ? "subtitle2" : "subtitle1"
 
     const [isSaved, setIsSaved] = useState(!!blog.isSaved)
+
+    const {showLogin} = useContext(AuthModalsContext)
+    const {user} = useAuthenticatedUser()
+
     const onSaveToggleButtonClick = async (e: any) => {
         e.stopPropagation()
+        if (!user) {
+            showLogin()
+            return
+        }
         try {
             if (isSaved) {
                 await saveDataSource.unSaveBlog(blog.slug)
@@ -32,6 +42,7 @@ const BlogGridItem = ({blog, className, ...props}: BlogGridItemProps & BoxProps)
             alert(e)
         }
     }
+
 
     return (
         <Box className={`${styles.blogCard} ${className}`} {...props}>

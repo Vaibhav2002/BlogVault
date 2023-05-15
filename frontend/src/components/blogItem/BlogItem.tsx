@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useContext, useState} from 'react';
 import Blog from "@/data/models/Blog";
 import {Box, BoxProps, Skeleton, Stack, Theme, ToggleButton, useMediaQuery} from "@mui/material";
 import styles from "./BlogItem.module.css";
@@ -14,6 +14,8 @@ import * as saveDataSource from "@/data/dataSources/SavedBlogDataSource";
 import useDevices from "@/hooks/useDevices";
 import {useRouter} from "next/router";
 import {getSearchRouteForTopic} from "@/utils/Routes";
+import {AuthModalsContext} from "@/components/modals/auth/AuthModal";
+import useAuthenticatedUser from "@/hooks/useAuthenticatedUser";
 
 interface BlogItemProps {
     blog: Blog
@@ -31,8 +33,15 @@ const BlogItem = ({blog, className, onBlogUnSaved, ...props}: BlogItemProps & Bo
     const descriptionSize = isBelowSm ? "caption" : "body2"
     const descriptionMaxLines = isBelowSm ? 2 : 3
 
+    const {showLogin} = useContext(AuthModalsContext)
+    const {user} = useAuthenticatedUser()
+
     const onSaveToggleButtonClick = async (e: any) => {
         e.stopPropagation()
+        if (!user) {
+            showLogin()
+            return
+        }
         try {
             if (isSaved) {
                 await saveDataSource.unSaveBlog(slug)

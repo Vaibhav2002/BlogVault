@@ -1,5 +1,5 @@
 import React, {ReactElement, useMemo} from 'react';
-import {Stack, StackProps, Tooltip} from "@mui/material";
+import {Box, Stack, StackProps, Tooltip} from "@mui/material";
 import ContainedIcon from "@/components/ContainedIcon";
 import {CiBookmark, CiGrid42, CiHome, CiLogin, CiLogout, CiSearch, CiSquarePlus} from "react-icons/ci";
 import {useRouter} from "next/router";
@@ -8,7 +8,10 @@ import {NavOptions, navOptions, NavScreen} from "@/components/navBars/NavOptions
 import User from "@/data/models/User";
 import UserAvatar from "@/components/Avatar";
 import Link from "next/link";
-import {getUserRoute} from "@/utils/Routes";
+import Routes, {getUserRoute} from "@/utils/Routes";
+import Image from "next/image";
+import logo from '@/assets/images/logo.png'
+import CenteredBox from "@/components/styled/CenteredBox";
 
 const iconSize = 24
 
@@ -62,23 +65,47 @@ const SideNav = ({user, selected, className, onLoginClick, onLogoutClick, ...pro
     }
 
     return (
-        <Stack spacing={4} className={className} padding={3} {...props}>
+        <CenteredBox
+            flexDirection='column'
+            gap={4}
+            className={className}
+            padding={3}
+            {...props}
+            height='100%'
+            position='relative'
+        >
 
-            {navItems.map((item) =>
-                <SideNavIcon
-                    key={item.navItem.href}
-                    icon={item.icon}
-                    bgColor={getIconBgColor(selected === item.navItem.screen)}
-                    text={item.navItem.screen}
-                    onClick={() => onIconSelected(item)}
-                />
-            )}
+            <Box
+                sx={{
+                    position: 'absolute', top: 0, left: 0, aspectRatio: '1/1', overflow: 'hidden', padding: 3
+                }}
+                width={1}
+                component={Link}
+                href={Routes.Home}
+            >
+                <Box width={1} sx={{aspectRatio: '1/1', position: 'relative'}}>
+                    <Image src={logo} fill priority alt='Logo'/>
+                </Box>
+            </Box>
 
-            {user
-                ? <UserLoggedInView user={user} onLogoutClick={onLogoutClick}/>
-                : <UserLoggedOutView onLoginClick={onLoginClick}/>
-            }
-        </Stack>
+
+            <Stack spacing={4} justifySelf='center'>
+                {navItems.map((item) =>
+                    <SideNavIcon
+                        key={item.navItem.href}
+                        icon={item.icon}
+                        bgColor={getIconBgColor(selected === item.navItem.screen)}
+                        text={item.navItem.screen}
+                        onClick={() => onIconSelected(item)}
+                    />
+                )}
+                {user
+                    ? <UserLoggedInView user={user} onLogoutClick={onLogoutClick}/>
+                    : <UserLoggedOutView onLoginClick={onLoginClick}/>
+                }
+            </Stack>
+
+        </CenteredBox>
     )
 }
 

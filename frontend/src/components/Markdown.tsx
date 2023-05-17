@@ -37,7 +37,7 @@ const Markdown = ({children, className}: MarkdownProps) => {
     )
 
     const sizes = {
-        h1: isMobile ? 'h4' : 'h3',
+        h1: isMobile ? 'h5' : 'h4',
         h2: isMobile ? 'h6' : 'h5',
         h3: isMobile ? 'subtitle1' : 'h6',
         h4: isMobile ? 'subtitle2' : 'subtitle1',
@@ -51,7 +51,7 @@ const Markdown = ({children, className}: MarkdownProps) => {
             remarkPlugins={[remarkGfm, [remarkToc, {compact: true, maxDepth: 3}]]}
             rehypePlugins={[rehypeRaw, rehypeSlug]}
             components={{
-                h1: ({...props}) => Spaced(<Typography {...props} variant={sizes.h1} fontWeight="bolder"/>),
+                h1: ({...props}) => Spaced(<Typography {...props} fontWeight="bolder" variant={sizes.h1}/>),
                 h2: ({...props}) => Spaced(<Typography {...props} variant={sizes.h2} fontWeight="bolder"/>),
                 h3: ({...props}) => Spaced(<Typography {...props} variant={sizes.h3} fontWeight="bolder"/>),
                 h4: ({...props}) => Spaced(<Typography {...props} variant={sizes.h4} fontWeight="bolder"/>),

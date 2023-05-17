@@ -21,12 +21,13 @@ const BlogMiniItem = ({blog, className}: BlogMiniItemProps) => {
             padding={0}
             component={Link}
             href={getBlogRoute(blog.slug)}
+            gap={2}
         >
             <Box className={styles.blogContent}>
 
                 <AuthorSection author={blog.author} date={formatDate(blog.createdAt)} avatarSize='small'/>
 
-                <Stack spacing={0.5}>
+                <Stack spacing={0.5} sx={{cursor: 'default'}}>
                     <MultilineText variant='h6' maxLines={1} color="text.primary">
                         {blog.title}
                     </MultilineText>

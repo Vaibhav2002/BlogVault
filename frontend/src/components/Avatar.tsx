@@ -34,7 +34,8 @@ const UserAvatar = ({url, username, size = "medium", className, ...avatarProps}:
             width: avatarSize,
             height: avatarSize,
             variant: "circular",
-            ...((!url && username) && {backgroundColor: stringToColor(username)})
+            ...((!url && username) && {backgroundColor: stringToColor(username)}),
+            cursor: 'pointer'
         },
         ...avatarProps
     }

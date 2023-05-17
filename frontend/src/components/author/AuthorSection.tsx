@@ -26,7 +26,9 @@ const AuthorSection = (
     return (
         <Stack alignItems="center" direction="row" spacing={1} sx={{cursor: 'default'}}>
             <UserAvatar url={profilePicUrl} size={avatarSize} onClick={onClick}/>
-            <Typography variant="caption" color="text.secondary" onClick={onClick}>{username}</Typography>
+            <Typography variant="caption" color="text.secondary" onClick={onClick} sx={{cursor: 'pointer'}}>
+                {username}
+            </Typography>
             <Dot/>
             <Typography variant="caption" color="text.secondary">{date}</Typography>
             {views && (views > 0) &&

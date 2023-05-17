@@ -63,7 +63,7 @@ const BlogItem = ({blog, className, onBlogUnSaved, ...props}: BlogItemProps & Bo
 
                 <AuthorSection author={blog.author} date={formatDate(createdAt)} views={blog.views}/>
 
-                <Box marginBottom={isBelowSm ? 0 : 3}>
+                <Box marginBottom={isBelowSm ? 0 : 3} sx={{cursor: 'default'}}>
                     <MultilineText
                         variant={titleSize}
                         maxLines={2}

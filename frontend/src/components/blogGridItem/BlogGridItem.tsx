@@ -51,7 +51,7 @@ const BlogGridItem = ({blog, className, ...props}: BlogGridItemProps & BoxProps)
             </Box>
 
 
-            <Box className={styles.blogContent}>
+            <Box className={styles.blogContent} sx={{cursor: 'default'}}>
 
                 <Box marginBottom={2}>
                     <Typography variant="overline" color="text.secondary">

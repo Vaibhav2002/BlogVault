@@ -48,7 +48,8 @@ const HeroSection = () => {
                     flexDirection: 'column',
                     alignItems: isMobile ? 'center' : 'flex-start',
                     flex: 0.5,
-                    height: 1
+                    height: 1,
+                    overflow: 'hidden'
                 }}
             >
 
@@ -107,7 +108,7 @@ const HeroImage = ({url, top, left, animationDelay = 1.5}: HeroImageProps) => {
             style={{
                 position: 'absolute',
                 width: '90%',
-                aspectRatio: '16/9',
+                aspectRatio: '3/2',
                 transform: 'translateY(-50%)',
                 top: top,
                 left: left

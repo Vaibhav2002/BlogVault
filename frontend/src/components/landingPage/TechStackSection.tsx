@@ -19,7 +19,7 @@ const TechStackSection = ({className}: TechStackSectionProps) => {
         <Stack
             spacing={{xs: 6, md: 8, lg: 10}}
             paddingX={{xs: 4, md: 6, lg: 14}}
-            paddingY={{xs: 6, md: 8, lg: 10}}
+            paddingY={{xs: 6, md: 8, lg: 14}}
         >
             <CenteredBox paddingX={2} width={1} gap={4}>
                 <Divider style={{flex: '1'}}/>

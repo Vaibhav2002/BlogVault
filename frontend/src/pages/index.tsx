@@ -3,6 +3,7 @@ import HeroSection from "@/components/landingPage/HeroSection";
 import React from "react";
 import FeatureSection from "@/components/landingPage/FeatureSection";
 import TechStackSection from "@/components/landingPage/TechStackSection";
+import FooterSection from "@/components/landingPage/FooterSection";
 
 export default function Home() {
     return (
@@ -10,6 +11,7 @@ export default function Home() {
             <HeroSection/>
             <FeatureSection/>
             <TechStackSection/>
+            <FooterSection/>
         </Stack>
     )
 }

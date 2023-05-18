@@ -35,11 +35,11 @@ const HeroSection = () => {
         <Stack
             direction={{xs: 'column', md: 'row'}}
             height='100vh'
-            overflow='hidden'
             padding={{xs: '3rem', md: '5rem'}}
             spacing={4}
             textAlign={{xs: 'center', md: 'start'}}
-            // position='relative'
+            position='relative'
+            overflow='hidden'
         >
             {!isMobile && <HeroCircle/>}
             <CenteredBox
@@ -137,21 +137,21 @@ const HeroCircle = ({className, ...props}: HeroCircleProps & MotionProps) => {
         <motion.div
             className={className}
             animate={{
-                x: ['100%', '15%', "30%"],
-                y: ['100%', "25%", '15%'],
+                right: ['0%', '5%', "-20%", "-25%"],
+                bottom: ['0%', '5%', "-20%", "-25%"],
                 scale: 1,
                 height: "100vh",
                 width: "100vh",
                 opacity: [1, 0.1]
             }}
-            initial={{x: "100%", y: "100%", scale: 0, opacity: 1}}
-            transition={{duration: 5, type: "tween", ease: "easeOut"}}
+            initial={{right: '-100%', bottom: '-100%', scale: 0, opacity: 1}}
+            transition={{duration: 5, type: "tween", ease: "easeInOut"}}
             style={{
                 position: "absolute",
                 backgroundColor: palette.secondary.main,
                 borderRadius: "50%",
-                bottom: 0,
-                right: 0
+                bottom: '-100%',
+                right: '-100%',
             }}
             {...props}
         >

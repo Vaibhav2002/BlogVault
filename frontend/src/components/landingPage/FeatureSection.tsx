@@ -15,20 +15,30 @@ interface FeatureSectionProps {
 
 const features: Feature[] = [
     {
-        title: "Discover a World of Ideas",
-        description: "Explore a diverse collection of captivating blogs on various topics, written by passionate individuals. Immerse yourself in a wealth of knowledge, inspiration, and thought-provoking content.",
-        videoUrl: '/home_vid.mp4'
+        title: "Explore the World of Engaging Content",
+        description: "Discover a vast collection of captivating blogs covering various topics. Immerse yourself in diverse perspectives and gain knowledge with our extensive content library.",
+        videoUrl: "home_vid.mp4"
     },
     {
-        title: "Share Your Voice with the World",
-        description: "Unleash your creativity and express your ideas through blogging. Create and publish your own compelling articles, essays, stories, or any form of written expression. Inspire others with your unique perspective and contribute to the growing community of passionate writers.",
-        videoUrl: '/create_vid.mp4'
+        title: "Unleash Your Creativity",
+        description: "Bring your ideas to life with our intuitive and user-friendly create blog screen. Seamlessly draft, edit, and publish your thoughts, and connect with your audience through a streamlined writing experience.",
+        videoUrl: "create_vid.mp4"
     },
     {
-        title: 'Stay Updated with the Latest Trends',
-        description: 'Explore our Discover screen to stay in the loop with the most popular blogs and influential authors. Discover trending blogs that are capturing attention and making waves within the community. Delve into a curated selection of captivating content, handpicked for your reading pleasure.',
-        videoUrl: '/discover_vid.mp4'
-    }
+        title: "Stay Updated with What's Trending",
+        description: "Stay in the loop with the latest trends in the blogging community. Explore our curated selection of trending blogs and influential authors. Gain insights, broaden your horizons, and be inspired by the creativity of trending authors.",
+        videoUrl: "discover_vid.mp4"
+    },
+    {
+        title: "Refine and Discover",
+        description: "Refine your search and discover precisely what you're looking for. Customize your search with keywords and categories to find tailored content. Experience the joy of personalized search and uncover valuable information at your fingertips.",
+        videoUrl: "search_vid.mp4"
+    },
+    {
+        title: "Never Miss a Read",
+        description: "Save blogs for later and never miss out on great reads. Curate a personalized reading list to enjoy captivating content at your convenience. Enhance your reading experience and make the most of your valuable time.",
+        videoUrl: "saved_vid.mp4"
+    },
 ]
 
 const FeatureSection = ({className}: FeatureSectionProps) => {

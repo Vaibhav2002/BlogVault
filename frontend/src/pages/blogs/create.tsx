@@ -19,6 +19,7 @@ import {NavScreen as NavPage} from "@/components/navBars/NavOptions";
 import useAuthenticatedUser from "@/hooks/useAuthenticatedUser";
 import CenteredBox from "@/components/styled/CenteredBox";
 import {HttpError} from "@/data/HttpErrors";
+import CreateTopicModal from "@/components/modals/CreateTopicModal";
 
 
 const blogSchema = yup.object({
@@ -40,9 +41,9 @@ const CreateNewBlogPage = () => {
 
     const {user, userLoading} = useAuthenticatedUser()
     const form = useForm<BlogInput>({resolver: yupResolver(blogSchema)})
-    const {handleSubmit, register, watch, setValue, formState: {errors, isSubmitting, isDirty}} = form
+    const {handleSubmit, register, watch, setValue, getValues, formState: {errors, isSubmitting, isDirty}} = form
 
-    const {data: topics, error: topicError} = useSWR('topics', getAllTopics)
+    const {data: topics, error: topicError, mutate: mutateTopic} = useSWR('topics', getAllTopics)
 
     const [error, setError] = useState<string | undefined>()
 
@@ -70,6 +71,12 @@ const CreateNewBlogPage = () => {
                 setError(e.message)
             else alert(e)
         }
+    }
+
+    const [showCreateTopicModal, setShowCreateTopicModal] = useState(false)
+    const onTopicCreated = async (topic: Topic) => {
+        if (!topics) await mutateTopic()
+        else await mutateTopic([...topics, topic])
     }
 
     const submitButton = useMemo(() => (
@@ -100,7 +107,13 @@ const CreateNewBlogPage = () => {
                     >
                         <Typography variant="h4">Create New Blog</Typography>
 
-                        <BlogMetaSection topics={topics || []} form={form} error={error}/>
+                        <BlogMetaSection
+                            topics={topics || []}
+                            form={form}
+                            error={error}
+                            onTopicCreated={onTopicCreated}
+                            onCreateTopicClick={() => setShowCreateTopicModal(true)}
+                        />
 
                         {/*Desktop View*/}
                         {!isBelowSm && submitButton}
@@ -123,6 +136,13 @@ const CreateNewBlogPage = () => {
                 </Box>
 
             </form>
+
+            {showCreateTopicModal &&
+                <CreateTopicModal
+                    onTopicCreated={onTopicCreated}
+                    dismiss={() => setShowCreateTopicModal(false)}/>
+            }
+
         </NavScreen>
     )
 }

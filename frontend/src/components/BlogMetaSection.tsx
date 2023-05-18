@@ -8,16 +8,27 @@ import FormImagePicker from "@/components/form/FormImagePicker";
 import FormTextField from "@/components/form/FormTextField";
 import FormAutoComplete from "@/components/form/FormAutoComplete";
 import React from "react";
+import Link from "@mui/material/Link";
 
 interface BlogMetaSectionProps {
     topics: Topic[]
     form: UseFormReturn<any>
     error?: string
     coverImage?: string
-    className?: string
+    className?: string,
+    onCreateTopicClick: () => void
+    onTopicCreated: (topic: Topic) => void
 }
 
-const BlogMetaSection = ({topics, form, error, coverImage, className}: BlogMetaSectionProps) => {
+const BlogMetaSection = ({
+                             topics,
+                             form,
+                             error,
+                             coverImage,
+                             className,
+                             onTopicCreated,
+                             onCreateTopicClick
+                         }: BlogMetaSectionProps) => {
 
     const {getValues, setValue, watch, formState: {errors}} = form
     const {fileUrl: coverImageUrl} = useFormImage('coverImage', watch, coverImage)
@@ -82,16 +93,25 @@ const BlogMetaSection = ({topics, form, error, coverImage, className}: BlogMetaS
                     placeholder="Enter description"
                 />
 
-                <FormAutoComplete
-                    control={form.control}
-                    name="topics"
-                    options={topics}
-                    placeholder="Select Topics"
-                    max={3}
-                    getOptionLabel={(topic: Topic) => topic.name}
-                />
-            </Stack>
+                <Stack spacing={1} paddingBottom={2}>
+                    <FormAutoComplete
+                        control={form.control}
+                        name="topics"
+                        options={topics}
+                        placeholder="Select Topics"
+                        max={3}
+                        getOptionLabel={(topic: Topic) => topic.name}
+                    />
 
+                    <Link
+                        onClick={onCreateTopicClick}
+                        sx={{cursor: 'pointer'}}
+                    >
+                        Create a new topic
+                    </Link>
+                </Stack>
+
+            </Stack>
         </Stack>
     )
 }

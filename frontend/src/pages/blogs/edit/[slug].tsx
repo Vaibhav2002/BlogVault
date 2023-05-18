@@ -20,6 +20,7 @@ import useDevices from "@/hooks/useDevices";
 import ConfirmationModal from "@/components/modals/ConfirmationModal";
 import useAuthenticatedUser from "@/hooks/useAuthenticatedUser";
 import CenteredBox from "@/components/styled/CenteredBox";
+import CreateTopicModal from "@/components/modals/CreateTopicModal";
 
 export const getServerSideProps: GetServerSideProps<EditBlogPageProps> = async ({params}) => {
     const slug = params?.slug?.toString()
@@ -65,7 +66,7 @@ const EditBlogPage = ({blog}: EditBlogPageProps) => {
     })
     const {handleSubmit, register, watch, setValue, formState: {errors, isSubmitting, isDirty}} = form
 
-    const {data: topics, error: topicError} = useSWR('topics', getAllTopics)
+    const {data: topics, error: topicError, mutate: mutateTopic} = useSWR('topics', getAllTopics)
 
     const [error, setError] = useState<string | undefined>()
 
@@ -124,6 +125,14 @@ const EditBlogPage = ({blog}: EditBlogPageProps) => {
 
     const isCurrentUserAuthor = user?._id === blog.author._id
 
+
+    const [showCreateTopicModal, setShowCreateTopicModal] = useState(false)
+    const onTopicCreated = async (topic: Topic) => {
+        if (!topics) await mutateTopic()
+        else await mutateTopic([...topics, topic])
+    }
+
+
     if (!isCurrentUserAuthor)
         return <CenteredBox height="100vh">
             <Typography variant="h4">You are not authorized to edit this blog</Typography>
@@ -151,7 +160,14 @@ const EditBlogPage = ({blog}: EditBlogPageProps) => {
                 >
                     <Typography variant="h4">Edit Blog</Typography>
 
-                    <BlogMetaSection topics={topics || []} form={form} error={error} coverImage={blog.coverImage}/>
+                    <BlogMetaSection
+                        topics={topics || []}
+                        form={form}
+                        error={error}
+                        coverImage={blog.coverImage}
+                        onTopicCreated={onTopicCreated}
+                        onCreateTopicClick={() => setShowCreateTopicModal(true)}
+                    />
 
                     {!isMobile && submitButton}
                     {!isMobile && deleteButton}
@@ -181,6 +197,12 @@ const EditBlogPage = ({blog}: EditBlogPageProps) => {
                     onPositiveClick={onDeleteConfirmed}
                     onNegativeClick={() => setShowDeleteConfirmation(false)}
                 />
+            }
+
+            {showCreateTopicModal &&
+                <CreateTopicModal
+                    onTopicCreated={onTopicCreated}
+                    dismiss={() => setShowCreateTopicModal(false)}/>
             }
 
         </form>

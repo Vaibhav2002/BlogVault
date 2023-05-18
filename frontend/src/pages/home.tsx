@@ -14,6 +14,7 @@ import DiscoverSection from "@/components/DiscoverSection";
 import _ from "lodash";
 import EmptyState from "@/components/EmptyState";
 import BlogList from "@/components/blogItem/BlogList";
+import Head from "next/head";
 
 
 export const getServerSideProps: GetServerSideProps<HomeScreenProps> = async ({query, req}) => {
@@ -54,32 +55,40 @@ const HomeScreen = ({blogPage: {page, blogs, totalPages}}: HomeScreenProps) => {
     ), [])
 
     return (
-        <NavScreen selected={NavPage.Home}>
+        <>
+            <Head>
+                <title>Home - BlogVault</title>
+                <meta name='description'
+                      content='Explore a diverse collection of captivating blogs on various topics, written by passionate individuals. Immerse yourself in a wealth of knowledge, inspiration, and thought-provoking content.'/>
+            </Head>
+            <NavScreen selected={NavPage.Home}>
 
-            <Stack
-                direction="row"
-                sx={{overflow: "hidden", padding: {xs: 2, md: 0}}}
-                height="100%"
-            >
+                <Stack
+                    direction="row"
+                    sx={{overflow: "hidden", padding: {xs: 2, md: 0}}}
+                    height="100%"
+                >
 
-                <Box flex={{xs: 1, lg: 0.7}} padding={{sx: 2, md: 8}} overflow='auto'>
-                    {areBlogsEmpty
-                        ? emptyState()
-                        : <HomeBlogSection page={page} totalPages={totalPages} className={styles.blogSection}
-                                           blogs={blogs}/>
-                    }
+                    <Box flex={{xs: 1, lg: 0.7}} padding={{sx: 2, md: 8}} overflow='auto'>
+                        {areBlogsEmpty
+                            ? emptyState()
+                            : <HomeBlogSection page={page} totalPages={totalPages} className={styles.blogSection}
+                                               blogs={blogs}/>
+                        }
 
-                </Box>
-
-
-                <Box sx={{display: {xs: "none", lg: "block"}}} className={styles.discoverSection}>
-                    <DiscoverSection/>
-                </Box>
+                    </Box>
 
 
-            </Stack>
+                    <Box sx={{display: {xs: "none", lg: "block"}}} className={styles.discoverSection}>
+                        <DiscoverSection/>
+                    </Box>
 
-        </NavScreen>
+
+                </Stack>
+
+            </NavScreen>
+        </>
+
     )
 }
 

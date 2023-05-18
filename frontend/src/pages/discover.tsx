@@ -18,6 +18,7 @@ import useSWR from "swr";
 import {getTrendingTopics} from "@/data/dataSources/TopicDataSource";
 import MultilineText from "@/components/styled/MultilineText";
 import ChipGroup, {ChipGroupSkeleton} from "@/components/chipGroup/ChipGroup";
+import Head from "next/head";
 
 export const getServerSideProps: GetServerSideProps<DiscoverProps> = async ({query}) => {
     const redirect = (page: number) => {
@@ -51,41 +52,48 @@ interface DiscoverProps {
 
 const Discover = ({blogPage, trendingAuthors, className}: DiscoverProps) => {
 
-
     return (
-        <NavScreen selected={NavPage.Discover}>
+        <>
+            <Head>
+                <title>Discover - BlogVault</title>
+                <meta name='description'
+                      content='Explore our Discover screen to stay in the loop with the most popular blogs and influential authors. Discover trending blogs that are capturing attention and making waves within the community. Delve into a curated selection of captivating content, handpicked for your reading pleasure.'/>
+            </Head>
+            <NavScreen selected={NavPage.Discover}>
 
-            <Stack padding={{xs: '1rem 0 1rem 1rem', md: '2rem 0 2rem 2rem', lg: '4rem 0 4rem 4rem'}} spacing={6}
-                   sx={{overflowX: 'hidden'}}>
-                <Typography variant='h4' paddingRight={{xs: 2, md: 4, lg: 8}}>
-                    Discover Trending this week
-                </Typography>
+                <Stack padding={{xs: '1rem 0 1rem 1rem', md: '2rem 0 2rem 2rem', lg: '4rem 0 4rem 4rem'}} spacing={6}
+                       sx={{overflowX: 'hidden'}}>
+                    <Typography variant='h4' paddingRight={{xs: 2, md: 4, lg: 8}}>
+                        Discover Trending this week
+                    </Typography>
 
-                <Box display={{xs: 'block', md: 'none'}}>
-                    <TrendingTopicSection height={1}/>
-                </Box>
-
-                <TrendingAuthorSection authors={trendingAuthors}/>
-
-                <Stack direction='row' paddingRight={{xs: 2, md: 4, lg: 8}} spacing={4}>
-                    <Box flex={1}>
-                        <TrendingBlogsSection blogPage={blogPage}/>
-                    </Box>
-
-                    <Box
-                        flex={0.3}
-                        padding={3}
-                        display={{xs: 'none', md: 'block'}}
-                        borderLeft='1px solid lightgray'
-                    >
+                    <Box display={{xs: 'block', md: 'none'}}>
                         <TrendingTopicSection height={1}/>
                     </Box>
 
+                    <TrendingAuthorSection authors={trendingAuthors}/>
+
+                    <Stack direction='row' paddingRight={{xs: 2, md: 4, lg: 8}} spacing={4}>
+                        <Box flex={1}>
+                            <TrendingBlogsSection blogPage={blogPage}/>
+                        </Box>
+
+                        <Box
+                            flex={0.3}
+                            padding={3}
+                            display={{xs: 'none', md: 'block'}}
+                            borderLeft='1px solid lightgray'
+                        >
+                            <TrendingTopicSection height={1}/>
+                        </Box>
+
+                    </Stack>
+
                 </Stack>
 
-            </Stack>
+            </NavScreen>
+        </>
 
-        </NavScreen>
     )
 }
 

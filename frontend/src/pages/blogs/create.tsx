@@ -20,6 +20,7 @@ import useAuthenticatedUser from "@/hooks/useAuthenticatedUser";
 import CenteredBox from "@/components/styled/CenteredBox";
 import {HttpError} from "@/data/HttpErrors";
 import CreateTopicModal from "@/components/modals/CreateTopicModal";
+import Head from "next/head";
 
 
 const blogSchema = yup.object({
@@ -88,62 +89,68 @@ const CreateNewBlogPage = () => {
     if (userLoading) return <CenteredBox><CircularProgress/></CenteredBox>
 
     return (
-        <NavScreen selected={NavPage.Post}>
-            <form onSubmit={handleSubmit(onSubmit)}>
+        <>
+            <Head>
+                <title>Post - BlogVault</title>
+            </Head>
+            <NavScreen selected={NavPage.Post}>
+                <form onSubmit={handleSubmit(onSubmit)}>
 
-                <Box
-                    padding={4}
-                    display="flex"
-                    gap={2}
-                    sx={{overflowX: "hidden", flexDirection: {xs: "column", md: "row"}}}
-                    alignItems="stretch"
-                >
-
-                    <Stack
-                        position="static"
-                        flex={0.4}
-                        direction='column'
-                        spacing={2}
+                    <Box
+                        padding={4}
+                        display="flex"
+                        gap={2}
+                        sx={{overflowX: "hidden", flexDirection: {xs: "column", md: "row"}}}
+                        alignItems="stretch"
                     >
-                        <Typography variant="h4">Create New Blog</Typography>
 
-                        <BlogMetaSection
-                            topics={topics || []}
-                            form={form}
-                            error={error}
-                            onTopicCreated={onTopicCreated}
-                            onCreateTopicClick={() => setShowCreateTopicModal(true)}
+                        <Stack
+                            position="static"
+                            flex={0.4}
+                            direction='column'
+                            spacing={2}
+                        >
+                            <Typography variant="h4">Create New Blog</Typography>
+
+                            <BlogMetaSection
+                                topics={topics || []}
+                                form={form}
+                                error={error}
+                                onTopicCreated={onTopicCreated}
+                                onCreateTopicClick={() => setShowCreateTopicModal(true)}
+                            />
+
+                            {/*Desktop View*/}
+                            {!isBelowSm && submitButton}
+
+                        </Stack>
+
+                        <MarkdownEditor
+                            register={register('content')}
+                            error={errors.content}
+                            value={watch('content')}
+                            setValue={setValue}
+                            placeholder="Write your blog here..."
+                            className={styles.editor}
+                            onError={setError}
                         />
 
-                        {/*Desktop View*/}
-                        {!isBelowSm && submitButton}
+                        {/*Mobile View*/}
+                        {isBelowSm && submitButton}
 
-                    </Stack>
+                    </Box>
 
-                    <MarkdownEditor
-                        register={register('content')}
-                        error={errors.content}
-                        value={watch('content')}
-                        setValue={setValue}
-                        placeholder="Write your blog here..."
-                        className={styles.editor}
-                        onError={setError}
-                    />
+                </form>
 
-                    {/*Mobile View*/}
-                    {isBelowSm && submitButton}
+                {showCreateTopicModal &&
+                    <CreateTopicModal
+                        onTopicCreated={onTopicCreated}
+                        dismiss={() => setShowCreateTopicModal(false)}/>
+                }
 
-                </Box>
+            </NavScreen>
+        </>
 
-            </form>
-
-            {showCreateTopicModal &&
-                <CreateTopicModal
-                    onTopicCreated={onTopicCreated}
-                    dismiss={() => setShowCreateTopicModal(false)}/>
-            }
-
-        </NavScreen>
     )
 }
 

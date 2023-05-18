@@ -18,6 +18,7 @@ import {useRouter} from "next/router";
 import EmptyState from "@/components/EmptyState";
 import ErrorState from "@/components/ErrorState";
 import {HttpError} from "@/data/HttpErrors";
+import Head from "next/head";
 
 interface Query {
     q?: string
@@ -42,25 +43,33 @@ const SearchPage = () => {
     }
 
     return (
-        <NavScreen selected={NavPage.Search}>
-            <CenteredBox>
-                <Stack
-                    height={1}
-                    alignItems='stretch'
-                    paddingY={{xs: '4rem', md: '6rem'}}
-                    spacing='4rem'
-                    width={{xs: '90%', md: '80%', lg: '70%', xl: '60%'}}
-                >
-                    <Header/>
-                    <SearchBar
-                        query={searchQuery ?? ''}
-                        onQueryChange={setSearchQuery}
-                        onSearchPress={onSearchClick}/>
-                    <TopicSection onTopicSelected={onTopicSelected} selectedTopic={topic}/>
-                    <BlogSection query={query}/>
-                </Stack>
-            </CenteredBox>
-        </NavScreen>
+        <>
+            <Head>
+                <title>Search - BlogVault</title>
+                <meta name='description'
+                      content="Refine your search and discover precisely what you're looking for. Customize your search with keywords and categories to find tailored content. Experience the joy of personalized search and uncover valuable information at your fingertips."/>
+            </Head>
+            <NavScreen selected={NavPage.Search}>
+                <CenteredBox>
+                    <Stack
+                        height={1}
+                        alignItems='stretch'
+                        paddingY={{xs: '4rem', md: '6rem'}}
+                        spacing='4rem'
+                        width={{xs: '90%', md: '80%', lg: '70%', xl: '60%'}}
+                    >
+                        <Header/>
+                        <SearchBar
+                            query={searchQuery ?? ''}
+                            onQueryChange={setSearchQuery}
+                            onSearchPress={onSearchClick}/>
+                        <TopicSection onTopicSelected={onTopicSelected} selectedTopic={topic}/>
+                        <BlogSection query={query}/>
+                    </Stack>
+                </CenteredBox>
+            </NavScreen>
+        </>
+
     )
 }
 

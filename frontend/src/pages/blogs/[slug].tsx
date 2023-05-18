@@ -16,6 +16,7 @@ import NavScreen from "@/components/NavScreen/NavScreen";
 import BlogCommentSection from "@/components/comments/CommentSection";
 import {getSearchRouteForTopic} from "@/utils/Routes";
 import {useRouter} from "next/router";
+import Head from "next/head";
 
 export const getServerSideProps: GetServerSideProps<BlogPageProps> = async ({params}) => {
     const slug = params?.slug?.toString();
@@ -37,25 +38,31 @@ interface BlogPageProps {
 const BlogPage = ({blog}: BlogPageProps) => {
 
     return (
-        <NavScreen>
-            <Stack
-                sx={{
-                    paddingX: {xs: "8%", sm: "10%", md: "17%"},
-                    paddingY: "6rem",
-                    overflowX: "hidden"
-                }}
-                spacing={8}
-                alignItems="stretch"
-            >
-                <BlogHeader blog={blog}/>
+        <>
+            <Head>
+                <title>{blog.title}</title>
+                <meta name='description' content={blog.description}/>
+                <meta name='og:image' key='og:image' content={blog.coverImage}/>
+            </Head>
+            <NavScreen>
+                <Stack
+                    sx={{
+                        paddingX: {xs: "8%", sm: "10%", md: "17%"},
+                        paddingY: "6rem",
+                        overflowX: "hidden"
+                    }}
+                    spacing={8}
+                    alignItems="stretch"
+                >
+                    <BlogHeader blog={blog}/>
 
-                <BlogContent blog={blog}/>
+                    <BlogContent blog={blog}/>
 
-                <BlogFooter blog={blog}/>
+                    <BlogFooter blog={blog}/>
 
-            </Stack>
-        </NavScreen>
-
+                </Stack>
+            </NavScreen>
+        </>
     )
 }
 

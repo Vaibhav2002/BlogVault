@@ -21,6 +21,7 @@ import ConfirmationModal from "@/components/modals/ConfirmationModal";
 import useAuthenticatedUser from "@/hooks/useAuthenticatedUser";
 import CenteredBox from "@/components/styled/CenteredBox";
 import CreateTopicModal from "@/components/modals/CreateTopicModal";
+import Head from "next/head";
 
 export const getServerSideProps: GetServerSideProps<EditBlogPageProps> = async ({params}) => {
     const slug = params?.slug?.toString()
@@ -142,70 +143,76 @@ const EditBlogPage = ({blog}: EditBlogPageProps) => {
         return <CenteredBox height="100vh"><CircularProgress/></CenteredBox>
 
     return (
-        <form onSubmit={handleSubmit(onSubmit)}>
+        <>
+            <Head>
+                <title>Editing - {blog.title}</title>
+            </Head>
+            <form onSubmit={handleSubmit(onSubmit)}>
 
-            <Box
-                padding={4}
-                display="flex"
-                gap={3}
-                sx={{overflowX: "hidden", flexDirection: {xs: "column", md: "row"}}}
-                alignItems="stretch"
-            >
-
-                <Stack
-                    position="static"
-                    flex={0.4}
-                    direction='column'
-                    spacing={2}
+                <Box
+                    padding={4}
+                    display="flex"
+                    gap={3}
+                    sx={{overflowX: "hidden", flexDirection: {xs: "column", md: "row"}}}
+                    alignItems="stretch"
                 >
-                    <Typography variant="h4">Edit Blog</Typography>
 
-                    <BlogMetaSection
-                        topics={topics || []}
-                        form={form}
-                        error={error}
-                        coverImage={blog.coverImage}
-                        onTopicCreated={onTopicCreated}
-                        onCreateTopicClick={() => setShowCreateTopicModal(true)}
+                    <Stack
+                        position="static"
+                        flex={0.4}
+                        direction='column'
+                        spacing={2}
+                    >
+                        <Typography variant="h4">Edit Blog</Typography>
+
+                        <BlogMetaSection
+                            topics={topics || []}
+                            form={form}
+                            error={error}
+                            coverImage={blog.coverImage}
+                            onTopicCreated={onTopicCreated}
+                            onCreateTopicClick={() => setShowCreateTopicModal(true)}
+                        />
+
+                        {!isMobile && submitButton}
+                        {!isMobile && deleteButton}
+
+                    </Stack>
+
+                    <MarkdownEditor
+                        register={register('content')}
+                        error={errors.content}
+                        value={watch('content')}
+                        setValue={setValue}
+                        placeholder="Write your blog here..."
+                        className={styles.editor}
+                        onError={setError}
                     />
 
-                    {!isMobile && submitButton}
-                    {!isMobile && deleteButton}
+                    {isMobile && submitButton}
+                    {isMobile && deleteButton}
 
-                </Stack>
+                </Box>
 
-                <MarkdownEditor
-                    register={register('content')}
-                    error={errors.content}
-                    value={watch('content')}
-                    setValue={setValue}
-                    placeholder="Write your blog here..."
-                    className={styles.editor}
-                    onError={setError}
-                />
+                {showDeleteConfirmation &&
+                    <ConfirmationModal
+                        open={showDeleteConfirmation}
+                        title="Delete blog?"
+                        message="Are you sure that you want to delete this blog? This action cannot be undone."
+                        onPositiveClick={onDeleteConfirmed}
+                        onNegativeClick={() => setShowDeleteConfirmation(false)}
+                    />
+                }
 
-                {isMobile && submitButton}
-                {isMobile && deleteButton}
+                {showCreateTopicModal &&
+                    <CreateTopicModal
+                        onTopicCreated={onTopicCreated}
+                        dismiss={() => setShowCreateTopicModal(false)}/>
+                }
 
-            </Box>
+            </form>
+        </>
 
-            {showDeleteConfirmation &&
-                <ConfirmationModal
-                    open={showDeleteConfirmation}
-                    title="Delete blog?"
-                    message="Are you sure that you want to delete this blog? This action cannot be undone."
-                    onPositiveClick={onDeleteConfirmed}
-                    onNegativeClick={() => setShowDeleteConfirmation(false)}
-                />
-            }
-
-            {showCreateTopicModal &&
-                <CreateTopicModal
-                    onTopicCreated={onTopicCreated}
-                    dismiss={() => setShowCreateTopicModal(false)}/>
-            }
-
-        </form>
 
     )
 }

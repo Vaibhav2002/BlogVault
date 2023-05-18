@@ -14,6 +14,7 @@ import PaginationBar from "@/components/PaginationBar";
 import _ from "lodash";
 import CenteredBox from "@/components/styled/CenteredBox";
 import EmptyState from "@/components/EmptyState";
+import Head from "next/head";
 
 const SavedBlogsPage = () => {
     const {user} = useAuthenticatedUser()
@@ -64,31 +65,39 @@ const LoggedInView = () => {
     ), [])
 
     return (
-        <CenteredBox>
-            <Stack
-                spacing={3}
-                paddingY={4}
-                width={{xs: '90%', md: '80%', lg: '70%', xl: '60%'}}
-                style={{justifySelf: 'start'}}
-            >
-                {isLoading && <BlogSkeletonList count={5}/>}
-                {blogPage && !_.isEmpty(blogPage.blogs) &&
-                    <>
-                        <Typography variant="h4">Saved Blogs</Typography>
-                        <BlogList blogs={blogPage.blogs} onBlogClick={onBlogClick}
-                                  onBlogUnSaved={onBlogUnSaved}/>
-                        <PaginationBar
-                            page={page}
-                            count={blogPage.totalPages}
-                            onPageChange={setPage}
-                            sx={{alignSelf: 'center'}}
-                        />
-                    </>
-                }
+        <>
+            <Head>
+                <title>Saved - BlogVault</title>
+                <meta name='description'
+                      content='Save blogs for later and never miss out on great reads. Curate a personalized reading list to enjoy captivating content at your convenience. Enhance your reading experience and make the most of your valuable time.'/>
+            </Head>
+            <CenteredBox>
+                <Stack
+                    spacing={3}
+                    paddingY={4}
+                    width={{xs: '90%', md: '80%', lg: '70%', xl: '60%'}}
+                    style={{justifySelf: 'start'}}
+                >
+                    {isLoading && <BlogSkeletonList count={5}/>}
+                    {blogPage && !_.isEmpty(blogPage.blogs) &&
+                        <>
+                            <Typography variant="h4">Saved Blogs</Typography>
+                            <BlogList blogs={blogPage.blogs} onBlogClick={onBlogClick}
+                                      onBlogUnSaved={onBlogUnSaved}/>
+                            <PaginationBar
+                                page={page}
+                                count={blogPage.totalPages}
+                                onPageChange={setPage}
+                                sx={{alignSelf: 'center'}}
+                            />
+                        </>
+                    }
 
-                {blogPage && _.isEmpty(blogPage.blogs) && emptyState()}
-            </Stack>
-        </CenteredBox>
+                    {blogPage && _.isEmpty(blogPage.blogs) && emptyState()}
+                </Stack>
+            </CenteredBox>
+        </>
+
     )
 }
 

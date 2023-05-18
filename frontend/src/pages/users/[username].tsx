@@ -17,6 +17,7 @@ import UpdateProfileModal from "@/components/modals/updateProfile/UpdateProfileM
 import PaginationBar from "@/components/PaginationBar";
 import EmptyState from "@/components/EmptyState";
 import _ from "lodash";
+import Head from "next/head";
 
 export const getServerSideProps: GetServerSideProps<ProfilePageProps> = async ({params}) => {
     const username = params?.username as string
@@ -33,7 +34,13 @@ interface ProfilePageProps {
 
 const ProfilePage = ({user}: ProfilePageProps) => {
     return (
-        <Profile user={user} key={user._id}/>
+        <>
+            <Head>
+                <title>{user.displayName || user.username}</title>
+                {user.about && <meta name='description' content={user.about}/>}
+            </Head>
+            <Profile user={user} key={user._id}/>
+        </>
     )
 }
 

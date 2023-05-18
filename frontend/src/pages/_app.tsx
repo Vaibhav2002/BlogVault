@@ -9,6 +9,7 @@ import OnBoardingModal from "@/components/modals/OnBoardingModal";
 import {useEffect, useState} from "react";
 import AuthModalProvider from "@/components/modals/auth/AuthModal";
 import NextProgress from "next-progress";
+import Head from "next/head";
 
 const clientSideEmotionCache = createEmotionCache()
 
@@ -21,18 +22,28 @@ export default function App({Component, pageProps, emotionCache = clientSideEmot
     const {showOnboardingModal} = useOnboardingModal()
 
     return (
-        <CacheProvider value={emotionCache}>
-            <ThemeProvider theme={blogVaultTheme}>
-                <CssBaseline/>
-                <AuthModalProvider>
-                    <main>
-                        <NextProgress/>
-                        <Component {...pageProps} />
-                        {showOnboardingModal && <OnBoardingModal/>}
-                    </main>
-                </AuthModalProvider>
-            </ThemeProvider>
-        </CacheProvider>
+        <>
+            <Head>
+                <title>BlogVault - Create and Share Your Stories with BlogVault</title>
+                <meta name='description'
+                      content='Explore Your Passions and Build Your Audience on Our User-Friendly Blogging Platform'/>
+                <meta name='viewport' content='width=device-width, initial-scale=1'/>
+                <link rel='icon' href='/favicon.ico'/>
+            </Head>
+            <CacheProvider value={emotionCache}>
+                <ThemeProvider theme={blogVaultTheme}>
+                    <CssBaseline/>
+                    <AuthModalProvider>
+                        <main>
+                            <NextProgress/>
+                            <Component {...pageProps} />
+                            {showOnboardingModal && <OnBoardingModal/>}
+                        </main>
+                    </AuthModalProvider>
+                </ThemeProvider>
+            </CacheProvider>
+        </>
+
     )
 }
 

@@ -1,11 +1,13 @@
 import React, {useMemo, useState} from 'react';
-import {AppBar, Avatar, Button, IconButton, Menu, MenuItem, Stack, Toolbar, Typography} from "@mui/material";
+import {AppBar, Avatar, Box, Button, IconButton, Menu, MenuItem, Stack, Toolbar} from "@mui/material";
 import {NavOptions, navOptions} from "@/components/navBars/NavOptions";
 import {MdMenu} from "react-icons/md";
 import {useRouter} from "next/router";
 import User from "@/data/models/User";
 import Link from "next/link";
 import {getUserRoute} from "@/utils/Routes";
+import brandName from '@/../public/brand_name.png'
+import Image from "next/image";
 
 interface AppBarProps {
     user?: User | null
@@ -78,7 +80,10 @@ const TopNav = ({user, onLoginClick, onLogoutClick, className}: AppBarProps) => 
                     sx={{overflowX: "hidden", width: "100%"}}
                 >
                     {menu}
-                    <Typography variant="h6" color="text.primary">BlogVault</Typography>
+
+                    <Box position='relative' height='3rem' sx={{aspectRatio: '2.85/1'}}>
+                        <Image src={brandName} fill priority alt='Brand Name'/>
+                    </Box>
 
                     {user ? LoggedInView(user) : LoggedOutView(onLoginClick)}
                 </Stack>

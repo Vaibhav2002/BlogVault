@@ -8,7 +8,7 @@ import {NavOptions, navOptions, NavScreen} from "@/components/navBars/NavOptions
 import User from "@/data/models/User";
 import UserAvatar from "@/components/Avatar";
 import Link from "next/link";
-import Routes, {getUserRoute} from "@/utils/Routes";
+import {getUserRoute} from "@/utils/Routes";
 import Image from "next/image";
 import logo from '@/assets/images/logo.png'
 import CenteredBox from "@/components/styled/CenteredBox";
@@ -81,7 +81,7 @@ const SideNav = ({user, selected, className, onLoginClick, onLogoutClick, ...pro
                 }}
                 width={1}
                 component={Link}
-                href={Routes.Home}
+                href='/'
             >
                 <Box width={1} sx={{aspectRatio: '1/1', position: 'relative'}}>
                     <Image src={logo} fill priority alt='Logo'/>

@@ -8,6 +8,7 @@ import {Profile as GoogleProfile} from "passport-google-oauth20";
 import {Profile as GithubProfile} from "passport-github2";
 import {appendLastUpdated} from "../utils/Helpers";
 import * as verificationDataSource from "./VerificationDataSource";
+import {revokeAllUserSession} from "../utils/SessionManager";
 
 
 export const registerUser = async (username: string, email: string, passwordRaw: string, code: number) => {
@@ -40,7 +41,7 @@ export const resetPassword = async (email: string, newPassword: string, code: nu
     user.password = hashedPassword
     await user.save()
 
-    await revokeAllSessions(user._id)
+    await revokeAllUserSession(user._id)
 
     user = user.toObject()
     delete user.password
@@ -90,12 +91,6 @@ export const registerGithubUser = async (profile: GithubProfile) => {
         profilePicUrl: profile.photos?.[0].value
     })
 }
-
-const revokeAllSessions = async (userId: mongoose.Types.ObjectId) => {
-    const idMatcher = new RegExp(`^${userId.toString()}`)
-    await mongoose.connection.db.collection('sessions').deleteMany({_id: idMatcher})
-}
-
 
 const isExistingUsername = async (username: string) => {
     const existingUser = await users.findOne({username: username})

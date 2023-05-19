@@ -88,8 +88,8 @@ const HeroSection = () => {
             </CenteredBox>
 
             <CenteredBox sx={{position: 'relative', height: 1, flex: 0.5}}>
-                <HeroImage url={homeImg} top='50%' left='0'/>
-                <HeroImage url={discoverImg} top='60%' left='15%' animationDelay={2}/>
+                <HeroImage url={discoverImg} top='50%' left='0'/>
+                <HeroImage url={homeImg} top='60%' left='15%' animationDelay={2}/>
             </CenteredBox>
         </Stack>
     )
@@ -142,7 +142,7 @@ const HeroCircle = ({className, ...props}: HeroCircleProps & MotionProps) => {
                 scale: 1,
                 height: "100vh",
                 width: "100vh",
-                opacity: [1, 0.1]
+                opacity: [1, 0.4]
             }}
             initial={{right: '-100%', bottom: '-100%', scale: 0, opacity: 1}}
             transition={{duration: 5, type: "tween", ease: "easeInOut"}}

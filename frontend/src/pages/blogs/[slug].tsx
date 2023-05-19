@@ -42,7 +42,7 @@ const BlogPage = ({blog}: BlogPageProps) => {
             <Head>
                 <title>{blog.title}</title>
                 <meta name='description' content={blog.description}/>
-                <meta name='og:image' key='og:image' content={blog.coverImage}/>
+                <meta property='og:image' key='og:image' content={blog.coverImage}/>
             </Head>
             <NavScreen>
                 <Stack

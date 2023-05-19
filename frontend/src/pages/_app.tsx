@@ -29,13 +29,16 @@ export default function App({Component, pageProps, emotionCache = clientSideEmot
                       content='Explore Your Passions and Build Your Audience on Our User-Friendly Blogging Platform'/>
                 <meta name='viewport' content='width=device-width, initial-scale=1'/>
                 <link rel='icon' href='/favicon.ico'/>
+                <meta property="og:image" key='og:image'
+                      content="https://c792f92b82df4e.lhr.life/social_media_preview.png"/>
+                <meta name="twitter:card" content="summary_large_image"/>
             </Head>
             <CacheProvider value={emotionCache}>
                 <ThemeProvider theme={blogVaultTheme}>
                     <CssBaseline/>
                     <AuthModalProvider>
+                        <NextProgress/>
                         <main>
-                            <NextProgress/>
                             <Component {...pageProps} />
                             {showOnboardingModal && <OnBoardingModal/>}
                         </main>

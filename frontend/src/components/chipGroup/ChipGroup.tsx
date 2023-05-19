@@ -1,6 +1,6 @@
 import React from 'react';
 import {Box, BoxProps, Skeleton} from "@mui/material";
-import styles from "@/components/chipGroup/ChipGroup.module.css";
+import styles from "./Chipgroup.module.css"
 import StyledChip from "@/components/styled/Chip";
 
 interface ChipGroupProps<T> {

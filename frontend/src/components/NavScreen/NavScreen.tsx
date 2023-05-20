@@ -40,7 +40,7 @@ const NavScreen = ({selected, children, className}: SideNavScreenProps) => {
         >
 
             {isBelowSm
-                ? <TopNav user={user} onLoginClick={() => showLogin} onLogoutClick={logout}/>
+                ? <TopNav user={user} onLoginClick={showLogin} onLogoutClick={logout}/>
                 : <SideNav user={user} selected={selected} className={styles.sideNav} onLoginClick={showLogin}
                            onLogoutClick={logout}/>
             }

@@ -94,7 +94,7 @@ const TopNav = ({user, onLoginClick, onLogoutClick, className}: AppBarProps) => 
 
 const LoggedInView = (user: User) => {
     return <Avatar src={user.profilePicUrl} sx={{cursor: "pointer"}} component={Link}
-                   href={getUserRoute(user.username ?? '/')}/>
+                   href={user.username ? getUserRoute(user.username) : '/'}/>
 }
 
 const LoggedOutView = (onLoginClick: () => void) => {

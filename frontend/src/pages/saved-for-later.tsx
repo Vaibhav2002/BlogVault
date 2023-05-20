@@ -20,7 +20,7 @@ const SavedBlogsPage = () => {
     const {user} = useAuthenticatedUser()
 
     return (
-        <NavScreen selected={NavPage.Bookmarks}>
+        <NavScreen selected={NavPage.SavedBlogs}>
             {user
                 ? <LoggedInView/>
                 : <LoggedOutView/>

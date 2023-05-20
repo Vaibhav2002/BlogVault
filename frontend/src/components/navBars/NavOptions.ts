@@ -1,7 +1,7 @@
 export enum NavScreen {
     Home = "Home",
     Discover = "Discover",
-    Bookmarks = "Bookmarks",
+    SavedBlogs = "Saved blogs",
     Search = "Search",
     Post = "Post"
 }
@@ -22,7 +22,7 @@ export const navOptions: NavOptions[] = [
         href: "/discover"
     },
     {
-        screen: NavScreen.Bookmarks,
+        screen: NavScreen.SavedBlogs,
         href: "/saved-for-later"
     },
     {

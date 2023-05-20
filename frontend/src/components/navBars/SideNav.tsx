@@ -25,7 +25,7 @@ const getIconForNavItem = (option: NavOptions, selected: boolean) => {
             return <CiHome size={iconSize} color={getIconColor(selected)}/>
         case NavScreen.Discover:
             return <CiGrid42 size={iconSize} color={getIconColor(selected)}/>
-        case NavScreen.Bookmarks:
+        case NavScreen.SavedBlogs:
             return <CiBookmark size={iconSize} color={getIconColor(selected)}/>
         case NavScreen.Search:
             return <CiSearch size={iconSize} color={getIconColor(selected)}/>

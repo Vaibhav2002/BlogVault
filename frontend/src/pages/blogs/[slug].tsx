@@ -56,7 +56,7 @@ const BlogPage = ({blog}: BlogPageProps) => {
                 >
                     <BlogHeader blog={blog}/>
 
-                    <BlogContent blog={blog}/>
+                    {/*<BlogContent blog={blog}/>*/}
 
                     <BlogFooter blog={blog}/>
 

@@ -90,8 +90,11 @@ export const getAllSlugs = async () => {
     return response.data as string[]
 }
 
-export const getBlogBySlug = async (slug: string) => {
-    const response = await api.get<Blog>(`/blogs/${slug}`)
+export const getBlogBySlug = async (slug: string, cookies?: any) => {
+    const response = await api.get<Blog>(`/blogs/${slug}`, {
+        withCredentials: true,
+        headers: {Cookie: cookies}
+    })
     return response.data as Blog
 }
 

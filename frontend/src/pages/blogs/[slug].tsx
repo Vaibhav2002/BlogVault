@@ -18,10 +18,10 @@ import {getSearchRouteForTopic} from "@/utils/Routes";
 import {useRouter} from "next/router";
 import Head from "next/head";
 
-export const getServerSideProps: GetServerSideProps<BlogPageProps> = async ({params}) => {
+export const getServerSideProps: GetServerSideProps<BlogPageProps> = async ({params, req: {headers}}) => {
     const slug = params?.slug?.toString();
     if (!slug) throw new Error("Slug is missing");
-    const blog = await getBlogBySlug(slug)
+    const blog = await getBlogBySlug(slug, headers.cookie)
     return {
         props: {
             blog: blog

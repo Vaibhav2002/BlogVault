@@ -2,7 +2,7 @@ import React, {useEffect} from 'react';
 import Comment from "@/data/models/Comment";
 import {IconButton, Stack, Typography} from "@mui/material";
 import FormTextField from "@/components/form/FormTextField";
-import {Close, SendRounded} from "@mui/icons-material";
+import {MdClose, MdSend} from "react-icons/md";
 import * as yup from 'yup'
 import {commentSchema} from "@/utils/Validation";
 import {useForm} from "react-hook-form";
@@ -60,8 +60,8 @@ const EditCommentSection = ({comment, onCommentUpdated, onCancel, className}: Ed
                         endAdornment: (
                             <>
                                 <IconButton size='small' type='submit'
-                                            disabled={isSubmitting}><SendRounded/></IconButton>
-                                <IconButton size='small' onClick={onCancel}><Close/></IconButton>
+                                            disabled={isSubmitting}><MdSend/></IconButton>
+                                <IconButton size='small' onClick={onCancel}><MdClose/></IconButton>
                             </>
 
                         )

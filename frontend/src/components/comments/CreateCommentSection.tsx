@@ -7,9 +7,9 @@ import {IconButton, Stack} from "@mui/material";
 import {HttpError} from "@/data/HttpErrors";
 import {createComment} from "@/data/dataSources/CommentDataSource";
 import Comment from "@/data/models/Comment";
-import {Close, SendRounded} from "@mui/icons-material";
 import {AuthModalsContext} from "@/components/modals/auth/AuthModal";
 import useAuthenticatedUser from "@/hooks/useAuthenticatedUser";
+import {MdClose, MdSend} from "react-icons/md";
 
 interface CreateCommentSectionProps {
     blogId: string
@@ -72,9 +72,9 @@ const CreateCommentSection = (
                     InputProps={{
                         endAdornment: (
                             <>
-                                <IconButton size='small' type='submit'><SendRounded/></IconButton>
+                                <IconButton size='small' type='submit'><MdSend/></IconButton>
                                 {props.canClose &&
-                                    <IconButton size='small' onClick={props.onClose}><Close/></IconButton>}
+                                    <IconButton size='small' onClick={props.onClose}><MdClose/></IconButton>}
                             </>
                         )
                     }}

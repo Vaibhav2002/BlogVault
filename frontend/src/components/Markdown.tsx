@@ -1,14 +1,15 @@
 import React, {ReactNode} from 'react';
 import ReactMarkdown from "react-markdown";
-import {Typography} from "@mui/material";
+import {List, ListItem, Typography, useTheme} from "@mui/material";
 import rehypeRaw from "rehype-raw";
 import {Prism as SyntaxHighlighter} from 'react-syntax-highlighter';
-import {oneDark} from "react-syntax-highlighter/dist/cjs/styles/prism";
 import remarkGfm from "remark-gfm";
 import remarkToc from "remark-toc";
 import rehypeSlug from "rehype-slug";
 import useDevices from "@/hooks/useDevices";
 import {Variant} from "@mui/material/styles/createTypography";
+import Link from "@mui/material/Link";
+import {github} from "react-syntax-highlighter/dist/esm/styles/hljs";
 
 interface MarkdownProps {
     children: string
@@ -25,7 +26,7 @@ interface Sizes {
 }
 
 const Markdown = ({children, className}: MarkdownProps) => {
-
+    const palette = useTheme().palette
     const markdown = children.replace("\\n", "&nbsp; \\n")
     const {isMobile} = useDevices()
 
@@ -62,25 +63,38 @@ const Markdown = ({children, className}: MarkdownProps) => {
                 p: ({...props}) => <Typography {...props} variant="body1"/>,
                 span: ({...props}) => <Typography {...props} variant="body1"/>,
 
-                code: ({node, inline, className, children, ...props}) => {
+                code: ({inline, className, children, ...props}) => {
                     const match = /language-(\w+)/.exec(className || '')
-                    return !inline && match ? (
-                        <SyntaxHighlighter
+                    if (!inline && match)
+                        return <SyntaxHighlighter
                             {...props}
                             children={String(children).replace(/\n$/, '')}
-                            style={oneDark}
+                            style={github}
                             language={match[1]}
                             PreTag="div"
                         />
-                    ) : (
-                        <code {...props} className={className}>{children}</code>
-                    )
+                    else if (!inline)
+                        return <SyntaxHighlighter
+                            {...props}
+                            children={String(children).replace(/\n$/, '')}
+                            style={github}
+                            language='markdown'
+                            PreTag="div"
+                        />
+                    else
+                        return <code className={className} {...props}
+                                     style={{backgroundColor: palette.background.paper}}/>
                 },
+
+                ul: ({...props}) => <List {...props} sx={{listStyleType: 'disc', pl: 4}}/>,
+                li: ({...props}) => <ListItem {...props} sx={{display: 'list-item', paddingY: 0.25}}/>,
 
                 img: ({node, ...props}) =>
                     <span style={{display: 'inline-flex', justifyContent: 'center', flexDirection: 'row'}}>
                         <img style={{maxWidth: '100%'}} {...props}/>
-                    </span>
+                    </span>,
+
+                a: ({...props}) => (<Link {...props} color="primary.main" underline="always" fontWeight='600'/>)
 
             }}
         >

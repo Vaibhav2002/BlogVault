@@ -47,7 +47,7 @@ const BlogGridItem = ({blog, className, ...props}: BlogGridItemProps & BoxProps)
     return (
         <Box className={`${styles.blogCard} ${className}`} {...props}>
             <Box className={styles.blogImage}>
-                <Image fill style={{objectFit: 'cover'}} src={blog.coverImage} alt={blog.title}/>
+                <Image fill style={{objectFit: 'cover'}} src={blog.posterImage} alt={blog.title}/>
             </Box>
 
 

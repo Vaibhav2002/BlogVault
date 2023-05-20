@@ -9,7 +9,8 @@ export default interface Blog {
     topics: Topic[]
     createdAt: string
     updatedAt: string
-    coverImage: string
+    coverImage: string,
+    posterImage: string
     views: number,
     author: User,
     isSaved?: boolean

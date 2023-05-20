@@ -122,7 +122,7 @@ const BlogItem = ({blog, className, onBlogUnSaved, ...props}: BlogItemProps & Bo
                 <Image
                     fill
                     style={{objectFit: 'cover'}}
-                    src={blog.coverImage}
+                    src={blog.posterImage}
                     alt={title}
                 />
             </Box>

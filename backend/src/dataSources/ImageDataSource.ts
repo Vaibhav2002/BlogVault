@@ -1,10 +1,10 @@
-import sharp from "sharp";
+import sharp, {ResizeOptions} from "sharp";
 import env from "../utils/CleanEnv";
 import fs from "fs";
 import * as path from "path";
 
-const COVER_IMAGE_WIDTH = 1280
-const COVER_IMAGE_HEIGHT = 720
+const COVER_IMAGE_WIDTH = 854
+const COVER_IMAGE_HEIGHT = 480
 
 const POSTER_IMAGE_WIDTH = 512
 const POSTER_IMAGE_HEIGHT = 512
@@ -56,7 +56,8 @@ export async function saveInBlogImage(image: Express.Multer.File, filename: stri
         image,
         IN_BLOG_IMAGE_WIDTH,
         IN_BLOG_IMAGE_HEIGHT,
-        `.${filePath}`
+        `.${filePath}`,
+        {withoutEnlargement: true}
     )
     return env.SERVER_URL + filePath
 }
@@ -75,9 +76,10 @@ async function saveImage(
     image: Express.Multer.File,
     width: number,
     height: number | undefined,
-    path: string
+    path: string,
+    options?: ResizeOptions
 ) {
     await sharp(image.buffer)
-        .resize(width, height)
+        .resize(width, height, options)
         .toFile(path)
 }

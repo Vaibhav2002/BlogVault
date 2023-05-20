@@ -38,7 +38,7 @@ const BlogMiniItem = ({blog, className}: BlogMiniItemProps) => {
             </Box>
 
             <Box className={styles.blogImage} flex={0.2}>
-                <Image fill style={{objectFit: 'cover'}} src={blog.coverImage} alt={blog.title}/>
+                <Image fill style={{objectFit: 'cover'}} src={blog.posterImage} alt={blog.title}/>
             </Box>
         </Box>
     )

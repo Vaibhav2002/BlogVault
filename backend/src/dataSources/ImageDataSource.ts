@@ -3,8 +3,8 @@ import env from "../utils/CleanEnv";
 import fs from "fs";
 import * as path from "path";
 
-const COVER_IMAGE_WIDTH = 854
-const COVER_IMAGE_HEIGHT = 480
+const COVER_IMAGE_WIDTH = 1280
+const COVER_IMAGE_HEIGHT = 720
 
 const POSTER_IMAGE_WIDTH = 512
 const POSTER_IMAGE_HEIGHT = 512

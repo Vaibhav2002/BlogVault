@@ -6,7 +6,7 @@ const nextConfig = {
             "localhost",
             "lh3.googleusercontent.com",
             "avatars.githubusercontent.com",
-            process.env.NEXT_PUBLIC_BACKEND_URL
+            'api.blogVault.vaibhavjaiswal.tech'
         ],
         deviceSizes: [600, 900, 1200, 1536]
     }

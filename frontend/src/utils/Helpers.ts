@@ -1,5 +1,5 @@
 import format from "date-fns/format"
-import {formatDistanceToNowStrict, formatRelative} from "date-fns";
+import {formatDistanceToNowStrict} from "date-fns";
 
 export const generateSlug = (title: string) => {
     return title
@@ -10,6 +10,14 @@ export const generateSlug = (title: string) => {
         .toLowerCase()
 }
 
-export const formatDate = (date: string) => format(new Date(date), "MMM dd, yyyy")
+export const formatDate = (dateString: string) => {
+    const date = new Date(dateString)
+    const currentDate = new Date(Date.now())
+
+    if (date.getFullYear() === currentDate.getFullYear())
+        return format(date, "MMM dd")
+    else
+        return format(new Date(date), "MMM dd, yyyy")
+}
 
 export const formatRelativeDate = (date:string) => formatDistanceToNowStrict(new Date(date), {addSuffix: true})

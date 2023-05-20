@@ -9,7 +9,7 @@ import rehypeSlug from "rehype-slug";
 import useDevices from "@/hooks/useDevices";
 import {Variant} from "@mui/material/styles/createTypography";
 import Link from "@mui/material/Link";
-import {github} from "react-syntax-highlighter/dist/esm/styles/hljs";
+import {github} from "react-syntax-highlighter/dist/cjs/styles/hljs";
 
 interface MarkdownProps {
     children: string

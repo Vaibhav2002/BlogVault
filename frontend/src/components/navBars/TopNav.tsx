@@ -81,7 +81,13 @@ const TopNav = ({user, onLoginClick, onLogoutClick, className}: AppBarProps) => 
                 >
                     {menu}
 
-                    <Box position='relative' height='3rem' sx={{aspectRatio: '2.85/1'}}>
+                    <Box
+                        position='relative'
+                        height='3rem'
+                        sx={{aspectRatio: '2.85/1'}}
+                        component={Link}
+                        href='/'
+                    >
                         <Image src={brandName} fill priority alt='Brand Name'/>
                     </Box>
 

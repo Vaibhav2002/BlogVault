@@ -1,46 +1,89 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped
-with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# **BlogVault** Frontend
 
-## Getting Started
+## Technical details 💡
 
-First, run the development server:
+- BlogVault is created using NextJS, ReactJS and MaterialUI.
+- BlogVault's animations are created using [Framer Motion](https://www.framer.com/motion/).
+- BlogVault uses the power of
+  NextJS [ServerSide rendering](https://nextjs.org/docs/basic-features/pages#server-side-rendering) to provide content
+  blazing fast.
+- BlogVault uses the [SWR](https://swr.vercel.app) to fetch client side data and cache, revalidate it for better
+  performance.
+- BlogVault is highly responsive and looks great on all devices.
+- All the React components and package structure is properly organized.
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
+## Tech Stack
+
+- [NextJs](https://nextjs.org) - Next.js enables you to create full-stack web applications by extending the latest React
+  features, and integrating powerful Rust-based JavaScript tooling for the fastest builds.
+- [React](https://react.dev) - The library for web and native user interfaces.
+- [MaterialUI](https://mui.com) - MUI offers a comprehensive suite of UI tools to help you ship new features faster.
+- [Framer Motion](https://www.framer.com/motion/) - A production-ready motion library for React.
+- [Lottie](https://lottiefiles.com) - LottieFiles is a collection of animations designed for Lottie and Bodymovin.
+- [ReactIcons](https://react-icons.github.io/react-icons/) - Include popular icons in your React projects easily with
+  react-icons.
+- [React Markdown](https://github.com/remarkjs/react-markdown) - Markdown component for React.
+- [React Hook Form](https://react-hook-form.com) - Performant, flexible and extensible forms with easy-to-use
+  validation.
+- [yup](https://github.com/jquense/yup) - Yup is a JavaScript schema builder for value parsing and validation.
+- [Sass](https://sass-lang.com) - Sass is the most mature, stable, and powerful professional grade CSS extension
+  language in the world.
+- [Axios](https://axios-http.com) - Promise based HTTP client for the browser and node.js.
+- [SWR](https://swr.vercel.app) - SWR is a React Hooks library for remote data fetching.
+- [Lodash](https://lodash.com) - A modern JavaScript utility library delivering modularity, performance & extras.
+- [Typescript](https://www.typescriptlang.org) - TypeScript is a strongly typed programming language that builds on
+  JavaScript, giving you better tooling at any scale.
+
+## Package Structure
+
+```
+src
+.
+├── assets                      # Image assets for the project
+├── components                  # Reusable React components and their CSS files
+├── data                        # Data package for all data and network related operations
+│   ├── datasouces              # Data sources for handling API calls
+│   └── models                  # Models for handling data
+│
+├── hooks                       # Custom hooks for the project
+├── pages                       # Pages for the project
+├── styles                      # Global styles for the project
+├── themes                      # MUI theme for the project
+└── utils                       # Utility functions for the project
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## Project Setup
 
-You can start editing the page by modifying `pages/index.tsx`. The page auto-updates as you edit the file.
+1) Clone this project. You can directly download the source code .zip file, or you can use the git clone command in
+   terminal
+2) Once successful, open your preferred IDE and run some tasks and write some setup code.
+3) Navigate to frontend directory
+4) Run the following commands in your terminal
 
-[API routes](https://nextjs.org/docs/api-routes/introduction) can be accessed
-on [http://localhost:3000/api/hello](http://localhost:3000/api/hello). This endpoint can be edited
-in `pages/api/hello.ts`.
+    ```
+    npm install
+    ```
 
-The `pages/api` directory is mapped to `/api/*`. Files in this directory are treated
-as [API routes](https://nextjs.org/docs/api-routes/introduction) instead of React pages.
+5) After this, create a new file with the exact name of `.env.local`
+6) In the `.env.local` file, write:<br>
 
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and
-load Inter, a custom Google Font.
+    ```
+    NEXT_PUBLIC_BACKEND_URL = For development use http://localhost:<backend port no> and for production use the domain on which you are hosting the backend
+    ```
 
-## Learn More
+7) You are all set up now! To start the app in development mode, run:
 
-To learn more about Next.js, take a look at the following resources:
+    ```
+    next dev
+    ```
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+8) And to start the frontend in production mode, run:
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions
-are welcome!
+    ```
+    next build
+    next start
+    ```
 
-## Deploy on Vercel
+9) Then write localhost:3000 in your browser to be able to use BlogVault!
 
-The easiest way to deploy your Next.js app is to use
-the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme)
-from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+---

@@ -1,6 +1,7 @@
 import React from 'react';
 import {Autocomplete, FormControl, FormHelperText, FormLabel, TextField} from "@mui/material";
 import {Control, Controller} from "react-hook-form";
+import Topic from "@/data/models/Topic";
 
 interface FormAutoCompleteProps {
     control: Control<any>

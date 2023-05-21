@@ -15,6 +15,7 @@ import _ from "lodash";
 import EmptyState from "@/components/EmptyState";
 import BlogList from "@/components/blogItem/BlogList";
 import Head from "next/head";
+import {useLandedEvent} from "@/hooks/useTracker";
 
 
 export const getServerSideProps: GetServerSideProps<HomeScreenProps> = async ({query, req}) => {
@@ -45,6 +46,7 @@ interface HomeScreenProps {
 }
 
 const HomeScreen = ({blogPage: {page, blogs, totalPages}}: HomeScreenProps) => {
+    useLandedEvent()
     const areBlogsEmpty = _.isEmpty(blogs)
     const emptyState = useCallback(() => (
         <EmptyState

@@ -17,6 +17,8 @@ import BlogCommentSection from "@/components/comments/CommentSection";
 import {getSearchRouteForTopic} from "@/utils/Routes";
 import {useRouter} from "next/router";
 import Head from "next/head";
+import Topic from "@/data/models/Topic";
+import {useLandedEvent} from "@/hooks/useTracker";
 
 export const getServerSideProps: GetServerSideProps<BlogPageProps> = async ({params, req: {headers}}) => {
     const slug = params?.slug?.toString();
@@ -36,7 +38,7 @@ interface BlogPageProps {
 
 
 const BlogPage = ({blog}: BlogPageProps) => {
-
+    useLandedEvent()
     return (
         <>
             <Head>

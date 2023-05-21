@@ -33,6 +33,7 @@ export enum TrackingScreen {
     BLOG = 'blog',
     EDIT_BLOG = 'edit_blog',
     CREATE_BLOG = 'create_blog',
+    LANDING = 'landing'
 }
 
 export enum TrackingLocation {
@@ -81,7 +82,7 @@ export const getScreenFromRoute = (routeStr: string): TrackingScreen => {
         case Route.Post:
             return TrackingScreen.CREATE_BLOG
         default:
-            return TrackingScreen.HOME
+            return TrackingScreen.LANDING
     }
 }
 

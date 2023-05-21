@@ -6,6 +6,7 @@ import BottomGradientBox from "@/components/styled/BottomGradientBox";
 import MultilineText from "@/components/styled/MultilineText";
 import Routes, {getUserRoute} from "@/utils/Routes";
 import {useRouter} from "next/router";
+import useTracker from "@/hooks/useTracker";
 
 interface AuthorProfileItemProps {
     author: User
@@ -13,10 +14,13 @@ interface AuthorProfileItemProps {
 }
 
 const AuthorProfileItem = (
-    {author: {profilePicUrl, username, displayName}, className, ...props}: AuthorProfileItemProps & BoxProps
+    {author, className, ...props}: AuthorProfileItemProps & BoxProps
 ) => {
+    const {profilePicUrl, username, displayName} = author
     const router = useRouter()
+    const {authorTrendingCardClick} = useTracker()
     const onClick = async () => {
+        authorTrendingCardClick(author)
         await router.push(username ? getUserRoute(username) : Routes.Home)
     }
 

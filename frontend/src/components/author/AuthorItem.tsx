@@ -3,8 +3,9 @@ import User from "@/data/models/User";
 import {Box, Skeleton, Stack, Typography} from "@mui/material";
 import UserAvatar from "@/components/Avatar";
 import MultilineText from "@/components/styled/MultilineText";
-import Link from "next/link";
 import Route, {getUserRoute} from "@/utils/Routes";
+import useTracker from "@/hooks/useTracker";
+import {useRouter} from "next/router";
 
 interface AuthorItemProps {
     author: User
@@ -12,6 +13,12 @@ interface AuthorItemProps {
 }
 
 const AuthorItem = ({author, className}: AuthorItemProps) => {
+    const {authorTrendingCardClick} = useTracker()
+    const router = useRouter()
+    const onAuthorClick = async () => {
+        authorTrendingCardClick(author)
+        await router.push(author.username ? getUserRoute(author.username) : Route.Home)
+    }
     return (
         <Stack
             direction='row'
@@ -19,8 +26,7 @@ const AuthorItem = ({author, className}: AuthorItemProps) => {
             justifyContent='stretch'
             spacing={2}
             className={className}
-            component={Link}
-            href={author.username ? getUserRoute(author.username) : Route.Home}
+            onClick={onAuthorClick}
         >
             <Box flex={1}>
                 <Typography variant='overline' color='text.primary'>{`@${author.username}`}</Typography>

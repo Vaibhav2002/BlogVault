@@ -5,8 +5,11 @@ import UserAvatar from "@/components/Avatar";
 import Dot from "@/components/Dot";
 import {useRouter} from "next/router";
 import Route, {getUserRoute} from "@/utils/Routes";
+import useTracker from "@/hooks/useTracker";
+import Blog from "@/data/models/Blog";
 
 interface AuthorSectionProps {
+    blog?: Blog,
     author: User,
     avatarSize?: 'small' | 'medium' | 'large',
     date: string,
@@ -15,11 +18,15 @@ interface AuthorSectionProps {
 }
 
 const AuthorSection = (
-    {author: {profilePicUrl, username}, avatarSize = 'medium', views, date, className}: AuthorSectionProps
+    {blog, author, avatarSize = 'medium', views, date, className}: AuthorSectionProps
 ) => {
+    const {profilePicUrl, username} = author
     const router = useRouter()
+    const {blogAuthorAvatarClick} = useTracker()
+
     const onClick = (e: any) => {
         e.stopPropagation()
+        if (blog) blogAuthorAvatarClick(blog)
         router.push(username ? getUserRoute(username) : Route.Home)
     }
 

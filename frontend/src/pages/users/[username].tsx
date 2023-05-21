@@ -18,6 +18,7 @@ import PaginationBar from "@/components/PaginationBar";
 import EmptyState from "@/components/EmptyState";
 import _ from "lodash";
 import Head from "next/head";
+import {useLandedEvent} from "@/hooks/useTracker";
 
 export const getServerSideProps: GetServerSideProps<ProfilePageProps> = async ({params}) => {
     const username = params?.username as string
@@ -45,7 +46,7 @@ const ProfilePage = ({user}: ProfilePageProps) => {
 }
 
 const Profile = ({user}: ProfilePageProps) => {
-
+    useLandedEvent()
     const [profileUser, setProfileUser] = useState(user)
     const [showUpdateModal, setShowUpdateModal] = useState(false)
 

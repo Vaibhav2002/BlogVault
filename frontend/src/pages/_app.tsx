@@ -10,6 +10,7 @@ import {useEffect, useState} from "react";
 import AuthModalProvider from "@/components/modals/auth/AuthModal";
 import NextProgress from "next-progress";
 import Head from "next/head";
+import '@/utils/FirebaseConfig'
 
 const clientSideEmotionCache = createEmotionCache()
 

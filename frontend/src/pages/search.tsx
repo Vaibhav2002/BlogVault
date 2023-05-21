@@ -19,6 +19,7 @@ import EmptyState from "@/components/EmptyState";
 import ErrorState from "@/components/ErrorState";
 import {HttpError} from "@/data/HttpErrors";
 import Head from "next/head";
+import useTracker, {useLandedEvent} from "@/hooks/useTracker";
 
 interface Query {
     q?: string
@@ -26,15 +27,18 @@ interface Query {
 }
 
 const SearchPage = () => {
+    useLandedEvent()
     const q = useRouter().query.q?.toString()
     const topicQuery = useRouter().query.topic?.toString()
     const [searchQuery, setSearchQuery] = useState<string | undefined>(q);
     const [topic, setTopic] = useState<string | undefined>(topicQuery);
     const [query, setQuery] = useState<Query>({q: searchQuery, topic: topic})
+    const {search: trackSearch} = useTracker()
 
     const onSearchClick = () => {
         setTopic(undefined)
         setQuery({q: searchQuery})
+        if (searchQuery) trackSearch(searchQuery)
     }
 
     const onTopicSelected = (topic?: string) => {

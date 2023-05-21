@@ -10,19 +10,21 @@ import Link from "next/link";
 import Blog from "@/data/models/Blog";
 import {HttpError} from "@/data/HttpErrors";
 import * as dataSource from "@/data/dataSources/SavedBlogDataSource";
+import useTracker from "@/hooks/useTracker";
 
 interface BlogAuthorSectionProps {
     blog: Blog
     className?: string
 }
 
-const BlogAuthorSection = ({blog: {author, slug, isSaved}, className}: BlogAuthorSectionProps) => {
-
+const BlogAuthorSection = ({blog, className}: BlogAuthorSectionProps) => {
+    const {author, slug, isSaved} = blog
     const isBelowSm = useMediaQuery((theme: Theme) => theme.breakpoints.down('sm'))
     const {user} = useAuthenticatedUser()
     const isAuthenticatedUserAuthor = author._id === user?._id
     const [blogSaved, setBlogSaved] = useState(!!isSaved)
 
+    const {blogSaveFromScreen, blogUnSaveFromScreen} = useTracker()
     const router = useRouter()
 
     const onUpdatePress = async () => {
@@ -31,9 +33,13 @@ const BlogAuthorSection = ({blog: {author, slug, isSaved}, className}: BlogAutho
 
     const onBlogSaveToggle = async () => {
         try {
-            if (blogSaved)
+            if (blogSaved) {
                 await dataSource.unSaveBlog(slug)
-            else await dataSource.saveBlog(slug)
+                blogUnSaveFromScreen(blog)
+            } else {
+                await dataSource.saveBlog(slug)
+                blogSaveFromScreen(blog)
+            }
             setBlogSaved(!blogSaved)
         } catch (e) {
             console.error(e)

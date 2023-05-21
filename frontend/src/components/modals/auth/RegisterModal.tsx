@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {Alert, Box, Button, Collapse, Divider, Stack, Typography} from "@mui/material";
 import {useForm} from "react-hook-form";
 import FormTextField from "@/components/form/FormTextField";
@@ -15,6 +15,7 @@ import SocialAuthSection from "@/components/auth/SocialAuthSection";
 import {HttpError} from "@/data/HttpErrors";
 import useVerificationCode from "@/hooks/useVerificationCode";
 import VerificationCodeField from "@/components/form/VerificationCodeField";
+import useTracker from "@/hooks/useTracker";
 
 interface RegisterModalProps {
     onDismiss: () => void
@@ -41,12 +42,19 @@ const RegisterModal = ({onDismiss, onMoveToLogin, className}: RegisterModalProps
     const {verificationPending, verificationCodeSending, coolDownLeft, ...verificationEvents} = useVerificationCode()
     const [error, setError] = useState<string | undefined>(undefined)
 
+    const {registerModalOpen, register} = useTracker()
+
+    useEffect(() => {
+        registerModalOpen()
+    }, [])
+
     const onSubmit = async (data: RegisterFormValues) => {
         verificationEvents.removePending()
         setError(undefined)
         try {
             const response = await dataSource.registerUser(data)
             await mutateUser(response)
+            register()
             onDismiss()
         } catch (e) {
             if (e instanceof HttpError) setError(e.message)

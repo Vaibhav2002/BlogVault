@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import User from "@/data/models/User";
 import PrimaryModal from "@/components/modals/PrimaryModal";
 import {Alert, Box, Collapse, Stack} from "@mui/material";
@@ -16,6 +16,7 @@ import useAuthenticatedUser from "@/hooks/useAuthenticatedUser";
 import * as userDataSource from "@/data/dataSources/UserDataSource"
 import {UpdateUserRequest} from "@/data/dataSources/UserDataSource"
 import useFormImage from "@/hooks/useFormImage";
+import useTracker from "@/hooks/useTracker";
 
 interface UpdateProfileModalProps {
     user: User
@@ -48,6 +49,7 @@ const UpdateProfileModal = ({user, onDismiss, onUpdated, className}: UpdateProfi
 
     const {fileUrl: userProfilePic} = useFormImage('profilePic', watch, user.profilePicUrl)
     const [error, setError] = useState<string | null>(null)
+    const {editProfileModalOpen, editProfile} = useTracker()
 
 
     const onSubmit = async ({username, displayName, about, profilePic}: UpdateProfileValues) => {
@@ -60,6 +62,7 @@ const UpdateProfileModal = ({user, onDismiss, onUpdated, className}: UpdateProfi
             } as UpdateUserRequest)
             await mutateUser(response)
             onUpdated(response)
+            editProfile()
             onDismiss()
         } catch (e) {
             console.error(e)
@@ -67,6 +70,10 @@ const UpdateProfileModal = ({user, onDismiss, onUpdated, className}: UpdateProfi
                 setError(e.message)
         }
     }
+
+    useEffect(() => {
+        editProfileModalOpen()
+    }, [])
 
     return (
         <PrimaryModal open={true} onDismiss={onDismiss} lgSize="50%" padding={{xs: 2, md: 4, lg: 6}}>

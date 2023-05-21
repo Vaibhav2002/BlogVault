@@ -22,6 +22,8 @@ import useAuthenticatedUser from "@/hooks/useAuthenticatedUser";
 import CenteredBox from "@/components/styled/CenteredBox";
 import CreateTopicModal from "@/components/modals/CreateTopicModal";
 import Head from "next/head";
+import useTracker, {useLandedEvent} from "@/hooks/useTracker";
+import Topic from "@/data/models/Topic";
 
 export const getServerSideProps: GetServerSideProps<EditBlogPageProps> = async ({params}) => {
     const slug = params?.slug?.toString()
@@ -54,6 +56,7 @@ interface EditBlogPageProps {
 }
 
 const EditBlogPage = ({blog}: EditBlogPageProps) => {
+    useLandedEvent()
     const {user, userLoading} = useAuthenticatedUser()
     const form = useForm<BlogInput>({
         defaultValues: {
@@ -75,6 +78,7 @@ const EditBlogPage = ({blog}: EditBlogPageProps) => {
     const [isDeleting, setIsDeleting] = useState(false);
     const router = useRouter()
 
+    const {blogEdit, blogDelete} = useTracker()
     const {isMobile} = useDevices()
 
     useUnsavedChangesWarning(isDirty && !isSubmitting && !isDeleting)
@@ -90,6 +94,7 @@ const EditBlogPage = ({blog}: EditBlogPageProps) => {
                 ...data,
                 topics: data.topics.map(topic => topic._id) ?? []
             })
+            blogEdit(blog)
             await router.replace(getBlogRoute(data.slug))
         } catch (e) {
             console.error(e)
@@ -103,6 +108,7 @@ const EditBlogPage = ({blog}: EditBlogPageProps) => {
         setIsDeleting(true)
         try {
             await deleteBlog(blog._id)
+            blogDelete(blog)
             await router.push(Routes.Home)
         } catch (e) {
             setIsDeleting(false)

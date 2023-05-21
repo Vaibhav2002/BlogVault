@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {emailSchema, passwordSchema} from "@/utils/Validation";
 import * as yup from "yup";
 import PrimaryModal from "@/components/modals/PrimaryModal";
@@ -15,6 +15,7 @@ import VerificationCodeField from "@/components/form/VerificationCodeField";
 import * as dataSource from "@/data/dataSources/AuthDataSource";
 import {HttpError} from "@/data/HttpErrors";
 import useAuthenticatedUser from "@/hooks/useAuthenticatedUser";
+import useTracker from "@/hooks/useTracker";
 
 interface PasswordResetModalProps {
     onDismiss: () => void,
@@ -39,6 +40,8 @@ const PasswordResetModal = ({onDismiss, moveToRegister, className}: PasswordRese
     const [error, setError] = useState<string | null>(null)
     const {verificationPending, verificationCodeSending, coolDownLeft, ...verificationEvents} = useVerificationCode()
 
+    const {resetPasswordModalOpen, resetPassword, resetPasswordVerificationCodeRequest} = useTracker()
+
     const sendVerificationCode = async () => {
         const isValidEmail = await trigger('email')
         if (!isValidEmail) return
@@ -48,6 +51,7 @@ const PasswordResetModal = ({onDismiss, moveToRegister, className}: PasswordRese
         try {
             await dataSource.sendPasswordResetCode(email)
             verificationEvents.onVerificationCodeSent()
+            resetPasswordVerificationCodeRequest()
         } catch (e) {
             verificationEvents.onVerificationCodeSendFailed()
             if (e instanceof HttpError) setError(e.message)
@@ -62,6 +66,7 @@ const PasswordResetModal = ({onDismiss, moveToRegister, className}: PasswordRese
         try {
             const user = dataSource.resetPassword(data)
             await mutateUser(user)
+            resetPassword()
             onDismiss()
         } catch (e) {
             if (e instanceof HttpError) setError(e.message)
@@ -69,6 +74,10 @@ const PasswordResetModal = ({onDismiss, moveToRegister, className}: PasswordRese
             console.error(e)
         }
     }
+
+    useEffect(() => {
+        resetPasswordModalOpen()
+    }, [])
 
     return (
         <PrimaryModal open onDismiss={onDismiss} className={className}>

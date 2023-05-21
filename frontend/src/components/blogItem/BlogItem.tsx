@@ -16,6 +16,8 @@ import {useRouter} from "next/router";
 import {getSearchRouteForTopic} from "@/utils/Routes";
 import {AuthModalsContext} from "@/components/modals/auth/AuthModal";
 import useAuthenticatedUser from "@/hooks/useAuthenticatedUser";
+import Topic from "@/data/models/Topic";
+import useTracker from "@/hooks/useTracker";
 
 interface BlogItemProps {
     blog: Blog
@@ -35,6 +37,7 @@ const BlogItem = ({blog, className, onBlogUnSaved, ...props}: BlogItemProps & Bo
 
     const {showLogin} = useContext(AuthModalsContext)
     const {user} = useAuthenticatedUser()
+    const {blogSaveFromCard, blogUnSaveFromCard, topicChipClick, blogCardClick} = useTracker()
 
     const onSaveToggleButtonClick = async (e: any) => {
         e.stopPropagation()
@@ -46,7 +49,11 @@ const BlogItem = ({blog, className, onBlogUnSaved, ...props}: BlogItemProps & Bo
             if (isSaved) {
                 await saveDataSource.unSaveBlog(slug)
                 onBlogUnSaved?.(blog)
-            } else await saveDataSource.saveBlog(slug)
+                blogUnSaveFromCard(blog)
+            } else {
+                await saveDataSource.saveBlog(slug)
+                blogSaveFromCard(blog)
+            }
             setIsSaved(!isSaved)
         } catch (e) {
             alert(e)
@@ -54,6 +61,7 @@ const BlogItem = ({blog, className, onBlogUnSaved, ...props}: BlogItemProps & Bo
     }
 
     const onTopicClick = async (topic: Topic) => {
+        topicChipClick(topic)
         await router.push(getSearchRouteForTopic(topic.name))
     }
 
@@ -61,7 +69,7 @@ const BlogItem = ({blog, className, onBlogUnSaved, ...props}: BlogItemProps & Bo
         <Box className={`${styles.blogCard} ${className}`}{...props} padding='1rem 0'>
             <Box className={styles.blogContent} padding='0 1rem'>
 
-                <AuthorSection author={blog.author} date={formatDate(createdAt)} views={blog.views}/>
+                <AuthorSection blog={blog} author={blog.author} date={formatDate(createdAt)} views={blog.views}/>
 
                 <Box marginBottom={isBelowSm ? 0 : 3} sx={{cursor: 'default'}}>
                     <MultilineText

@@ -21,6 +21,8 @@ import CenteredBox from "@/components/styled/CenteredBox";
 import {HttpError} from "@/data/HttpErrors";
 import CreateTopicModal from "@/components/modals/CreateTopicModal";
 import Head from "next/head";
+import useTracker, {useLandedEvent} from "@/hooks/useTracker";
+import Topic from "@/data/models/Topic";
 
 
 const blogSchema = yup.object({
@@ -39,6 +41,7 @@ const blogSchema = yup.object({
 export type BlogInput = yup.InferType<typeof blogSchema>
 
 const CreateNewBlogPage = () => {
+    useLandedEvent()
 
     const {user, userLoading} = useAuthenticatedUser()
     const form = useForm<BlogInput>({resolver: yupResolver(blogSchema)})
@@ -51,6 +54,7 @@ const CreateNewBlogPage = () => {
     const router = useRouter()
 
     const isBelowSm = useMediaQuery((theme: Theme) => theme.breakpoints.down('sm'))
+    const {blogCreate} = useTracker()
 
     useUnsavedChangesWarning(isDirty && !isSubmitting)
 
@@ -61,10 +65,11 @@ const CreateNewBlogPage = () => {
     const onSubmit = async (data: BlogInput) => {
         try {
             setError(undefined)
-            await createBlog({
+            const blog = await createBlog({
                 ...data,
                 topics: data.topics.map(topic => topic._id) ?? [],
             })
+            blogCreate(blog)
             await router.replace(getBlogRoute(data.slug))
         } catch (e) {
             console.error(e)

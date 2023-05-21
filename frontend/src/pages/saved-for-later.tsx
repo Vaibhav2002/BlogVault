@@ -15,8 +15,10 @@ import _ from "lodash";
 import CenteredBox from "@/components/styled/CenteredBox";
 import EmptyState from "@/components/EmptyState";
 import Head from "next/head";
+import {useLandedEvent} from "@/hooks/useTracker";
 
 const SavedBlogsPage = () => {
+    useLandedEvent()
     const {user} = useAuthenticatedUser()
 
     return (

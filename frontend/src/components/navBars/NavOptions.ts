@@ -1,3 +1,5 @@
+import Route from "@/utils/Routes";
+
 export enum NavScreen {
     Home = "Home",
     Discover = "Discover",
@@ -15,22 +17,22 @@ export interface NavOptions {
 export const navOptions: NavOptions[] = [
     {
         screen: NavScreen.Home,
-        href: "/home"
+        href: Route.Home
     },
     {
         screen: NavScreen.Discover,
-        href: "/discover"
+        href: Route.Discover
     },
     {
         screen: NavScreen.SavedBlogs,
-        href: "/saved-for-later"
+        href: Route.SavedForLater
     },
     {
         screen: NavScreen.Search,
-        href: "/search"
+        href: Route.Search
     },
     {
         screen: NavScreen.Post,
-        href: '/blogs/create'
+        href: Route.Post
     }
 ]

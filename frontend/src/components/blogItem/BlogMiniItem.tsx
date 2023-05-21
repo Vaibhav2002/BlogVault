@@ -25,7 +25,7 @@ const BlogMiniItem = ({blog, className}: BlogMiniItemProps) => {
         >
             <Box className={styles.blogContent}>
 
-                <AuthorSection author={blog.author} date={formatDate(blog.createdAt)} avatarSize='small'/>
+                <AuthorSection blog={blog} author={blog.author} date={formatDate(blog.createdAt)} avatarSize='small'/>
 
                 <Stack spacing={0.5} sx={{cursor: 'default'}}>
                     <MultilineText variant='h6' maxLines={1} color="text.primary">

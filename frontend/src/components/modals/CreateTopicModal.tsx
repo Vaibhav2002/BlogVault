@@ -9,6 +9,8 @@ import {yupResolver} from "@hookform/resolvers/yup";
 import FormTextField from "@/components/form/FormTextField";
 import {HttpError} from "@/data/HttpErrors";
 import * as dataSource from "@/data/dataSources/TopicDataSource";
+import useTracker from "@/hooks/useTracker";
+import Topic from "@/data/models/Topic";
 
 interface CreateTopicModalProps {
     onTopicCreated: (topic: Topic) => void,
@@ -31,12 +33,14 @@ const CreateTopicModal = ({onTopicCreated, dismiss, className}: CreateTopicModal
         resolver: yupResolver(topicFormSchema)
     })
     const [error, setError] = useState<string>()
+    const {createTopic, createTopicModalOpen} = useTracker()
 
     const onSubmit = async (data: TopicFormValues) => {
         try {
             setError(undefined)
             const topic = await dataSource.createNewTopic(data.topic)
             onTopicCreated(topic)
+            createTopic()
             dismiss()
         } catch (e) {
             if (e instanceof HttpError)
@@ -49,6 +53,9 @@ const CreateTopicModal = ({onTopicCreated, dismiss, className}: CreateTopicModal
         setError(errors.topic?.message)
     }, [errors]);
 
+    useEffect(() => {
+        createTopicModalOpen()
+    })
 
     return (
         <PrimaryModal open onDismiss={dismiss}>

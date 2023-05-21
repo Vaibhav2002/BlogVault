@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {useForm} from "react-hook-form";
 import {Alert, Box, Button, Collapse, Divider, Stack, Typography} from "@mui/material";
 import styles from "@/components/modals/auth/AuthModal.module.css";
@@ -13,6 +13,7 @@ import {requiredStringSchema} from "@/utils/Validation";
 import {yupResolver} from "@hookform/resolvers/yup";
 import SocialAuthSection from "@/components/auth/SocialAuthSection";
 import {HttpError} from "@/data/HttpErrors";
+import useTracker from "@/hooks/useTracker";
 
 interface LoginModalProps {
     onDismiss: () => void
@@ -37,10 +38,13 @@ const LoginModal = ({onDismiss, onMoveToRegister, onForgotPassword, className}: 
 
     const [error, setError] = useState<string | undefined>(undefined)
 
+    const {loginModalOpen, login} = useTracker()
+
     const onSubmit = async (data: LoginFormValues) => {
         try {
             const response = await loginUser(data)
             await mutateUser(response)
+            login()
             onDismiss()
         } catch (e) {
             if (e instanceof HttpError) setError(e.message)
@@ -48,6 +52,10 @@ const LoginModal = ({onDismiss, onMoveToRegister, onForgotPassword, className}: 
             console.error(e)
         }
     }
+
+    useEffect(() => {
+        loginModalOpen()
+    }, [])
 
     return (
         <PrimaryModal open onDismiss={onDismiss} className={className}>

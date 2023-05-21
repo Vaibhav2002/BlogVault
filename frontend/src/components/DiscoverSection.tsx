@@ -10,6 +10,8 @@ import BlogMiniItem, {BlogMiniItemSkeleton} from "@/components/blogItem/BlogMini
 import AuthorItem, {AuthorItemSkeleton} from "@/components/author/AuthorItem";
 import {getSearchRouteForTopic} from "@/utils/Routes";
 import {useRouter} from "next/router";
+import Topic from "@/data/models/Topic";
+import useTracker from "@/hooks/useTracker";
 
 interface DiscoverSectionProps {
     showTrendingTopics?: boolean
@@ -34,8 +36,12 @@ const DiscoverSection = (
 const TrendingTopicsSection = () => {
     const router = useRouter()
     const {data: topics, isLoading, error} = useSWR('trending_topics', getTrendingTopics)
+    const {trendingTopicChipClick} = useTracker()
+    const onTopicSelected = (topic: Topic) => {
+        trendingTopicChipClick(topic)
+        router.push(getSearchRouteForTopic(topic.name))
+    }
 
-    const onTopicSelected = (topic: Topic) => router.push(getSearchRouteForTopic(topic.name))
 
     if (error || (topics && _.isEmpty(topics))) return <></>
 

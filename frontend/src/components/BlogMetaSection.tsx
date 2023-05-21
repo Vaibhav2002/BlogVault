@@ -9,6 +9,7 @@ import FormTextField from "@/components/form/FormTextField";
 import FormAutoComplete from "@/components/form/FormAutoComplete";
 import React from "react";
 import Link from "@mui/material/Link";
+import Topic from "@/data/models/Topic";
 
 interface BlogMetaSectionProps {
     topics: Topic[]

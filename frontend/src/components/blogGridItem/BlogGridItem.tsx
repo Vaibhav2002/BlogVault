@@ -11,6 +11,7 @@ import {FaArrowRight} from "react-icons/fa";
 import * as saveDataSource from "@/data/dataSources/SavedBlogDataSource";
 import {AuthModalsContext} from "@/components/modals/auth/AuthModal";
 import useAuthenticatedUser from "@/hooks/useAuthenticatedUser";
+import useTracker from "@/hooks/useTracker";
 
 interface BlogGridItemProps {
     blog: Blog
@@ -26,6 +27,7 @@ const BlogGridItem = ({blog, className, ...props}: BlogGridItemProps & BoxProps)
 
     const {showLogin} = useContext(AuthModalsContext)
     const {user} = useAuthenticatedUser()
+    const {blogSaveFromCard, blogUnSaveFromCard} = useTracker()
 
     const onSaveToggleButtonClick = async (e: any) => {
         e.stopPropagation()
@@ -36,7 +38,11 @@ const BlogGridItem = ({blog, className, ...props}: BlogGridItemProps & BoxProps)
         try {
             if (isSaved) {
                 await saveDataSource.unSaveBlog(blog.slug)
-            } else await saveDataSource.saveBlog(blog.slug)
+                blogUnSaveFromCard(blog)
+            } else {
+                await saveDataSource.saveBlog(blog.slug)
+                blogSaveFromCard(blog)
+            }
             setIsSaved(!isSaved)
         } catch (e) {
             alert(e)

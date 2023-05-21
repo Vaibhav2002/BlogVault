@@ -19,6 +19,8 @@ import {getTrendingTopics} from "@/data/dataSources/TopicDataSource";
 import MultilineText from "@/components/styled/MultilineText";
 import ChipGroup, {ChipGroupSkeleton} from "@/components/chipGroup/ChipGroup";
 import Head from "next/head";
+import Topic from "@/data/models/Topic";
+import {useLandedEvent} from "@/hooks/useTracker";
 
 export const getServerSideProps: GetServerSideProps<DiscoverProps> = async ({query}) => {
     const redirect = (page: number) => {
@@ -51,6 +53,7 @@ interface DiscoverProps {
 }
 
 const Discover = ({blogPage, trendingAuthors, className}: DiscoverProps) => {
+    useLandedEvent()
 
     return (
         <>

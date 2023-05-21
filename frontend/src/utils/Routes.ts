@@ -13,10 +13,9 @@ enum Route {
 
 export const getRouteFromString = (routeStr: string) => {
     if (routeStr === '/') return Route.LANDING
-    for (let route in Route) {
-        if (routeStr.startsWith(route)) {
-            return route
-        }
+    const routes = Object.entries(Route)
+    for (const [key, value] of routes) {
+        if (routeStr.startsWith(value)) return value
     }
     return undefined
 }

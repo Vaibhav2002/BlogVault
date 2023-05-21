@@ -11,6 +11,7 @@ import AuthModalProvider from "@/components/modals/auth/AuthModal";
 import NextProgress from "next-progress";
 import Head from "next/head";
 import '@/utils/FirebaseConfig'
+import {Analytics} from '@vercel/analytics/react';
 
 const clientSideEmotionCache = createEmotionCache()
 
@@ -42,6 +43,7 @@ export default function App({Component, pageProps, emotionCache = clientSideEmot
                         <main>
                             <Component {...pageProps} />
                             {showOnboardingModal && <OnBoardingModal/>}
+                            <Analytics/>
                         </main>
                     </AuthModalProvider>
                 </ThemeProvider>

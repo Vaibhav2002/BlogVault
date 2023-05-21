@@ -1,4 +1,5 @@
 import api from './AxiosInstance'
+import Topic from "@/data/models/Topic";
 
 export const getAllTopics = async () => {
     const response = await api.get<Topic[]>(`/topics`)

@@ -1,4 +1,5 @@
 import User from "@/data/models/User";
+import Topic from "@/data/models/Topic";
 
 export default interface Blog {
     _id: string

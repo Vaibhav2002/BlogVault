@@ -13,9 +13,8 @@ enum Route {
 
 export const getRouteFromString = (routeStr: string) => {
     if (routeStr === '/') return Route.LANDING
-    const routeWord = routeStr.substring(1)
     for (let route in Route) {
-        if (routeWord.startsWith(route)) {
+        if (routeStr.startsWith(route)) {
             return route
         }
     }

@@ -75,7 +75,7 @@ const HeroSection = () => {
 
                 <motion.div
                     initial={{scale: 0}} animate={{scale: 1}}
-                    transition={{delay: 5, duration: 1, type: "spring", damping: 10, stiffness: 100}}
+                    transition={{delay: 3, duration: 1, type: "spring", damping: 10, stiffness: 100}}
                 >
                     <PrimaryButton
                         onClick={onGetStartedPress}
